@@ -5,14 +5,14 @@ const GitHubPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // LinkedIn profil URL'sini buraya ekleyin
-    const linkedInProfileURL = 'https://github.com/yasirkaramandev/';
+    // GitHub profil URL'sini buraya ekleyin
+    const githubProfileURL = 'https://github.com/yasirkaramandev';
 
-    // Sayfa yüklendiğinde belirtilen LinkedIn profiline yönlendirme
-    window.location.href = linkedInProfileURL;
+    // Sayfa yüklendiğinde belirtilen GitHub profiline yönlendirme
+    window.location.href = githubProfileURL;
   }, []);
 
-  return <div>GitHub'a Yönlendiriliyorsunuz...</div>; // Opsiyonel: Yönlendirme sırasında görüntülenecek bir içerik
+  return <div>Yönlendiriliyorsunuz...</div>; // Opsiyonel: Yönlendirme sırasında görüntülenecek bir içerik
 };
 
 export default GitHubPage;
