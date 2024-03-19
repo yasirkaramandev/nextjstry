@@ -6,7 +6,7 @@ const GitHubPage = () => {
 
   useEffect(() => {
     // GitHub profil URL'sini buraya ekleyin
-    const githubProfileURL = 'https://github.com/yasirkaramandev';
+    const githubProfileURL = "https://github.com/yasirkaramandev";
 
     // Sayfa yüklendiğinde belirtilen GitHub profiline yönlendirme
     window.location.href = githubProfileURL;
