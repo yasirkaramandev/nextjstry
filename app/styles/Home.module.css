@@ -1,1 +1,90 @@
 
+.container {
+  min-height: 100vh;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  padding: 5rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 4rem;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.description {
+  margin: 1.5rem 0;
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.highlight {
+  background-color: #6e44ff;
+  color: white;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.3rem;
+}
+
+.workLink {
+  color: #6e44ff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.about {
+  width: 100%;
+  max-width: 800px;
+  text-align: left;
+  margin-top: 2rem;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.aboutContent {
+  display: flex;
+  align-items: center;
+}
+
+.aboutText {
+  flex: 1;
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.aboutImage {
+  border-radius: 0.5rem;
+  margin-left: 2rem;
+}
+
+.moreAboutLink {
+  color: #6e44ff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  display: inline-block;
+  margin-top: 1rem;
+}
