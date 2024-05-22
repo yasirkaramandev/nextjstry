@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import 'styles/Home.css';  // CSS dosyanın yolunu belirleyin
+import './styles/Home.css';  // CSS dosyanın yolunu belirleyin
 
 const HomePage = () => {
   return (
