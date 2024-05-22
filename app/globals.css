@@ -1,33 +1,98 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
+/* Custom Styles */
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    background-color: #161513;
+    color: #FFF;
+    font-family: 'Poppins', sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.navbar {
+    background-color: #222222;
+}
+
+.navbar img {
+    width: 80px;
+    height: 80px;
+}
+
+.header {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.header img {
+    width: 251px;
+    height: 223px;
+}
+
+.header h1 {
+    color: #FFF;
+    font-size: 55px;
+    font-weight: 800;
+}
+
+.header h1 span {
+    background: linear-gradient(116deg, #FF8660 71.79%, #9A33FF 95.51%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.about p {
+    color: #C5C5C5;
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 0.36px;
+}
+
+.technologies img {
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+}
+
+.projects h2 {
+    font-size: 35px;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #FF8660 0%, #D5491D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.experience .item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.experience img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.experience h3 {
+    color: #FFF;
+    font-size: 21.74px;
+    font-weight: 700;
+}
+
+.experience p {
+    color: #8491A0;
+    font-size: 14.494px;
+    line-height: 150%;
+}
+
+.footer {
+    background-color: #191919;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer a {
+    color: #FFF;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
 }
