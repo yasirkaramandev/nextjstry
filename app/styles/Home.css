@@ -1,0 +1,107 @@
+body {
+  background-color: #1d1d1d;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.nav-list {
+  list-style-type: none;
+  display: flex;
+  gap: 20px;
+}
+
+.main-content {
+  text-align: center;
+  margin: 20px;
+}
+
+.profile-pic {
+  border-radius: 50%;
+}
+
+.main-title {
+  font-size: 3rem;
+  margin-top: 20px;
+}
+
+.main-subtitle {
+  font-size: 2rem;
+  color: #ff6347;
+}
+
+.main-description {
+  font-size: 1.2rem;
+  margin: 20px 0;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.contact-btn, .cv-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contact-btn {
+  background-color: #ff6347;
+  color: #fff;
+}
+
+.cv-btn {
+  background-color: #fff;
+  color: #000;
+}
+
+.tech-section, .projects-section, .experience-section {
+  margin: 40px 0;
+}
+
+.tech-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.projects {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.project-card {
+  text-align: center;
+}
+
+.experience {
+  margin: 20px 0;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #1d1d1d;
+}
+
+.social-links {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.social-link {
+  color: #1e90ff;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  text-decoration: underline;
+}
