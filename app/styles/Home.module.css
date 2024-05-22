@@ -1,3 +1,11 @@
+:root {
+  --Primary-Color: #FFF;
+  --Primary-Gradient: linear-gradient(116deg, #FF8660 71.79%, #9A33FF 95.51%);
+  --Secondary-Text: #C5C5C5;
+  --Orange-Gradient: linear-gradient(180deg, #FF8660 0%, #D5491D 100%);
+  --Light-Grey: #8491A0;
+}
+
 body {
   background-color: #161513;
   color: #fff;
@@ -55,14 +63,14 @@ body {
 }
 
 .mainTitle {
-  color: #fff;
+  color: var(--Primary-Color);
   font-size: 55px;
   font-weight: 800;
   line-height: 63.357px;
 }
 
 .mainSubtitle {
-  background: linear-gradient(116deg, #FF8660 71.79%, #9A33FF 95.51%);
+  background: var(--Primary-Gradient);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -72,7 +80,7 @@ body {
 }
 
 .mainDescription {
-  color: #C5C5C5;
+  color: var(--Secondary-Text);
   font-size: 18px;
   font-weight: 300;
   letter-spacing: 0.36px;
@@ -123,7 +131,7 @@ body {
   font-size: 35px;
   font-weight: 800;
   text-transform: uppercase;
-  background: linear-gradient(180deg, #FF8660 0%, #D5491D 100%);
+  background: var(--Orange-Gradient);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -160,18 +168,18 @@ body {
 }
 
 .experienceTitle {
-  color: #fff;
+  color: var(--Primary-Color);
   font-size: 21.74px;
   font-weight: 700;
 }
 
 .experienceDate {
-  color: #C5C5C5;
+  color: var(--Secondary-Text);
   font-size: 14px;
 }
 
 .experienceDescription {
-  color: #8491A0;
+  color: var(--Light-Grey);
   font-size: 14.494px;
   font-weight: 400;
   line-height: 21.74px;
@@ -206,5 +214,5 @@ body {
 .footerNote {
   margin-top: 20px;
   font-size: 14px;
-  color: #C5C5C5;
+  color: var(--Secondary-Text);
 }
