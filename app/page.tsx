@@ -9,7 +9,7 @@ const HomePage = () => {
     <div>
       <header className={styles.header}>
         <nav className={styles.navbar}>
-          <Image src="/foto_1.png" alt="Logo" width={80} height={80} className={styles.navbarLogo} />
+          <Image src="/foto_1.jpg" alt="Logo" width={80} height={80} className={styles.navbarLogo} />
           <ul className={styles.navList}>
             <li><a href="#home">Ev</a></li>
             <li><a href="#projects">Projeler</a></li>
