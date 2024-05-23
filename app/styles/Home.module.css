@@ -1,10 +1,3 @@
-.root {
-  --Primary-Color: #FFF;
-  --Primary-Gradient: linear-gradient(116deg, #FF8660 71.79%, #9A33FF 95.51%);
-  --Secondary-Text: #C5C5C5;
-  --Orange-Gradient: linear-gradient(180deg, #FF8660 0%, #D5491D 100%);
-  --Light-Grey: #8491A0;
-}
 
 body {
   background-color: #161513;
