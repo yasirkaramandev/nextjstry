@@ -1,8 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
+import './styles/Home.css';  // CSS dosyanın yolunu belirleyin
 import Link from 'next/link';
 import styles from './styles/Home.module.css';
-import './styles/Home.css';
+
 
 const Home = () => {
     return (
