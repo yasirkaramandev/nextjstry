@@ -1,14 +1,15 @@
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #121212;
+    background-color: #161513;
     color: #ffffff;
 }
 
 header {
-    background-color: #1f1f1f;
+    background-color: #222222;
     padding: 20px;
 }
 
@@ -47,35 +48,59 @@ header .hamburger span {
     width: 25px;
 }
 
-.aboutSection,
-.projectsSection,
-.experienceSection,
-.contactSection {
+/* About Section */
+.aboutSection {
     padding: 60px 0;
+    text-align: center;
 }
 
-.aboutSection h1,
-.aboutSection h2,
-.projectsSection h2,
-.experienceSection h2 {
-    color: #ffffff;
+.aboutSection h1 {
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 55px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 63.357px;
 }
 
-.buttons .contactButton,
-.buttons .cvButton {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-right: 10px;
-    color: #ffffff;
-    background-color: #1373d1;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+.aboutSection h2 {
+    background: linear-gradient(116deg, #FF8660 71.79%, #9A33FF 95.51%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: Poppins;
+    font-size: 55px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 63.357px;
 }
 
-.buttons .contactButton:hover,
-.buttons .cvButton:hover {
-    background-color: #0f5ba7;
+.aboutSection p {
+    color: #C5C5C5;
+    font-family: Poppins;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 300;
+    letter-spacing: 0.36px;
+}
+
+/* Projects Section */
+.projectsSection {
+    padding: 60px 0;
+    text-align: center;
+}
+
+.projectsSection h2 {
+    font-family: Poppins;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 35.748px;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #FF8660 0%, #D5491D 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .projectsSection .projects {
@@ -103,6 +128,24 @@ header .hamburger span {
     color: #ffffff;
 }
 
+/* Experience Section */
+.experienceSection {
+    padding: 60px 0;
+}
+
+.experienceSection h2 {
+    font-family: Poppins;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 35.748px;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #5BADFF 0%, #1373D1 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .experienceSection .experienceEntry {
     display: flex;
     justify-content: space-between;
@@ -110,12 +153,42 @@ header .hamburger span {
     margin-bottom: 20px;
 }
 
+.experienceSection .experienceEntry img {
+    width: 40px;
+    height: 40px;
+}
+
 .experienceSection .experienceEntry h3 {
     margin: 0;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 21.74px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.experienceSection .experienceEntry .date {
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 14.494px;
+    font-style: normal;
+    font-weight: 400;
 }
 
 .experienceSection .experienceDescription {
-    margin-bottom: 40px;
+    color: #8491A0;
+    font-family: Poppins;
+    font-size: 14.494px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+}
+
+/* Contact Section */
+.contactSection {
+    padding: 60px 0;
+    text-align: left;
+    background-color: #191919;
 }
 
 .contactSection p {
@@ -143,6 +216,7 @@ header .hamburger span {
     text-decoration: underline;
 }
 
+/* Responsive Styles */
 @media (max-width: 768px) {
     header .navbar ul {
         display: none;
