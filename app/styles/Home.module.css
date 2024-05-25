@@ -1,21 +1,52 @@
+/* Updated Home.module.css */
 .hero {
   padding: 0 315px;
   text-align: left;
 }
 
-.hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+.heroImage {
+  width: 251px;
+  height: 223px;
+  display: block;
+  margin: 0 auto;
 }
 
-.hero p {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
+.heroTitle {
+  color: var(--Primary-Color, #FFF);
+  text-align: center;
+  font-family: Poppins;
+  font-size: 55px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 63.357px;
+}
+
+.heroSubtitle {
+  background: var(--Primary-Gradient, linear-gradient(116deg, #FF8660 71.79%, #9A33FF 95.51%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: Poppins;
+  font-size: 55px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 63.357px;
+}
+
+.heroDescription {
+  color: var(--Secondary-Text, #C5C5C5);
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  letter-spacing: 0.36px;
+  text-align: center;
 }
 
 .heroButtons {
   display: flex;
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -25,69 +56,51 @@
   cursor: pointer;
 }
 
-.experiences {
+.technologies {
   padding: 2rem 315px;
   text-align: left;
 }
 
-.experiencesTitle {
-  font-family: 'Poppins', sans-serif;
+.technologyIcons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.projects {
+  padding: 2rem 315px;
+  text-align: left;
+}
+
+.projectsTitle {
+  font-family: Poppins;
   font-size: 35px;
+  font-style: normal;
   font-weight: 800;
-  line-height: 35.748px;
+  line-height: 35.748px; /* 102.137% */
   text-transform: uppercase;
-  background: linear-gradient(180deg, #5BADFF 0%, #1373D1 100%);
+  background: var(--Orange-Gradient, linear-gradient(180deg, #FF8660 0%, #D5491D 100%));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.experience {
+.project {
   margin-bottom: 2rem;
 }
 
-.experienceHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.project img {
+  width: 100%;
+  height: auto;
 }
 
-.experienceHeader img {
-  margin-right: 1rem;
-}
-
-.date {
-  text-align: right;
-}
-
-.contact {
-  padding: 2rem 315px;
-  text-align: left;
-}
-
-.contactInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.socialLinks {
-  display: flex;
-  gap: 1rem;
-}
-
-.github,
-.linkedin {
-  color: blue;
+.project a {
+  display: block;
+  margin-top: 0.5rem;
+  color: #fff;
   text-decoration: none;
 }
 
-.github:hover,
-.linkedin:hover {
-  text-decoration: underline;
-}
-
-.developedBy {
-  text-align: center;
-  margin-top: 2rem;
-}
+.experiences {
+  padding: 2
