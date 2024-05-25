@@ -103,4 +103,73 @@
 }
 
 .experiences {
-  padding: 2
+  padding: 2rem 315px;
+  text-align: left;
+}
+
+.experiencesTitle {
+  font-family: Poppins;
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 35.748px; /* 102.137% */
+  text-transform: uppercase;
+}
+
+.experience {
+  margin-bottom: 2rem;
+}
+
+.experienceHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.experienceIcon {
+  width: 40px;
+  height: 40px;
+}
+
+.experience h3 {
+  color: var(--Primary-Color, #FFF);
+  font-family: Poppins;
+  font-size: 21.74px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.experience .date {
+  color: var(--Primary-Color, #FFF);
+}
+
+.experience p {
+  color: var(--Light-Grey, var(--Secondary-Color, #8491A0));
+  font-family: Poppins;
+  font-size: 14.494px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 21.74px */
+}
+
+.contact {
+  padding: 2rem 315px;
+  text-align: center;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.footer {
+  background-color: #191919;
+  padding: 2rem 0;
+}
+
+.developedBy {
+  text-align: center;
+  margin-top: 1rem;
+}
