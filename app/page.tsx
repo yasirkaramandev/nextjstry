@@ -2,7 +2,14 @@ import React from 'react';
 import styles from './styles/Home.module.css';
 import './styles/Home.css';
 
-const Home = () => {
+const Home: React.FC = () => {
+  const toggleMenu = () => {
+    const menu = document.querySelector(`.${styles.menu}`);
+    if (menu) {
+      menu.classList.toggle(styles.showMenu);
+    }
+  };
+
   return (
     <div>
       <nav className={styles.navbar}>
@@ -97,13 +104,6 @@ const Home = () => {
       </footer>
     </div>
   );
-
-  function toggleMenu() {
-    const menu = document.querySelector(`.${styles.menu}`);
-    if (menu) {
-      menu.classList.toggle(styles.showMenu);
-    }
-  }
 };
 
 export default Home;
