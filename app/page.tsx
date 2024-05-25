@@ -100,7 +100,9 @@ const Home = () => {
 
   function toggleMenu() {
     const menu = document.querySelector(`.${styles.menu}`);
-    menu.classList.toggle(styles.showMenu);
+    if (menu) {
+      menu.classList.toggle(styles.showMenu);
+    }
   }
 };
 
