@@ -1,233 +1,62 @@
-/* Global Styles */
+/* Global styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #161513;
-    color: #ffffff;
+  font-family: 'Poppins', sans-serif;
 }
 
-header {
-    background-color: #222222;
-    padding: 20px;
-}
-
-header .navbar ul {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-header .navbar ul li {
-    margin-right: 20px;
-}
-
-header .navbar ul li a {
-    text-decoration: none;
-    color: #ffffff;
-}
-
-header .navbar ul li a:hover {
-    text-decoration: underline;
-}
-
-header .hamburger {
-    display: none;
-    cursor: pointer;
-    flex-direction: column;
-}
-
-header .hamburger span {
-    background-color: #ffffff;
-    border-radius: 2px;
-    display: block;
-    height: 3px;
-    margin: 4px 0;
-    width: 25px;
-}
-
-/* About Section */
-.aboutSection {
-    padding: 60px 0;
-    text-align: center;
-}
-
-.aboutSection h1 {
-    color: #FFF;
-    font-family: Poppins;
-    font-size: 55px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: 63.357px;
-}
-
-.aboutSection h2 {
-    background: linear-gradient(116deg, #FF8660 71.79%, #9A33FF 95.51%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-family: Poppins;
-    font-size: 55px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: 63.357px;
-}
-
-.aboutSection p {
-    color: #C5C5C5;
-    font-family: Poppins;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 300;
-    letter-spacing: 0.36px;
-}
-
-/* Projects Section */
-.projectsSection {
-    padding: 60px 0;
-    text-align: center;
-}
-
-.projectsSection h2 {
-    font-family: Poppins;
-    font-size: 35px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: 35.748px;
-    text-transform: uppercase;
-    background: linear-gradient(180deg, #FF8660 0%, #D5491D 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.projectsSection .projects {
-    display: flex;
-    justify-content: space-between;
-}
-
-.projectsSection .projects .project {
-    text-align: center;
-}
-
-.projectsSection .projects .project img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    transition: transform 0.3s;
-}
-
-.projectsSection .projects .project img:hover {
-    transform: scale(1.05);
-}
-
-.projectsSection .projects .project h3 {
-    margin-top: 10px;
-    color: #ffffff;
-}
-
-/* Experience Section */
-.experienceSection {
-    padding: 60px 0;
-}
-
-.experienceSection h2 {
-    font-family: Poppins;
-    font-size: 35px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: 35.748px;
-    text-transform: uppercase;
-    background: linear-gradient(180deg, #5BADFF 0%, #1373D1 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.experienceSection .experienceEntry {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.experienceSection .experienceEntry img {
-    width: 40px;
-    height: 40px;
-}
-
-.experienceSection .experienceEntry h3 {
-    margin: 0;
-    color: #FFF;
-    font-family: Poppins;
-    font-size: 21.74px;
-    font-style: normal;
-    font-weight: 700;
-}
-
-.experienceSection .experienceEntry .date {
-    color: #FFF;
-    font-family: Poppins;
-    font-size: 14.494px;
-    font-style: normal;
-    font-weight: 400;
-}
-
-.experienceSection .experienceDescription {
-    color: #8491A0;
-    font-family: Poppins;
-    font-size: 14.494px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%;
-}
-
-/* Contact Section */
-.contactSection {
-    padding: 60px 0;
-    text-align: left;
-    background-color: #191919;
-}
-
-.contactSection p {
-    margin-bottom: 20px;
-}
-
-.contactSection .footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.contactSection .footer p {
-    margin: 0 10px;
-}
-
-.contactSection .footer a {
-    color: blue;
-    text-decoration: none;
-    margin-right: 10px;
-    transition: text-decoration 0.3s;
-}
-
-.contactSection .footer a:hover {
-    text-decoration: underline;
-}
-
-/* Responsive Styles */
 @media (max-width: 768px) {
-    header .navbar ul {
-        display: none;
-    }
-    header .hamburger {
-        display: flex;
-    }
-    .aboutSection,
-    .projectsSection,
-    .experienceSection,
-    .contactSection {
-        padding: 20px;
-    }
+  .hero,
+  .experiences,
+  .contact {
+    padding: 1rem;
+  }
+  
+  .experienceHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .date {
+    align-self: flex-end;
+    margin-top: 0.5rem;
+  }
+
+  .contactInfo {
+    align-items: flex-start;
+  }
+
+  .heroButtons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/* Navbar styles for mobile */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.navbar .menu {
+  display: none;
+}
+
+.navbar .hamburger {
+  display: block;
+}
+
+.navbar .hamburger:hover {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .navbar .menu {
+    display: block;
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    width: 100%;
+    background: #333;
+    padding: 1rem;
+  }
 }
