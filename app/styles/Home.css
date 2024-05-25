@@ -1,62 +1,63 @@
-/* Global styles */
 body {
-  font-family: 'Poppins', sans-serif;
+  background-color: #161513;
+  color: #fff;
+  font-family: Poppins, sans-serif;
 }
 
-@media (max-width: 768px) {
-  .hero,
-  .experiences,
-  .contact {
-    padding: 1rem;
-  }
-  
-  .experienceHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .date {
-    align-self: flex-end;
-    margin-top: 0.5rem;
-  }
-
-  .contactInfo {
-    align-items: flex-start;
-  }
-
-  .heroButtons {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-}
-
-/* Navbar styles for mobile */
 .navbar {
+  background-color: #222222;
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  align-items: center;
+  padding: 1rem 315px;
 }
 
-.navbar .menu {
-  display: none;
+.navbar .profilePic {
+  width: 80px;
+  height: 80px;
 }
 
 .navbar .hamburger {
-  display: block;
+  display: none;
+  cursor: pointer;
 }
 
-.navbar .hamburger:hover {
-  cursor: pointer;
+.navbar .menu {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar .menu li a {
+  color: #fff;
+  text-decoration: none;
 }
 
 @media (max-width: 768px) {
   .navbar .menu {
-    display: block;
+    display: none;
+    flex-direction: column;
     position: absolute;
-    top: 3rem;
+    top: 100%;
     left: 0;
     width: 100%;
-    background: #333;
-    padding: 1rem;
+    background-color: #222222;
+    text-align: center;
   }
+
+  .navbar .menu.showMenu {
+    display: flex;
+  }
+
+  .navbar .hamburger {
+    display: block;
+  }
+}
+
+.hero, .technologies, .projects, .experiences, .contact {
+  padding: 2rem 315px;
+}
+
+.heroTitle, .heroSubtitle, .projectsTitle, .experiencesTitle {
+  text-align: center;
 }
