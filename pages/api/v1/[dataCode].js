@@ -1,31 +1,24 @@
-import { dataStore } from './dataStore';
+// pages/api/v1/[dataCode].js
+
+import fs from 'fs';
+import path from 'path';
 
 export default function handler(req, res) {
-  const { dataCode } = req.query;
+    const { dataCode } = req.query;
 
-  if (req.method === 'POST') {
-    const jsonMessage = req.body;
+    if (req.method === 'GET') {
+        const dataDir = path.join(process.cwd(), 'data');
+        const filePath = path.join(dataDir, `${dataCode}.json`);
 
-    if (!jsonMessage) {
-      res.status(400).json({ error: "No JSON message provided" });
-      return;
+        // Check if the file exists
+        if (fs.existsSync(filePath)) {
+            const fileContents = fs.readFileSync(filePath, 'utf8');
+            const data = JSON.parse(fileContents);
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({ message: 'Data not found.' });
+        }
+    } else {
+        res.status(405).json({ message: 'Method not allowed. Use GET.' });
     }
-
-    // Gelen JSON mesajını sakla
-    dataStore[dataCode] = jsonMessage;
-
-    res.status(200).json({ status: "Message saved successfully" });
-  } else if (req.method === 'GET') {
-    // Saklanan JSON mesajını geri gönder
-    const message = dataStore[dataCode];
-
-    if (!message) {
-      res.status(404).json({ error: "31" });
-      return;
-    }
-
-    res.status(200).json({ status: "Message retrieved successfully", data: message });
-  } else {
-    res.status(405).json({ error: "Method not allowed" });
-  }
 }
