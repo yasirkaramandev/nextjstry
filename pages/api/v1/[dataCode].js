@@ -1,5 +1,3 @@
-// pages/api/v1/[dataCode].js
-
 import fs from 'fs';
 import path from 'path';
 
