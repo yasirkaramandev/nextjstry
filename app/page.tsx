@@ -3,25 +3,26 @@ import styles from './styles/Home.module.css';
 import './styles/Home.css';
 
 const Home: React.FC = () => {
-  useEffect(() => {
-    const toggleMenu = () => {
-      const menu = document.querySelector(`.${styles.menu}`);
-      if (menu) {
-        menu.classList.toggle(styles.showMenu);
-      }
-    };
+  const toggleMenu = () => {
+  const menu = document.querySelector(`.${styles.menu}`);
+  if (menu) {
+    menu.classList.toggle(styles.showMenu);
+  }
+};
 
-    const hamburger = document.querySelector(`.${styles.hamburger}`);
+useEffect(() => {
+  const hamburger = document.querySelector(`.${styles.hamburger}`);
+  if (hamburger) {
+    hamburger.addEventListener('click', toggleMenu);
+  }
+  
+  return () => {
     if (hamburger) {
-      hamburger.addEventListener('click', toggleMenu);
+      hamburger.removeEventListener('click', toggleMenu);
     }
+  };
+}, []); // Boş bağımlılık dizisi, bu etkileşimin yalnızca bir kez oluşturulmasını sağlar
 
-    return () => {
-      if (hamburger) {
-        hamburger.removeEventListener('click', toggleMenu);
-      }
-    };
-  }, []);
 
   return (
     <div>
