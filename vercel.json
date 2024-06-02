@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "pages/api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/v1/send/(.*)",
+      "dest": "/api/v1/send/[dataCode]"
+    },
+    {
+      "src": "/api/v1/get/(.*)",
+      "dest": "/api/v1/get/[dataCode]"
+    }
+  ]
+}
