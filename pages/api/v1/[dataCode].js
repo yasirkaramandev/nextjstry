@@ -20,7 +20,7 @@ export default function handler(req, res) {
     const message = dataStore[dataCode];
 
     if (!message) {
-      res.status(404).json({ error: "Data not found" });
+      res.status(404).json({ error: "31" });
       return;
     }
 
