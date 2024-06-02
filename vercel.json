@@ -12,8 +12,8 @@
       "dest": "/api/v1/send/[dataCode]"
     },
     {
-      "src": "/api/v1/get/(.*)",
-      "dest": "/api/v1/get/[dataCode]"
+      "src": "/api/v1/(.*)",
+      "dest": "/api/v1/[dataCode]"
     }
   ]
 }
