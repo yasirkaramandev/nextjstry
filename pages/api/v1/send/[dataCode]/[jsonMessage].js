@@ -1,4 +1,4 @@
-import { dataStore } from 'api/v1/dataStore';
+import { dataStore } from '../../dataStore';
 
 export default function handler(req, res) {
   const { dataCode, jsonMessage } = req.query;
