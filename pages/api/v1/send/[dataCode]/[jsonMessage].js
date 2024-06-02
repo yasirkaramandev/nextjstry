@@ -1,30 +1,39 @@
-import { dataStore } from '../../dataStore';
+// pages/api/v1/send/[dataCode]/[jsonMessage].js
+
+import fs from 'fs';
+import path from 'path';
 
 export default function handler(req, res) {
-  const { dataCode, jsonMessage } = req.query;
+    const { dataCode, jsonMessage } = req.query;
 
-  if (req.method === 'GET') {
-    // Saklanan JSON mesajını geri gönder
-    const message = dataStore[dataCode];
+    if (req.method === 'POST') {
+        const dataDir = path.join(process.cwd(), 'data');
+        const filePath = path.join(dataDir, `${dataCode}.json`);
 
-    if (!message) {
-      res.status(404).json({ error: "Data not found" });
-      return;
+        // Create data directory if it doesn't exist
+        if (!fs.existsSync(dataDir)) {
+            fs.mkdirSync(dataDir);
+        }
+
+        let data = [];
+
+        // If file exists, read its contents
+        if (fs.existsSync(filePath)) {
+            const fileContents = fs.readFileSync(filePath, 'utf8');
+            data = JSON.parse(fileContents);
+        }
+
+        // Add new JSON message
+        data.push({
+            JSON: jsonMessage,
+            timestamp: new Date().toISOString()
+        });
+
+        // Write updated data to file
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
+        res.status(200).json({ message: 'JSON message saved successfully.' });
+    } else {
+        res.status(405).json({ message: 'Method not allowed. Use POST.' });
     }
-
-    res.status(200).json({ status: "Message retrieved successfully", data: message });
-  } else if (req.method === 'POST') {
-    try {
-      const parsedMessage = JSON.parse(jsonMessage);
-
-      // Gelen JSON mesajını sakla
-      dataStore[dataCode] = parsedMessage;
-
-      res.status(200).json({ status: "Message saved successfully" });
-    } catch (error) {
-      res.status(400).json({ error: "Invalid JSON format" });
-    }
-  } else {
-    res.status(405).json({ error: "Method not allowed" });
-  }
 }
