@@ -1,34 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './styles/Home.module.css';
 import './styles/Home.css';
 
 const Home: React.FC = () => {
-  const toggleMenu = () => {
-  const menu = document.querySelector(`.${styles.menu}`);
-  if (menu) {
-    menu.classList.toggle(styles.showMenu);
-  }
-};
-
-useEffect(() => {
-  const hamburger = document.querySelector(`.${styles.hamburger}`);
-  if (hamburger) {
-    hamburger.addEventListener('click', toggleMenu);
-  }
-  
-  return () => {
-    if (hamburger) {
-      hamburger.removeEventListener('click', toggleMenu);
-    }
-  };
-}, []); // Boş bağımlılık dizisi, bu etkileşimin yalnızca bir kez oluşturulmasını sağlar
-
-
   return (
     <div>
       <nav className={styles.navbar}>
-        <img src="photo_1.png" alt="Profil" className={styles.profilePic} />
-        <div className={styles.hamburger} onClick={toggleMenu}>
+        <img src="photo_1.png" alt="Profile" className={styles.profilePic} />
+        <div className={styles.hamburger}>
           ☰
         </div>
         <ul className={styles.menu}>
@@ -40,15 +19,15 @@ useEffect(() => {
       </nav>
 
       <section id="ev" className={styles.hero}>
-        <img src="photo_2.png" alt="Profil" className={styles.heroImage} />
-        <h1 className={styles.heroTitle}>Merhaba, ben Yasir</h1>
+        <img src="photo_2.png" alt="Profile" className={styles.heroImage} />
+        <h1 className={styles.heroTitle}>Merhaba ben Yasir,</h1>
         <h1 className={styles.heroSubtitle}>Hakkımda!</h1>
         <p className={styles.heroDescription}>
           Yaklaşık beş yıldır yazılım geliştirme alanında çalışıyorum ve bu süreçte birçok projede önemli roller üstlendim. Kariyerim boyunca, yazılımın farklı yönlerinde tecrübe kazandım ve sürekli öğrenmeye büyük önem verdim. Ekip çalışmasına ve problem çözme yeteneklerime güvenerek, yazılım geliştirme alanında ilerlemeyi hedefliyorum.
         </p>
         <div className={styles.heroButtons}>
           <button>İletişime Geç</button>
-          <button>CV'yi İndir</button>
+          <button>Download CV</button>
         </div>
       </section>
 
@@ -69,11 +48,11 @@ useEffect(() => {
       <section id="projeler" className={styles.projects}>
         <h2 className={styles.projectsTitle}>Projeler</h2>
         <div className={styles.project}>
-          <img src="/path/to/project1.png" alt="Proje 1" />
+          <img src="/path/to/project1.png" alt="Project 1" />
           <a href="#">Lorem ipsum dolor sit amet</a>
         </div>
         <div className={styles.project}>
-          <img src="/path/to/project2.png" alt="Proje 2" />
+          <img src="/path/to/project2.png" alt="Project 2" />
           <a href="#">Lorem ipsum dolor sit amet</a>
         </div>
       </section>
@@ -83,7 +62,7 @@ useEffect(() => {
         <div className={styles.experience}>
           <div className={styles.experienceHeader}>
             <img src="/hayal.png" alt="Hayal Otonomi" className={styles.experienceIcon} />
-            <h3>Hayal Otonomi Mid GUI Geliştirici</h3>
+            <h3>Hayal Otonomi Mid GUI Developer</h3>
             <span className={styles.date}>Haz 2020 - Haz 2024</span>
           </div>
           <p>
@@ -93,31 +72,32 @@ useEffect(() => {
         <div className={styles.experience}>
           <div className={styles.experienceHeader}>
             <img src="/bionluk.png" alt="Bionluk" className={styles.experienceIcon} />
-            <h3>Bionluk Freelance Hizmetleri</h3>
-            <span className={styles.date}>Ağu 2021 - Kas 2021</span>
+            <h3>Bionluk Freelance hizmet.</h3>
+            <span className={styles.date}>Ağus 2021 - Kas 2021</span>
           </div>
+         
           <p>
-            Freelancer olarak hizmet verdiğim platformda, çok sayıda müşteri ile başarılı görüşmeler gerçekleştirdim ve bu süreçte en yüksek değerlendirme olan 5 yıldız elde ettim. Bu deneyim Bütün projelerinizi tamamladıktan sonra, bunları ilerletmek için yeni müşterilerle birlikte çalışmaktan ve müşteri memnuniyetini artırmaya yönelik iş süreçlerine katkıda bulunmaktan büyük keyif aldım.
-                  </p>
-    </div>
-  </section>
+            Freelancer olarak hizmet verdiğim platformda, çok sayıda müşteri ile başarılı görüşmeler gerçekleştirdim ve bu süreçte en yüksek değerlendirme olan 5 yıldız elde ettim. Bu deneyimler, pazarlama becerilerimi ve insan ilişkilerini olumlu yönde geliştirmeme inanıyorum ve bu yeteneklerimi, müşteri memnuniyetini artıracak iş süreçlerine katkıda bulunmak için kullanmayı sürdüreceğim.
+          </p>
+        </div>
+      </section>
 
-  <footer className={styles.footer}>
-    <section id="iletisim" className={styles.contact}>
-      <h2>İletişim</h2>
-      <p>
-        Yaklaşık beş yıldır yazılım geliştirme alanında çalışıyorum ve bu süreçte birçok projede önemli roller üstlendim. Kariyerim boyunca, yazılımın farklı yönlerinde tecrübe kazandım ve sürekli öğrenmeye büyük önem verdim. Ekip çalışmasına ve problem çözme yeteneklerime güvenerek, yazılım geliştirme alanında ilerlemeyi hedefliyorum.
-      </p>
-      <a href="mailto:yasir@yasirkaraman.com.tr">yasir@yasirkaraman.com.tr</a>
-      <div className={styles.socialLinks}>
-        <a href="https://github.com/yasirkaraman">GitHub</a>
-        <a href="https://linkedin.com/in/yasirkaraman">LinkedIn</a>
-      </div>
-    </section>
-    <p className={styles.developedBy}>Yasir Karaman tarafından geliştirildi</p>
-  </footer>
-</div>
-);
+      <footer className={styles.footer}>
+        <section id="iletisim" className={styles.contact}>
+          <h2>İletişim</h2>
+          <p>
+            Yaklaşık beş yıldır yazılım geliştirme alanında çalışıyorum ve bu süreçte birçok projede önemli roller üstlendim. Kariyerim boyunca, yazılımın farklı yönlerinde tecrübe kazandım ve sürekli öğrenmeye büyük önem verdim. Ekip çalışmasına ve problem çözme yeteneklerime güvenerek, yazılım geliştirme alanında ilerlemeyi hedefliyorum.
+          </p>
+          <a href="mailto:yasir@yasirkaraman.com.tr">yasir@yasirkaraman.com.tr</a>
+          <div className={styles.socialLinks}>
+            <a href="https://github.com/yasirkaraman">GitHub</a>
+            <a href="https://linkedin.com/in/yasirkaraman">LinkedIn</a>
+          </div>
+        </section>
+        <p className={styles.developedBy}>Developed By Yasir Karaman</p>
+      </footer>
+    </div>
+  );
 };
 
 export default Home;
