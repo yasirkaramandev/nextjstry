@@ -6,15 +6,16 @@ export default function Home() {
   const [dataCode, setDataCode] = useState('myDataCode');
 
   const sendData = () => {
-    fetch(`/api/v1/${dataCode}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message: inputData }),
+    const jsonMessage = encodeURIComponent(JSON.stringify({ message: inputData }));
+
+    fetch(`/api/v1/${dataCode}/${jsonMessage}`, {
+      method: 'POST'
     })
       .then(response => response.json())
-      .then(data => console.log('Data sent:', data))
+      .then(data => {
+        console.log('Data sent:', data);
+        alert('Data sent successfully');
+      })
       .catch(error => console.error('Error:', error));
   };
 
