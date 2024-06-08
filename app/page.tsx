@@ -1,4 +1,5 @@
 // app/page.tsx
+"use client"; // Bu ifadeyi ekleyin
 
 import { useEffect } from 'react';
 
