@@ -11,8 +11,16 @@
   padding: 0 315px;
   background-color: #2A2A2A;
   color: var(--Primary-Color);
+  
+  --Primary-Color: #FFF;
+  --Primary-Gradient: linear-gradient(116deg, #FF8660 71.79%, #9A33FF 95.51%);
+  --Secondary-Text: #C5C5C5;
+  --Light-Grey: #8491A0;
+  --Orange-Gradient: linear-gradient(180deg, #FF8660 0%, #D5491D 100%);
+  --Blue-Gradient: linear-gradient(180deg, #5BADFF 0%, #1373D1 100%);
 }
 
+/* Diğer CSS kurallarınız burada devam eder */
 .header {
   background-color: #222222;
   padding: 20px 0;
