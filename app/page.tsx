@@ -24,28 +24,15 @@ export default function Home() {
           </div>
         </div>
         <div style={styles.links}>
-          <a 
-            href="https://github.com/yasirkaramandev" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={styles.link}
-          >
+          <a href="https://github.com/yasirkaramandev" style={styles.link} target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
           <span style={styles.divider}>•</span>
-          <a 
-            href="https://www.linkedin.com/in/yasirkaramandev" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={styles.link}
-          >
+          <a href="https://www.linkedin.com/in/yasirkaramandev" style={styles.link} target="_blank" rel="noopener noreferrer">
             LinkedIn
           </a>
           <span style={styles.divider}>•</span>
-          <a 
-            href="mailto:yasir@yasirkaraman.com.tr"
-            style={styles.link}
-          >
+          <a href="mailto:yasir@yasirkaraman.com.tr" style={styles.link}>
             E-mail
           </a>
         </div>
@@ -64,7 +51,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     padding: '20px',
-  },
+  } as const,
   content: {
     maxWidth: '600px',
     textAlign: 'center' as const,
@@ -76,63 +63,57 @@ const styles = {
     overflow: 'hidden',
     boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
     marginBottom: '30px',
-  },
+  } as const,
   terminalHeader: {
     background: '#2d2d2d',
     padding: '10px',
     display: 'flex',
     gap: '6px',
-  },
+  } as const,
   terminalDot: {
     width: '12px',
     height: '12px',
     borderRadius: '50%',
     background: '#ff5f56',
-    ':nth-child(2)': {
-      background: '#ffbd2e',
-    },
-    ':nth-child(3)': {
-      background: '#27c93f',
-    },
-  },
+  } as const,
   terminalBody: {
     padding: '20px',
-  },
-  command: {
-    color: '#61dafb',
-    marginBottom: '10px',
-    fontFamily: 'monospace',
-    fontSize: '1rem',
-  },
+  } as const,
   title: {
     fontSize: 'clamp(2rem, 5vw, 3.5rem)',
     color: '#ffffff',
     marginBottom: '20px',
     fontWeight: '700',
-  },
+  } as const,
   line: {
     width: '80px',
     height: '4px',
     background: '#61dafb',
     margin: '0 auto 30px',
     borderRadius: '2px',
-  },
+  } as const,
   message: {
     fontSize: 'clamp(1rem, 2vw, 1.2rem)',
     color: '#e2e8f0',
     marginBottom: '40px',
     lineHeight: '1.6',
-  },
+  } as const,
+  command: {
+    color: '#61dafb',
+    marginBottom: '10px',
+    fontFamily: 'monospace',
+    fontSize: '1rem',
+  } as const,
   console: {
     color: '#61dafb',
     fontFamily: 'monospace',
-  },
+  } as const,
   links: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     gap: '15px',
-  },
+  } as const,
   link: {
     color: '#61dafb',
     textDecoration: 'none',
@@ -140,21 +121,21 @@ const styles = {
     padding: '10px 15px',
     borderRadius: '5px',
     transition: 'all 0.3s ease',
-  },
+  } as const,
   divider: {
     color: '#4a5568',
     fontSize: '1rem',
-  },
+  } as const,
   footer: {
-    position: 'fixed',
+    position: 'fixed' as const,
     bottom: '0',
     left: '0',
     right: '0',
-    textAlign: 'center',
+    textAlign: 'center' as const,
     padding: '20px',
     color: '#a0aec0',
     fontSize: '0.9rem',
     background: 'rgba(26, 32, 44, 0.8)',
     backdropFilter: 'blur(5px)',
-  },
+  } as const,
 };
