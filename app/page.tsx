@@ -18,8 +18,9 @@ export default function Home() {
             <div style={styles.line} />
             <p style={styles.message}>
               <span style={styles.console}>&gt; console.log(</span>
-              "Portfolyo sayfam hala yapım aşamasında. Lütfen daha sonra tekrar kontrol edin!"<span style={styles.console}>);</span>
+              "Portfolyo sayfam hala yapım aşamasında. Lütfen daha sonra tekrar kontrol edin!"
               <span style={styles.console}>);</span>
+              
             </p>
           </div>
         </div>
