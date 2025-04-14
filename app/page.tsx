@@ -1,32 +1,46 @@
-// app/page.tsx
+'use client';
+
 import React from 'react';
 
-const UnderConstruction = () => {
+export default function Home() {
   return (
-    <div style={styles.container}>
+    <main style={styles.container}>
       <div style={styles.content}>
         <h1 style={styles.title}>Yapım Aşamasında</h1>
-        <div style={styles.line}></div>
+        <div style={styles.line} />
         <p style={styles.message}>
-          Web sitemiz şu anda geliştirme aşamasındadır. Çok yakında yeni ve modern tasarımımızla sizlerle olacağız!
+          Web sitemiz yakında yayında olacak. Şimdilik beni sosyal medyadan takip edebilirsiniz.
         </p>
         <div style={styles.links}>
-          <a href="https://github.com/yasirkaramandev" style={styles.link} target="_blank" rel="noopener noreferrer">
+          <a 
+            href="https://github.com/yasirkaramandev" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={styles.link}
+          >
             GitHub
           </a>
           <span style={styles.divider}>•</span>
-          <a href="https://www.linkedin.com/in/yasirkaramandev" style={styles.link} target="_blank" rel="noopener noreferrer">
+          <a 
+            href="https://www.linkedin.com/in/yasirkaramandev" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={styles.link}
+          >
             LinkedIn
           </a>
           <span style={styles.divider}>•</span>
-          <a href="mailto:yasir@yasirkaraman.com.tr" style={styles.link}>
+          <a 
+            href="mailto:yasir@yasirkaraman.com.tr"
+            style={styles.link}
+          >
             E-mail
           </a>
         </div>
       </div>
-    </div>
+    </main>
   );
-};
+}
 
 const styles = {
   container: {
@@ -34,21 +48,18 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    background: 'linear-gradient(135deg, #1a202c 0%, #2d3748 100%)',
     padding: '20px',
   },
   content: {
     maxWidth: '600px',
-    textAlign: 'center',
+    textAlign: 'center' as const,
     animation: 'fadeIn 1s ease-in',
   },
   title: {
     fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-    fontWeight: '700',
-    marginBottom: '20px',
     color: '#ffffff',
-    letterSpacing: '0.05em',
-    fontFamily: '"Segoe UI", -apple-system, sans-serif',
+    marginBottom: '20px',
+    fontWeight: '700',
   },
   line: {
     width: '80px',
@@ -59,10 +70,9 @@ const styles = {
   },
   message: {
     fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-    lineHeight: '1.6',
-    marginBottom: '40px',
     color: '#e2e8f0',
-    fontFamily: '"Segoe UI", -apple-system, sans-serif',
+    marginBottom: '40px',
+    lineHeight: '1.6',
   },
   links: {
     display: 'flex',
@@ -77,16 +87,9 @@ const styles = {
     padding: '10px 15px',
     borderRadius: '5px',
     transition: 'all 0.3s ease',
-    fontFamily: '"Segoe UI", -apple-system, sans-serif',
-    ':hover': {
-      backgroundColor: 'rgba(97, 218, 251, 0.1)',
-      transform: 'translateY(-2px)',
-    },
   },
   divider: {
     color: '#4a5568',
     fontSize: '1rem',
   },
 };
-
-export default UnderConstruction;
