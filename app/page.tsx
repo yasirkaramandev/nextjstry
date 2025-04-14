@@ -6,11 +6,23 @@ export default function Home() {
   return (
     <main style={styles.container}>
       <div style={styles.content}>
-        <h1 style={styles.title}>Yapım Aşamasında</h1>
-        <div style={styles.line} />
-        <p style={styles.message}>
-          Web sitemiz yakında yayında olacak. Şimdilik beni sosyal medyadan takip edebilirsiniz.
-        </p>
+        <div style={styles.terminal}>
+          <div style={styles.terminalHeader}>
+            <span style={styles.terminalDot}></span>
+            <span style={styles.terminalDot}></span>
+            <span style={styles.terminalDot}></span>
+          </div>
+          <div style={styles.terminalBody}>
+            <p style={styles.command}>$ status</p>
+            <h1 style={styles.title}>&gt; Yapım Aşamasında</h1>
+            <div style={styles.line} />
+            <p style={styles.message}>
+              <span style={styles.console}>&gt; console.log(</span>
+              "Web sitemiz yakında yayında olacak. Şimdilik beni sosyal medyadan takip edebilirsiniz."
+              <span style={styles.console}>);</span>
+            </p>
+          </div>
+        </div>
         <div style={styles.links}>
           <a 
             href="https://github.com/yasirkaramandev" 
@@ -38,6 +50,9 @@ export default function Home() {
           </a>
         </div>
       </div>
+      <footer style={styles.footer}>
+        <p>© {new Date().getFullYear()} Yasir Karaman. Tüm hakları saklıdır.</p>
+      </footer>
     </main>
   );
 }
@@ -54,6 +69,40 @@ const styles = {
     maxWidth: '600px',
     textAlign: 'center' as const,
     animation: 'fadeIn 1s ease-in',
+  },
+  terminal: {
+    background: '#1e1e1e',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
+    marginBottom: '30px',
+  },
+  terminalHeader: {
+    background: '#2d2d2d',
+    padding: '10px',
+    display: 'flex',
+    gap: '6px',
+  },
+  terminalDot: {
+    width: '12px',
+    height: '12px',
+    borderRadius: '50%',
+    background: '#ff5f56',
+    ':nth-child(2)': {
+      background: '#ffbd2e',
+    },
+    ':nth-child(3)': {
+      background: '#27c93f',
+    },
+  },
+  terminalBody: {
+    padding: '20px',
+  },
+  command: {
+    color: '#61dafb',
+    marginBottom: '10px',
+    fontFamily: 'monospace',
+    fontSize: '1rem',
   },
   title: {
     fontSize: 'clamp(2rem, 5vw, 3.5rem)',
@@ -74,6 +123,10 @@ const styles = {
     marginBottom: '40px',
     lineHeight: '1.6',
   },
+  console: {
+    color: '#61dafb',
+    fontFamily: 'monospace',
+  },
   links: {
     display: 'flex',
     justifyContent: 'center',
@@ -91,5 +144,17 @@ const styles = {
   divider: {
     color: '#4a5568',
     fontSize: '1rem',
+  },
+  footer: {
+    position: 'fixed',
+    bottom: '0',
+    left: '0',
+    right: '0',
+    textAlign: 'center',
+    padding: '20px',
+    color: '#a0aec0',
+    fontSize: '0.9rem',
+    background: 'rgba(26, 32, 44, 0.8)',
+    backdropFilter: 'blur(5px)',
   },
 };
