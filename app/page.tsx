@@ -18,7 +18,7 @@ export default function Home() {
             <div style={styles.line} />
             <p style={styles.message}>
               <span style={styles.console}>&gt; console.log(</span>
-              "Web sitemiz yakında yayında olacak. Şimdilik beni sosyal medyadan takip edebilirsiniz."
+              "Portfolyo sayfam hala yapım aşamasında. Lütfen daha sonra tekrar kontrol edin!"<span style={styles.console}>);</span>
               <span style={styles.console}>);</span>
             </p>
           </div>
@@ -33,7 +33,7 @@ export default function Home() {
           </a>
           <span style={styles.divider}>•</span>
           <a href="mailto:yasir@yasirkaraman.com.tr" style={styles.link}>
-            E-mail
+            Mail
           </a>
         </div>
       </div>
