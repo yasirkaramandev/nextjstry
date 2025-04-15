@@ -53,7 +53,7 @@
   position: fixed;
   pointer-events: none;
   z-index: 9998;
-  transition: transform 0.1s ease;
+  transition: all 0.1s ease;
   transform: translate(-50%, -50%);
 }
 
@@ -65,18 +65,18 @@
   position: fixed;
   pointer-events: none;
   z-index: 9999;
-  transition: transform 0.05s ease;
+  transition: all 0.05s ease;
   transform: translate(-50%, -50%);
 }
 
 .cursor-clicked .cursor-outer {
   transform: translate(-50%, -50%) scale(1.5);
-  background: rgba(26, 32, 44, 0.3);
+  background: rgba(97, 218, 251, 0.3);
 }
 
 .cursor-clicked .cursor-inner {
   transform: translate(-50%, -50%) scale(0.8);
-  background: rgba(26, 32, 44, 0.8);
+  background: rgba(97, 218, 251, 0.9);
 }
 
 * {

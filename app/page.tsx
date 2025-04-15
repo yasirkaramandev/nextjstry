@@ -47,11 +47,50 @@ const CustomCursor = () => {
   );
 };
 
+const VSCodeStatus = () => {
+  const [isActive, setIsActive] = useState(false);
+  const [currentProject, setCurrentProject] = useState("nextjstry");
+
+  useEffect(() => {
+    const checkVSCode = () => {
+      const now = new Date().getHours();
+      setIsActive(now >= 9 && now <= 23);
+    };
+
+    checkVSCode();
+    const interval = setInterval(checkVSCode, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div style={styles.vscodeTerminal}>
+      <div style={styles.terminalHeader}>
+        <span style={styles.terminalTitle}>Visual Studio Code</span>
+        <div style={styles.terminalDots}>
+          <span style={styles.terminalDot}></span>
+          <span style={styles.terminalDot}></span>
+          <span style={styles.terminalDot}></span>
+        </div>
+      </div>
+      <div style={styles.terminalBody}>
+        <p style={styles.command}>$ code --status</p>
+        <div style={styles.vscodeStatus}>
+          <span style={{...styles.statusDot, background: isActive ? '#3FB950' : '#F85149'}}></span>
+          <span style={styles.statusText}>
+            {isActive ? `Aktif Proje: ${currentProject}` : 'Şuan çalışmıyor.'}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function Home() {
   return (
     <main style={styles.container}>
       <CustomCursor />
       <div style={styles.content}>
+        <VSCodeStatus />
         <div style={styles.terminal}>
           <div style={styles.terminalHeader}>
             <span style={styles.terminalDot}></span>
@@ -110,7 +149,7 @@ const styles = {
     maxWidth: '600px',
     textAlign: 'center' as const,
     animation: 'fadeIn 1s ease-in',
-    marginBottom: '60px', // Footer için alan
+    marginBottom: '60px',
   },
   terminal: {
     width: '100%',
@@ -198,5 +237,40 @@ const styles = {
     background: 'rgba(26, 32, 44, 0.9)',
     backdropFilter: 'blur(5px)',
     zIndex: 10,
+  } as const,
+  vscodeTerminal: {
+    width: '100%',
+    background: '#1e1e1e',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
+    marginBottom: '20px',
+  } as const,
+  terminalTitle: {
+    color: '#e2e8f0',
+    fontSize: '0.9rem',
+    fontFamily: 'monospace',
+  } as const,
+  terminalDots: {
+    display: 'flex',
+    gap: '6px',
+  } as const,
+  vscodeStatus: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    padding: '10px 0',
+    fontFamily: 'monospace',
+    fontSize: '0.9rem',
+    color: '#e2e8f0',
+  } as const,
+  statusDot: {
+    width: '8px',
+    height: '8px',
+    borderRadius: '50%',
+    transition: 'background 0.3s ease',
+  } as const,
+  statusText: {
+    color: '#e2e8f0',
   } as const,
 };
