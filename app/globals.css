@@ -32,6 +32,25 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+}
+
+@media (max-width: 480px) {
+  .terminal-body {
+    padding: 15px !important;
+  }
+  
+  .links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 body {
