@@ -215,6 +215,12 @@ const styles = {
     borderRadius: '50%',
     background: '#ff5f56'
   } as const,
+  terminalDots: {
+    display: 'flex',
+    gap: '8px',
+    position: 'absolute' as const,
+    left: '15px'
+  } as const,
   terminalBody: {
     padding: '20px'
   } as const,
