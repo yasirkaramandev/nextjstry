@@ -58,25 +58,33 @@ interface SpotifyTrack {
   progress: number;
 }
 
+const formatTime = (ms: number) => {
+  const minutes = Math.floor(ms / 60000);
+  const seconds = Math.floor((ms % 60000) / 1000);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
+
 const SpotifyStatus = () => {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const [localProgress, setLocalProgress] = useState(0);
 
   const fetchSpotifyData = useCallback(async () => {
     if (isLoading) return;
-    
+
     try {
       setIsLoading(true);
       const timestamp = Date.now();
       const res = await fetch(`/api/spotify?_=${timestamp}`, {
         next: { revalidate: 0 }
       });
-      
+
       const data = await res.json();
       if (data.error) throw new Error(data.error);
-      
+
       setTrack(data);
+      setLocalProgress(data.progress);
       setError('');
     } catch (err) {
       console.error('Spotify Hatası:', err);
@@ -91,6 +99,21 @@ const SpotifyStatus = () => {
     const interval = setInterval(fetchSpotifyData, 5000);
     return () => clearInterval(interval);
   }, [fetchSpotifyData]);
+
+  useEffect(() => {
+    if (!track?.isPlaying) return;
+
+    const progressInterval = setInterval(() => {
+      setLocalProgress(prev => {
+        if (prev >= track.duration) {
+          return track.progress;
+        }
+        return prev + 1000;
+      });
+    }, 1000);
+
+    return () => clearInterval(progressInterval);
+  }, [track]);
 
   return (
     <div style={styles.musicTerminal}>
@@ -126,6 +149,18 @@ const SpotifyStatus = () => {
                 >
                   Spotify'da Dinle
                 </a>
+              </div>
+            </div>
+            <div style={styles.progressContainer}>
+              <div style={styles.progressBar}>
+                <div style={{
+                  ...styles.progressFill,
+                  width: `${(localProgress / (track?.duration || 1)) * 100}%`
+                }} />
+              </div>
+              <div style={styles.timeInfo}>
+                <span>{formatTime(localProgress)}</span>
+                <span>{formatTime(track?.duration || 0)}</span>
               </div>
             </div>
           </>
