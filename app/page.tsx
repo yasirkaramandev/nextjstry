@@ -61,14 +61,26 @@ interface SpotifyTrack {
 const SpotifyStatus = () => {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [error, setError] = useState<string>('');
-  const intervalRef = useRef<NodeJS.Timer>();
 
   const fetchSpotifyData = async () => {
     try {
-      const response = await fetch('/api/spotify');
+      const response = await fetch('/api/spotify', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
+        }
+      });
+      
       if (!response.ok) throw new Error('API yanıt vermedi');
       const data = await response.json();
+      
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
       setTrack(data);
+      setError('');
     } catch (err) {
       console.error('Spotify Hatası:', err);
       setError('Bağlantı hatası oluştu');
@@ -77,13 +89,8 @@ const SpotifyStatus = () => {
 
   useEffect(() => {
     fetchSpotifyData();
-    intervalRef.current = setInterval(fetchSpotifyData, 3000);
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
+    const interval = setInterval(fetchSpotifyData, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
