@@ -61,79 +61,35 @@ interface SpotifyTrack {
 const SpotifyStatus = () => {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [error, setError] = useState<string>('');
-  const [localProgress, setLocalProgress] = useState(0);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const getSpotifyStatus = async () => {
+    const fetchSpotifyData = async () => {
       try {
-        const timestamp = new Date().getTime();
-        const res = await fetch(`/api/spotify?t=${timestamp}`, {
-          cache: 'no-store',
-          next: { revalidate: 0 },
-          headers: {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache'
-          }
+        const res = await fetch('/api/spotify', {
+          method: 'GET',
+          headers: { 'x-timestamp': Date.now().toString() }
         });
-
-        if (!isMounted) return;
-
         const data = await res.json();
 
         if (data.error) {
-          console.log('Spotify Hatası:', data.error);
           setError('Spotify bağlantısı geçici olarak kullanılamıyor');
           return;
         }
 
-        // Yeni veri eski veriden farklıysa güncelle
-        if (JSON.stringify(track) !== JSON.stringify(data)) {
-          console.log('Yeni Spotify Verisi Algılandı:', {
-            önceki_şarkı: track?.title,
-            yeni_şarkı: data.title,
-            zaman: new Date().toLocaleTimeString()
-          });
-          
-          setTrack(data);
-          setLocalProgress(data.progress);
-        }
-
-        setError('');
+        setTrack(data);
       } catch (err) {
-        if (!isMounted) return;
-        console.error('Spotify Bağlantı Hatası:', err);
         setError('Spotify bağlantısı kurulamadı');
       }
     };
 
-    // İlk yükleme
-    getSpotifyStatus();
+    // İlk veri çekme
+    fetchSpotifyData();
 
-    // Her 3 saniyede bir güncelle
-    const apiInterval = setInterval(getSpotifyStatus, 3000);
+    // Her 2 saniyede bir yeni veri çek
+    const interval = setInterval(fetchSpotifyData, 2000);
 
-    // Her saniye progress'i güncelle
-    const progressInterval = setInterval(() => {
-      if (track?.isPlaying) {
-        setLocalProgress(prev => {
-          if (prev >= (track?.duration || 0)) {
-            // Şarkı bittiyse yeni veriyi hemen al
-            getSpotifyStatus();
-            return 0;
-          }
-          return prev + 1000;
-        });
-      }
-    }, 1000);
-
-    return () => {
-      isMounted = false;
-      clearInterval(apiInterval);
-      clearInterval(progressInterval);
-    };
-  }, [track?.duration, track?.isPlaying]);
+    return () => clearInterval(interval);
+  }, []);
 
   const formatTime = (ms: number) => {
     const seconds = Math.floor((ms / 1000) % 60);
@@ -178,12 +134,12 @@ const SpotifyStatus = () => {
                 <div 
                   style={{
                     ...styles.progressFill,
-                    width: `${(localProgress / (track?.duration || 1)) * 100}%`
+                    width: `${(track.progress / track.duration) * 100}%`
                   }}
                 />
               </div>
               <div style={styles.timeInfo}>
-                <span>{formatTime(localProgress)}</span>
+                <span>{formatTime(track.progress)}</span>
                 <span>{formatTime(track.duration)}</span>
               </div>
             </div>
