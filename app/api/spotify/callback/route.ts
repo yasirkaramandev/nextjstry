@@ -4,11 +4,11 @@ export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get('code');
 
   if (!code) {
-    return NextResponse.json({ error: 'Kod bulunamadı' });
+    return NextResponse.json({ error: 'No code provided' });
   }
 
   try {
-    const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
+    const response = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -23,13 +23,11 @@ export async function GET(request: NextRequest) {
       }),
     });
 
-    const data = await tokenResponse.json();
-    console.log('İşte Refresh Token:', data.refresh_token);
-
-    return NextResponse.json({ 
-      message: 'Refresh token konsolda, .env.local dosyanıza ekleyin' 
-    });
+    const data = await response.json();
+    console.log('SPOTIFY REFRESH TOKEN:', data.refresh_token);
+    
+    return NextResponse.redirect('http://localhost:3000');
   } catch (error) {
-    return NextResponse.json({ error: 'Token alınamadı' });
+    return NextResponse.json({ error: 'Token exchange failed' });
   }
 }

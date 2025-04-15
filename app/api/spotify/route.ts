@@ -1,18 +1,19 @@
 import { NextResponse } from 'next/server';
 
-const BASE_URL = 'https://api.spotify.com/v1';
-
 async function getAccessToken() {
-  const basic = Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64');
-  
+  const basic = Buffer.from(
+    `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`
+  ).toString('base64');
+
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
       Authorization: `Basic ${basic}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: new URLSearchParams({
-      grant_type: 'client_credentials',
+      grant_type: 'refresh_token',
+      refresh_token: process.env.SPOTIFY_REFRESH_TOKEN!,
     }),
   });
 
@@ -22,30 +23,27 @@ async function getAccessToken() {
 export async function GET() {
   try {
     const { access_token } = await getAccessToken();
-    
-    // Spotify'dan örnek bir playlist'in son şarkısını al
-    const response = await fetch(`${BASE_URL}/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks?limit=1`, {
+
+    const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
     });
 
-    const data = await response.json();
-    const track = data.items[0]?.track;
-
-    if (!track) {
+    if (response.status === 204) {
       return NextResponse.json({ isPlaying: false });
     }
 
+    const song = await response.json();
+
     return NextResponse.json({
-      isPlaying: true,
-      title: track.name,
-      artist: track.artists.map((artist: any) => artist.name).join(', '),
-      album: track.album.name,
-      albumImageUrl: track.album.images[0]?.url,
-      songUrl: track.external_urls.spotify
+      isPlaying: song.is_playing,
+      title: song.item.name,
+      artist: song.item.artists.map((artist: any) => artist.name).join(', '),
+      albumImageUrl: song.item.album.images[0].url,
+      songUrl: song.item.external_urls.spotify
     });
   } catch (error) {
-    return NextResponse.json({ isPlaying: false, error: 'Spotify API hatası' });
+    return NextResponse.json({ isPlaying: false, error: 'Spotify API error' });
   }
 }

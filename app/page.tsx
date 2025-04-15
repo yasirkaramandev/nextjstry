@@ -63,16 +63,23 @@ const SpotifyStatus = () => {
   useEffect(() => {
     const getSpotifyStatus = async () => {
       try {
-        const res = await fetch('https://nextjstry-git-main-yasirs-projects-f703138c.vercel.app/api/spotify');
+        const res = await fetch('/api/spotify');
         const data = await res.json();
+
+        if (data.error) {
+          setError('Spotify bağlantısı geçici olarak kullanılamıyor');
+          return;
+        }
+
         setTrack(data);
+        setError('');
       } catch (err) {
         setError('Spotify bağlantısı kurulamadı');
       }
     };
 
     getSpotifyStatus();
-    const interval = setInterval(getSpotifyStatus, 10000);
+    const interval = setInterval(getSpotifyStatus, 30000); // 30 saniyede bir güncelle
     return () => clearInterval(interval);
   }, []);
 
@@ -84,32 +91,27 @@ const SpotifyStatus = () => {
           <span style={{ ...styles.terminalDot, background: '#ffbd2e' }}></span>
           <span style={{ ...styles.terminalDot, background: '#27c93f' }}></span>
         </div>
-        <span style={styles.terminalTitle}>Spotify</span>
+        <span style={styles.terminalTitle}>Spotify'da Çalan</span>
       </div>
       <div style={styles.terminalBody}>
         {error ? (
           <p style={styles.errorText}>{error}</p>
         ) : track ? (
           <div style={styles.musicInfo}>
-            {track.albumImageUrl && (
-              <img
-                src={track.albumImageUrl}
-                alt={track.title}
-                style={styles.artwork}
-              />
-            )}
+            <a href={track.songUrl} target="_blank" rel="noopener noreferrer" style={styles.albumLink}>
+              <img src={track.albumImageUrl} alt={track.title} style={styles.artwork} />
+            </a>
             <div style={styles.trackInfo}>
               <p style={styles.trackName}>{track.title}</p>
               <p style={styles.artistName}>{track.artist}</p>
-              <div style={styles.playingStatus}>
-                <span
-                  style={{
-                    ...styles.statusDot,
-                    background: track.isPlaying ? '#1DB954' : '#F85149'
-                  }}
-                ></span>
-                {track.isPlaying ? 'Şimdi Çalıyor' : 'Duraklatıldı'}
-              </div>
+              <a 
+                href={track.songUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={styles.listenButton}
+              >
+                Spotify'da Dinle
+              </a>
             </div>
           </div>
         ) : (
@@ -314,10 +316,17 @@ const styles = {
     padding: '15px'
   } as const,
   artwork: {
-    width: '60px',
-    height: '60px',
-    borderRadius: '8px',
-    objectFit: 'cover' as const
+    width: '80px',
+    height: '80px',
+    borderRadius: '6px',
+    objectFit: 'cover' as const,
+    transition: 'transform 0.2s ease'
+  } as const,
+  albumLink: {
+    display: 'block',
+    ':hover img': {
+      transform: 'scale(1.05)'
+    }
   } as const,
   trackInfo: {
     flex: 1,
@@ -340,6 +349,17 @@ const styles = {
     gap: '8px',
     color: '#e2e8f0',
     fontSize: '0.8rem'
+  } as const,
+  listenButton: {
+    display: 'inline-block',
+    background: '#1DB954',
+    color: '#ffffff',
+    padding: '6px 12px',
+    borderRadius: '20px',
+    fontSize: '0.8rem',
+    textDecoration: 'none',
+    transition: 'background-color 0.2s ease',
+    marginTop: '8px'
   } as const,
   statusDot: {
     width: '8px',
