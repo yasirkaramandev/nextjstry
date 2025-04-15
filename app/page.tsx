@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { VSCodeStatus, getVSCodeStatus } from './lib/vscode-status';
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -47,56 +48,57 @@ const CustomCursor = () => {
   );
 };
 
-interface VSCodeStatus {
-  isActive: boolean;
-  currentProject: string;
-  currentFile: string;
-  currentLine: number;
-  lastActive: string;
-}
-
-const VSCodeStatus = () => {
+const VSCodeStatusComponent = () => {
   const [status, setStatus] = useState<VSCodeStatus | null>(null);
 
   useEffect(() => {
-    const fetchStatus = async () => {
-      try {
-        const response = await fetch('/api/vscode-status');
-        const data = await response.json();
-        setStatus(data);
-      } catch (error) {
-        console.error('VS Code status fetch failed:', error);
-      }
+    setStatus(getVSCodeStatus());
+
+    const handleStorage = () => {
+      setStatus(getVSCodeStatus());
     };
 
-    fetchStatus();
-    const interval = setInterval(fetchStatus, 10000); // Her 10 saniyede bir güncelle
-    return () => clearInterval(interval);
+    window.addEventListener('storage', handleStorage);
+
+    const interval = setInterval(() => {
+      const currentStatus = getVSCodeStatus();
+      const lastActiveTime = new Date(currentStatus.lastActive).getTime();
+
+      if (Date.now() - lastActiveTime > 5 * 60 * 1000) {
+        setStatus({ ...currentStatus, isActive: false });
+      }
+    }, 5000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      clearInterval(interval);
+    };
   }, []);
 
   return (
     <div style={styles.vscodeTerminal}>
       <div style={styles.terminalHeader}>
         <div style={styles.terminalDots}>
-          <span style={{...styles.terminalDot, background: '#ff5f56'}}></span>
-          <span style={{...styles.terminalDot, background: '#ffbd2e'}}></span>
-          <span style={{...styles.terminalDot, background: '#27c93f'}}></span>
+          <span style={{ ...styles.terminalDot, background: '#ff5f56' }}></span>
+          <span style={{ ...styles.terminalDot, background: '#ffbd2e' }}></span>
+          <span style={{ ...styles.terminalDot, background: '#27c93f' }}></span>
         </div>
         <span style={styles.terminalTitle}>Visual Studio Code</span>
       </div>
       <div style={styles.terminalBody}>
         <div style={styles.vscodeStatus}>
-          <span style={{...styles.statusDot, 
-            background: status?.isActive ? '#3FB950' : '#F85149'
-          }}></span>
+          <span
+            style={{
+              ...styles.statusDot,
+              background: status?.isActive ? '#3FB950' : '#F85149'
+            }}
+          ></span>
           {status ? (
             <div style={styles.statusInfo}>
               <p style={styles.projectInfo}>
                 {status.currentProject} • {status.currentFile}
               </p>
-              <p style={styles.lineInfo}>
-                Line: {status.currentLine}
-              </p>
+              <p style={styles.lineInfo}>Line: {status.currentLine}</p>
             </div>
           ) : (
             <span style={styles.statusText}>VS Code bağlantısı kurulamadı</span>
@@ -112,7 +114,7 @@ export default function Home() {
     <main style={styles.container}>
       <CustomCursor />
       <div style={styles.content}>
-        <VSCodeStatus />
+        <VSCodeStatusComponent />
         <div style={styles.terminal}>
           <div style={styles.terminalHeader}>
             <span style={styles.terminalDot}></span>
@@ -127,16 +129,25 @@ export default function Home() {
               <span style={styles.console}>&gt; console.log(</span>
               "Portfolyo sayfam hala yapım aşamasında. Lütfen daha sonra tekrar kontrol edin!"
               <span style={styles.console}>);</span>
-              
             </p>
           </div>
         </div>
         <div style={styles.links}>
-          <a href="https://github.com/yasirkaramandev" style={styles.link} target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://github.com/yasirkaramandev"
+            style={styles.link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             GitHub
           </a>
           <span style={styles.divider}>•</span>
-          <a href="https://www.linkedin.com/in/yasirkaramandev" style={styles.link} target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://www.linkedin.com/in/yasirkaramandev"
+            style={styles.link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             LinkedIn
           </a>
           <span style={styles.divider}>•</span>
@@ -164,14 +175,14 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     padding: '1rem',
-    position: 'relative' as const,
+    position: 'relative' as const
   } as const,
   content: {
     width: '90%',
     maxWidth: '600px',
     textAlign: 'center' as const,
     animation: 'fadeIn 1s ease-in',
-    marginBottom: '60px',
+    marginBottom: '60px'
   },
   terminal: {
     width: '100%',
@@ -179,52 +190,52 @@ const styles = {
     borderRadius: '8px',
     overflow: 'hidden',
     boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
-    marginBottom: '30px',
+    marginBottom: '30px'
   } as const,
   terminalHeader: {
     background: '#2d2d2d',
     padding: '10px',
     display: 'flex',
-    gap: '6px',
+    gap: '6px'
   } as const,
   terminalDot: {
     width: '12px',
     height: '12px',
     borderRadius: '50%',
-    background: '#ff5f56',
+    background: '#ff5f56'
   } as const,
   terminalBody: {
-    padding: '20px',
+    padding: '20px'
   } as const,
   title: {
     fontSize: 'clamp(2rem, 5vw, 3.5rem)',
     color: '#ffffff',
     marginBottom: '20px',
-    fontWeight: '700',
+    fontWeight: '700'
   } as const,
   line: {
     width: '80px',
     height: '4px',
     background: '#61dafb',
     margin: '0 auto 30px',
-    borderRadius: '2px',
+    borderRadius: '2px'
   } as const,
   message: {
     fontSize: 'clamp(0.9rem, 4vw, 1.2rem)',
     color: '#e2e8f0',
     marginBottom: '40px',
     lineHeight: '1.6',
-    padding: '0 10px',
+    padding: '0 10px'
   } as const,
   command: {
     color: '#61dafb',
     marginBottom: '10px',
     fontFamily: 'monospace',
-    fontSize: '1rem',
+    fontSize: '1rem'
   } as const,
   console: {
     color: '#61dafb',
-    fontFamily: 'monospace',
+    fontFamily: 'monospace'
   } as const,
   links: {
     display: 'flex',
@@ -232,7 +243,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     gap: '10px',
-    padding: '0 10px',
+    padding: '0 10px'
   } as const,
   link: {
     color: '#61dafb',
@@ -241,11 +252,11 @@ const styles = {
     padding: '8px 12px',
     borderRadius: '5px',
     transition: 'all 0.3s ease',
-    whiteSpace: 'nowrap' as const,
+    whiteSpace: 'nowrap' as const
   } as const,
   divider: {
     color: '#4a5568',
-    fontSize: '1rem',
+    fontSize: '1rem'
   } as const,
   footer: {
     position: 'fixed' as const,
@@ -258,7 +269,7 @@ const styles = {
     fontSize: 'clamp(0.7rem, 3vw, 0.9rem)',
     background: 'rgba(26, 32, 44, 0.9)',
     backdropFilter: 'blur(5px)',
-    zIndex: 10,
+    zIndex: 10
   } as const,
   vscodeTerminal: {
     width: '100%',
@@ -266,62 +277,62 @@ const styles = {
     borderRadius: '8px',
     overflow: 'hidden',
     boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
-    marginBottom: '20px',
+    marginBottom: '20px'
   } as const,
   terminalHeader: {
     background: '#2d2d2d',
     padding: '10px 15px',
     display: 'flex',
     alignItems: 'center',
-    position: 'relative' as const,
+    position: 'relative' as const
   } as const,
   terminalDots: {
     display: 'flex',
     gap: '8px',
     position: 'absolute' as const,
-    left: '15px',
+    left: '15px'
   } as const,
   terminalTitle: {
     color: '#e2e8f0',
     fontSize: '0.9rem',
     fontFamily: 'monospace',
     width: '100%',
-    textAlign: 'center' as const,
+    textAlign: 'center' as const
   } as const,
   terminalDot: {
     width: '12px',
     height: '12px',
     borderRadius: '50%',
     transition: 'opacity 0.2s ease',
-    cursor: 'pointer',
+    cursor: 'pointer'
   } as const,
   vscodeStatus: {
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
     padding: '15px',
-    fontFamily: 'monospace',
+    fontFamily: 'monospace'
   } as const,
   statusInfo: {
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: '5px',
+    gap: '5px'
   } as const,
   projectInfo: {
     color: '#e2e8f0',
-    fontSize: '0.9rem',
+    fontSize: '0.9rem'
   } as const,
   lineInfo: {
     color: '#a0aec0',
-    fontSize: '0.8rem',
+    fontSize: '0.8rem'
   } as const,
   statusDot: {
     width: '8px',
     height: '8px',
     borderRadius: '50%',
-    transition: 'background 0.3s ease',
+    transition: 'background 0.3s ease'
   } as const,
   statusText: {
-    color: '#e2e8f0',
-  } as const,
+    color: '#e2e8f0'
+  } as const
 };
