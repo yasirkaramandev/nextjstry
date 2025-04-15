@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { VSCodeStatus, getVSCodeStatus } from './lib/vscode-status';
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -48,62 +47,74 @@ const CustomCursor = () => {
   );
 };
 
-const VSCodeStatusComponent = () => {
-  const [status, setStatus] = useState<VSCodeStatus | null>(null);
+interface SpotifyTrack {
+  isPlaying: boolean;
+  title: string;
+  artist: string;
+  album: string;
+  albumImageUrl: string;
+  songUrl: string;
+}
+
+const SpotifyStatus = () => {
+  const [track, setTrack] = useState<SpotifyTrack | null>(null);
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
-    setStatus(getVSCodeStatus());
-
-    const handleStorage = () => {
-      setStatus(getVSCodeStatus());
-    };
-
-    window.addEventListener('storage', handleStorage);
-
-    const interval = setInterval(() => {
-      const currentStatus = getVSCodeStatus();
-      const lastActiveTime = new Date(currentStatus.lastActive).getTime();
-
-      if (Date.now() - lastActiveTime > 5 * 60 * 1000) {
-        setStatus({ ...currentStatus, isActive: false });
+    const getSpotifyStatus = async () => {
+      try {
+        const res = await fetch('https://nextjstry-git-main-yasirs-projects-f703138c.vercel.app/api/spotify');
+        const data = await res.json();
+        setTrack(data);
+      } catch (err) {
+        setError('Spotify bağlantısı kurulamadı');
       }
-    }, 5000);
-
-    return () => {
-      window.removeEventListener('storage', handleStorage);
-      clearInterval(interval);
     };
+
+    getSpotifyStatus();
+    const interval = setInterval(getSpotifyStatus, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div style={styles.vscodeTerminal}>
+    <div style={styles.musicTerminal}>
       <div style={styles.terminalHeader}>
         <div style={styles.terminalDots}>
           <span style={{ ...styles.terminalDot, background: '#ff5f56' }}></span>
           <span style={{ ...styles.terminalDot, background: '#ffbd2e' }}></span>
           <span style={{ ...styles.terminalDot, background: '#27c93f' }}></span>
         </div>
-        <span style={styles.terminalTitle}>Visual Studio Code</span>
+        <span style={styles.terminalTitle}>Spotify</span>
       </div>
       <div style={styles.terminalBody}>
-        <div style={styles.vscodeStatus}>
-          <span
-            style={{
-              ...styles.statusDot,
-              background: status?.isActive ? '#3FB950' : '#F85149'
-            }}
-          ></span>
-          {status ? (
-            <div style={styles.statusInfo}>
-              <p style={styles.projectInfo}>
-                {status.currentProject} • {status.currentFile}
-              </p>
-              <p style={styles.lineInfo}>Line: {status.currentLine}</p>
+        {error ? (
+          <p style={styles.errorText}>{error}</p>
+        ) : track ? (
+          <div style={styles.musicInfo}>
+            {track.albumImageUrl && (
+              <img
+                src={track.albumImageUrl}
+                alt={track.title}
+                style={styles.artwork}
+              />
+            )}
+            <div style={styles.trackInfo}>
+              <p style={styles.trackName}>{track.title}</p>
+              <p style={styles.artistName}>{track.artist}</p>
+              <div style={styles.playingStatus}>
+                <span
+                  style={{
+                    ...styles.statusDot,
+                    background: track.isPlaying ? '#1DB954' : '#F85149'
+                  }}
+                ></span>
+                {track.isPlaying ? 'Şimdi Çalıyor' : 'Duraklatıldı'}
+              </div>
             </div>
-          ) : (
-            <span style={styles.statusText}>VS Code bağlantısı kurulamadı</span>
-          )}
-        </div>
+          </div>
+        ) : (
+          <p style={styles.loadingText}>Yükleniyor...</p>
+        )}
       </div>
     </div>
   );
@@ -114,7 +125,7 @@ export default function Home() {
     <main style={styles.container}>
       <CustomCursor />
       <div style={styles.content}>
-        <VSCodeStatusComponent />
+        <SpotifyStatus />
         <div style={styles.terminal}>
           <div style={styles.terminalHeader}>
             <span style={styles.terminalDot}></span>
@@ -271,7 +282,7 @@ const styles = {
     backdropFilter: 'blur(5px)',
     zIndex: 10
   } as const,
-  vscodeTerminal: {
+  musicTerminal: {
     width: '100%',
     background: '#1e1e1e',
     borderRadius: '8px',
@@ -279,60 +290,48 @@ const styles = {
     boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
     marginBottom: '20px'
   } as const,
-  terminalHeader: {
-    background: '#2d2d2d',
-    padding: '10px 15px',
+  musicInfo: {
     display: 'flex',
     alignItems: 'center',
-    position: 'relative' as const
+    gap: '15px',
+    padding: '15px'
   } as const,
-  terminalDots: {
-    display: 'flex',
-    gap: '8px',
-    position: 'absolute' as const,
-    left: '15px'
+  artwork: {
+    width: '60px',
+    height: '60px',
+    borderRadius: '8px',
+    objectFit: 'cover' as const
   } as const,
-  terminalTitle: {
-    color: '#e2e8f0',
-    fontSize: '0.9rem',
-    fontFamily: 'monospace',
-    width: '100%',
-    textAlign: 'center' as const
+  trackInfo: {
+    flex: 1,
+    textAlign: 'left' as const
   } as const,
-  terminalDot: {
-    width: '12px',
-    height: '12px',
-    borderRadius: '50%',
-    transition: 'opacity 0.2s ease',
-    cursor: 'pointer'
+  trackName: {
+    color: '#ffffff',
+    fontSize: '1.1rem',
+    fontWeight: '600',
+    marginBottom: '4px'
   } as const,
-  vscodeStatus: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-    padding: '15px',
-    fontFamily: 'monospace'
-  } as const,
-  statusInfo: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: '5px'
-  } as const,
-  projectInfo: {
-    color: '#e2e8f0',
-    fontSize: '0.9rem'
-  } as const,
-  lineInfo: {
+  artistName: {
     color: '#a0aec0',
+    fontSize: '0.9rem',
+    marginBottom: '8px'
+  } as const,
+  playingStatus: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    color: '#e2e8f0',
     fontSize: '0.8rem'
   } as const,
-  statusDot: {
-    width: '8px',
-    height: '8px',
-    borderRadius: '50%',
-    transition: 'background 0.3s ease'
+  errorText: {
+    color: '#F85149',
+    padding: '15px',
+    textAlign: 'center' as const
   } as const,
-  statusText: {
-    color: '#e2e8f0'
+  loadingText: {
+    color: '#e2e8f0',
+    padding: '15px',
+    textAlign: 'center' as const
   } as const
 };

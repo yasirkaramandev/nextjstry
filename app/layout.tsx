@@ -17,6 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tr">
+      <head>
+        <script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js"></script>
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   )
