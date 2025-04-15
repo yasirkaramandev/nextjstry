@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -61,37 +61,36 @@ interface SpotifyTrack {
 const SpotifyStatus = () => {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchSpotifyData = async () => {
+  const fetchSpotifyData = useCallback(async () => {
+    if (isLoading) return;
+    
     try {
-      const response = await fetch('/api/spotify', {
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache'
-        }
+      setIsLoading(true);
+      const timestamp = Date.now();
+      const res = await fetch(`/api/spotify?_=${timestamp}`, {
+        next: { revalidate: 0 }
       });
       
-      if (!response.ok) throw new Error('API yanıt vermedi');
-      const data = await response.json();
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
       
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
       setTrack(data);
       setError('');
     } catch (err) {
       console.error('Spotify Hatası:', err);
       setError('Bağlantı hatası oluştu');
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [isLoading]);
 
   useEffect(() => {
     fetchSpotifyData();
-    const interval = setInterval(fetchSpotifyData, 2000);
+    const interval = setInterval(fetchSpotifyData, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchSpotifyData]);
 
   return (
     <div style={styles.musicTerminal}>

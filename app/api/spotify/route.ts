@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   const client_id = process.env.SPOTIFY_CLIENT_ID;
   const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
   const refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
 
   try {
-    // Access token alma
     const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
@@ -17,28 +19,20 @@ export async function GET() {
         grant_type: 'refresh_token',
         refresh_token: refresh_token!,
       }),
+      cache: 'no-store'
     });
 
     const tokenData = await tokenResponse.json();
-
-    // Şu an çalan şarkıyı alma
-    const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-      headers: {
-        Authorization: `Bearer ${tokenData.access_token}`,
-      },
-      cache: 'no-store',
+    const spotifyResponse = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` },
+      cache: 'no-store'
     });
 
-    if (!response.ok && response.status !== 204) {
-      throw new Error('Spotify API error');
-    }
-
-    if (response.status === 204) {
+    if (spotifyResponse.status === 204) {
       return NextResponse.json({ isPlaying: false });
     }
 
-    const data = await response.json();
-    
+    const data = await spotifyResponse.json();
     return NextResponse.json({
       isPlaying: data.is_playing,
       title: data.item.name,
@@ -48,6 +42,11 @@ export async function GET() {
       songUrl: data.item.external_urls.spotify,
       duration: data.item.duration_ms,
       progress: data.progress_ms
+    }, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache'
+      }
     });
 
   } catch (error) {
