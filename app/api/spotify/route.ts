@@ -31,12 +31,16 @@ export async function GET() {
     });
 
     if (response.status === 204) {
-      return NextResponse.json({ isPlaying: false });
+      const jsonResponse = NextResponse.json({ isPlaying: false });
+      jsonResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      jsonResponse.headers.set('Pragma', 'no-cache');
+      jsonResponse.headers.set('Expires', '0');
+      return jsonResponse;
     }
 
     const song = await response.json();
 
-    return NextResponse.json({
+    const jsonResponse = NextResponse.json({
       isPlaying: song.is_playing,
       title: song.item.name,
       artist: song.item.artists.map((artist: any) => artist.name).join(', '),
@@ -45,7 +49,15 @@ export async function GET() {
       duration: song.item.duration_ms,
       progress: song.progress_ms
     });
+    jsonResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    jsonResponse.headers.set('Pragma', 'no-cache');
+    jsonResponse.headers.set('Expires', '0');
+    return jsonResponse;
   } catch (error) {
-    return NextResponse.json({ isPlaying: false, error: 'Spotify API error' });
+    const jsonResponse = NextResponse.json({ isPlaying: false, error: 'Spotify API error' });
+    jsonResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    jsonResponse.headers.set('Pragma', 'no-cache');
+    jsonResponse.headers.set('Expires', '0');
+    return jsonResponse;
   }
 }

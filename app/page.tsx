@@ -63,46 +63,53 @@ const SpotifyStatus = () => {
   const [error, setError] = useState<string>('');
   const [localProgress, setLocalProgress] = useState(0);
 
-  useEffect(() => {
-    const getSpotifyStatus = async () => {
-      try {
-        const res = await fetch('/api/spotify', {
-          cache: 'no-store',
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
-          }
-        });
-        const data = await res.json();
-
-        if (data.error) {
-          console.log('Spotify Hatası:', data.error);
-          setError('Spotify bağlantısı geçici olarak kullanılamıyor');
-          return;
+  const getSpotifyStatus = async () => {
+    try {
+      const timestamp = new Date().getTime();
+      const res = await fetch(`/api/spotify?t=${timestamp}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
         }
+      });
+      const data = await res.json();
 
-        setTrack(data);
-        setLocalProgress(data.progress);
-        console.log('Spotify Güncel Veri:', {
-          şarkı: data.title,
-          sanatçı: data.artist,
-          durum: data.isPlaying ? 'Çalıyor' : 'Duraklatıldı',
-          süre: `${Math.floor(data.progress / 1000)}/${Math.floor(data.duration / 1000)} sn`,
-          güncelleme_zamanı: new Date().toLocaleTimeString()
-        });
-        setError('');
-      } catch (err) {
-        console.error('Spotify Bağlantı Hatası:', err);
-        setError('Spotify bağlantısı kurulamadı');
+      if (data.error) {
+        console.log('Spotify Hatası:', data.error);
+        setError('Spotify bağlantısı geçici olarak kullanılamıyor');
+        return;
       }
-    };
 
+      setTrack(data);
+      setLocalProgress(data.progress);
+      
+      console.log('Spotify Güncel Veri:', {
+        şarkı: data.title,
+        sanatçı: data.artist,
+        durum: data.isPlaying ? 'Çalıyor' : 'Duraklatıldı',
+        süre: `${Math.floor(data.progress / 1000)}/${Math.floor(data.duration / 1000)} sn`,
+        güncelleme_zamanı: new Date().toLocaleTimeString(),
+        request_id: timestamp
+      });
+      
+      setError('');
+    } catch (err) {
+      console.error('Spotify Bağlantı Hatası:', err);
+      setError('Spotify bağlantısı kurulamadı');
+    }
+  };
+
+  useEffect(() => {
     getSpotifyStatus();
-    
     const apiInterval = setInterval(getSpotifyStatus, 5000);
+    
     const progressInterval = setInterval(() => {
       if (track?.isPlaying) {
-        setLocalProgress(prev => Math.min(prev + 1000, track.duration));
+        setLocalProgress(prev => {
+          const newProgress = prev + 1000;
+          return newProgress >= (track?.duration || 0) ? track?.progress || 0 : newProgress;
+        });
       }
     }, 1000);
 
