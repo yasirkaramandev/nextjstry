@@ -41,7 +41,9 @@ export async function GET() {
       title: song.item.name,
       artist: song.item.artists.map((artist: any) => artist.name).join(', '),
       albumImageUrl: song.item.album.images[0].url,
-      songUrl: song.item.external_urls.spotify
+      songUrl: song.item.external_urls.spotify,
+      duration: song.item.duration_ms,
+      progress: song.progress_ms
     });
   } catch (error) {
     return NextResponse.json({ isPlaying: false, error: 'Spotify API error' });

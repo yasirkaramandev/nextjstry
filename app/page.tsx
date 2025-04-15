@@ -54,6 +54,8 @@ interface SpotifyTrack {
   album: string;
   albumImageUrl: string;
   songUrl: string;
+  duration: number;
+  progress: number;
 }
 
 const SpotifyStatus = () => {
@@ -83,6 +85,12 @@ const SpotifyStatus = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const formatTime = (ms: number) => {
+    const seconds = Math.floor((ms / 1000) % 60);
+    const minutes = Math.floor(ms / 1000 / 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
   return (
     <div style={styles.musicTerminal}>
       <div style={styles.terminalHeader}>
@@ -97,23 +105,39 @@ const SpotifyStatus = () => {
         {error ? (
           <p style={styles.errorText}>{error}</p>
         ) : track ? (
-          <div style={styles.musicInfo}>
-            <a href={track.songUrl} target="_blank" rel="noopener noreferrer" style={styles.albumLink}>
-              <img src={track.albumImageUrl} alt={track.title} style={styles.artwork} />
-            </a>
-            <div style={styles.trackInfo}>
-              <p style={styles.trackName}>{track.title}</p>
-              <p style={styles.artistName}>{track.artist}</p>
-              <a 
-                href={track.songUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                style={styles.listenButton}
-              >
-                Spotify'da Dinle
+          <>
+            <div style={styles.musicInfo}>
+              <a href={track.songUrl} target="_blank" rel="noopener noreferrer" style={styles.albumLink}>
+                <img src={track.albumImageUrl} alt={track.title} style={styles.artwork} />
               </a>
+              <div style={styles.trackInfo}>
+                <p style={styles.trackName}>{track.title}</p>
+                <p style={styles.artistName}>{track.artist}</p>
+                <a 
+                  href={track.songUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={styles.listenButton}
+                >
+                  Spotify'da Dinle
+                </a>
+              </div>
             </div>
-          </div>
+            <div style={styles.progressContainer}>
+              <div style={styles.progressBar}>
+                <div 
+                  style={{
+                    ...styles.progressFill,
+                    width: `${(track.progress / track.duration) * 100}%`
+                  }}
+                />
+              </div>
+              <div style={styles.timeInfo}>
+                <span>{formatTime(track.progress)}</span>
+                <span>{formatTime(track.duration)}</span>
+              </div>
+            </div>
+          </>
         ) : (
           <p style={styles.loadingText}>Yükleniyor...</p>
         )}
@@ -379,5 +403,28 @@ const styles = {
     color: '#e2e8f0',
     padding: '15px',
     textAlign: 'center' as const
+  } as const,
+  progressContainer: {
+    padding: '0 15px 15px',
+  } as const,
+  progressBar: {
+    width: '100%',
+    height: '4px',
+    background: '#4a5568',
+    borderRadius: '2px',
+    overflow: 'hidden',
+    marginBottom: '8px'
+  } as const,
+  progressFill: {
+    height: '100%',
+    background: '#1DB954',
+    transition: 'width 0.3s ease'
+  } as const,
+  timeInfo: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    color: '#a0aec0',
+    fontSize: '0.8rem',
+    fontFamily: 'monospace'
   } as const
 };
