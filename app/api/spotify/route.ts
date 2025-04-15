@@ -23,24 +23,21 @@ async function getAccessToken() {
 export async function GET() {
   try {
     const { access_token } = await getAccessToken();
-
+    
     const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
+      cache: 'no-store',
     });
 
     if (response.status === 204) {
-      const jsonResponse = NextResponse.json({ isPlaying: false });
-      jsonResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-      jsonResponse.headers.set('Pragma', 'no-cache');
-      jsonResponse.headers.set('Expires', '0');
-      return jsonResponse;
+      return NextResponse.json({ isPlaying: false });
     }
 
     const song = await response.json();
-
-    const jsonResponse = NextResponse.json({
+    
+    return NextResponse.json({
       isPlaying: song.is_playing,
       title: song.item.name,
       artist: song.item.artists.map((artist: any) => artist.name).join(', '),
@@ -49,15 +46,8 @@ export async function GET() {
       duration: song.item.duration_ms,
       progress: song.progress_ms
     });
-    jsonResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    jsonResponse.headers.set('Pragma', 'no-cache');
-    jsonResponse.headers.set('Expires', '0');
-    return jsonResponse;
   } catch (error) {
-    const jsonResponse = NextResponse.json({ isPlaying: false, error: 'Spotify API error' });
-    jsonResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    jsonResponse.headers.set('Pragma', 'no-cache');
-    jsonResponse.headers.set('Expires', '0');
-    return jsonResponse;
+    console.error('Spotify API Hatası:', error);
+    return NextResponse.json({ error: 'Spotify API error' }, { status: 500 });
   }
 }

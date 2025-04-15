@@ -61,76 +61,30 @@ interface SpotifyTrack {
 const SpotifyStatus = () => {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [error, setError] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [localProgress, setLocalProgress] = useState(0);
-  const abortControllerRef = useRef<AbortController>();
+  const intervalRef = useRef<NodeJS.Timer>();
 
-  const updateSpotifyData = async () => {
-    if (isLoading) return;
+  const fetchSpotifyData = async () => {
     try {
-      setIsLoading(true);
-      abortControllerRef.current?.abort();
-      abortControllerRef.current = new AbortController();
-
-      const res = await fetch(`/api/spotify?_=${Date.now()}`, {
-        signal: abortControllerRef.current.signal,
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache'
-        }
-      });
-
-      if (!res.ok) throw new Error('API yanıt vermedi');
-      const data = await res.json();
-
+      const response = await fetch('/api/spotify');
+      if (!response.ok) throw new Error('API yanıt vermedi');
+      const data = await response.json();
       setTrack(data);
-      setLocalProgress(data.progress);
-      setError('');
     } catch (err) {
-      if (err.name === 'AbortError') return;
+      console.error('Spotify Hatası:', err);
       setError('Bağlantı hatası oluştu');
-    } finally {
-      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    updateSpotifyData();
-    const interval = setInterval(updateSpotifyData, 1000);
-    
-    return () => {
-      clearInterval(interval);
-      abortControllerRef.current?.abort();
-    };
-  }, []);
-
-  const progressInterval = useRef<NodeJS.Timer>();
-
-  useEffect(() => {
-    if (track?.isPlaying) {
-      progressInterval.current = setInterval(() => {
-        setLocalProgress(prev => {
-          if (prev >= track.duration) {
-            updateSpotifyData();
-            return 0;
-          }
-          return prev + 50;
-        });
-      }, 50);
-    }
+    fetchSpotifyData();
+    intervalRef.current = setInterval(fetchSpotifyData, 3000);
 
     return () => {
-      if (progressInterval.current) {
-        clearInterval(progressInterval.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
       }
     };
-  }, [track?.isPlaying, track?.duration]);
-
-  const formatTime = (ms: number) => {
-    const seconds = Math.floor((ms / 1000) % 60);
-    const minutes = Math.floor(ms / 1000 / 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  };
+  }, []);
 
   return (
     <div style={styles.musicTerminal}>
@@ -166,20 +120,6 @@ const SpotifyStatus = () => {
                 >
                   Spotify'da Dinle
                 </a>
-              </div>
-            </div>
-            <div style={styles.progressContainer}>
-              <div style={styles.progressBar}>
-                <div
-                  style={{
-                    ...styles.progressFill,
-                    width: `${(localProgress / track.duration) * 100}%`
-                  }}
-                />
-              </div>
-              <div style={styles.timeInfo}>
-                <span>{formatTime(localProgress)}</span>
-                <span>{formatTime(track.duration)}</span>
               </div>
             </div>
           </>
