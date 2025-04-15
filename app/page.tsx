@@ -61,34 +61,49 @@ interface SpotifyTrack {
 const SpotifyStatus = () => {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchSpotifyData = async () => {
+    if (isLoading) return;
+    
+    try {
+      setIsLoading(true);
+      const timestamp = Date.now();
+      const res = await fetch(`/api/spotify?t=${timestamp}`, {
+        method: 'GET',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
+
+      if (!res.ok) throw new Error('API yanıt vermedi');
+
+      const data = await res.json();
+
+      if (data.error) {
+        console.warn('Spotify Hatası:', data.error);
+        setError('Spotify bağlantısı geçici olarak kullanılamıyor');
+        return;
+      }
+
+      setTrack(data);
+      setError('');
+    } catch (err) {
+      console.error('Fetch hatası:', err);
+      setError('Bağlantı hatası oluştu');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchSpotifyData = async () => {
-      try {
-        const res = await fetch('/api/spotify', {
-          method: 'GET',
-          headers: { 'x-timestamp': Date.now().toString() }
-        });
-        const data = await res.json();
-
-        if (data.error) {
-          setError('Spotify bağlantısı geçici olarak kullanılamıyor');
-          return;
-        }
-
-        setTrack(data);
-      } catch (err) {
-        setError('Spotify bağlantısı kurulamadı');
-      }
-    };
-
-    // İlk veri çekme
     fetchSpotifyData();
+    const interval = setInterval(fetchSpotifyData, 3000);
 
-    // Her 2 saniyede bir yeni veri çek
-    const interval = setInterval(fetchSpotifyData, 2000);
-
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   const formatTime = (ms: number) => {
