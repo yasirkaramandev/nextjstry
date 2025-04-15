@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import useSWR from 'swr';
+import React, { useEffect, useState, useRef } from 'react';
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -59,23 +58,35 @@ interface SpotifyTrack {
   progress: number;
 }
 
-const fetcher = async (url: string) => {
-  const res = await fetch(url, {
-    headers: { 
-      'x-timestamp': Date.now().toString(),
-      'Cache-Control': 'no-cache'
-    }
-  });
-  if (!res.ok) throw new Error('API yanıt vermedi');
-  return res.json();
-};
-
 const SpotifyStatus = () => {
-  const { data: track, error } = useSWR<SpotifyTrack>('/api/spotify', fetcher, {
-    refreshInterval: 1000,
-    revalidateOnFocus: true,
-    dedupingInterval: 1000
-  });
+  const [track, setTrack] = useState<SpotifyTrack | null>(null);
+  const [error, setError] = useState<string>('');
+  const ws = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    const connectWebSocket = () => {
+      ws.current = new WebSocket(`wss://${window.location.host}/api/spotify/socket`);
+      
+      ws.current.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        setTrack(data);
+      };
+
+      ws.current.onerror = () => {
+        setError('Bağlantı hatası oluştu');
+      };
+
+      ws.current.onclose = () => {
+        setTimeout(connectWebSocket, 1000);
+      };
+    };
+
+    connectWebSocket();
+
+    return () => {
+      ws.current?.close();
+    };
+  }, []);
 
   const formatTime = (ms: number) => {
     const seconds = Math.floor((ms / 1000) % 60);
