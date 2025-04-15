@@ -130,9 +130,12 @@ export default function Home() {
         <SpotifyStatus />
         <div style={styles.terminal}>
           <div style={styles.terminalHeader}>
-            <span style={styles.terminalDot}></span>
-            <span style={styles.terminalDot}></span>
-            <span style={styles.terminalDot}></span>
+            <div style={styles.terminalDots}>
+              <span style={{ ...styles.terminalDot, background: '#ff5f56' }}></span>
+              <span style={{ ...styles.terminalDot, background: '#ffbd2e' }}></span>
+              <span style={{ ...styles.terminalDot, background: '#27c93f' }}></span>
+            </div>
+            <span style={styles.terminalTitle}>Terminal</span>
           </div>
           <div style={styles.terminalBody}>
             <p style={styles.command}>$ status</p>
