@@ -36,6 +36,10 @@ export default function Home() {
           <a href="mailto:yasir@yasirkaraman.com.tr" style={styles.link}>
             Mail
           </a>
+          <span style={styles.divider}>•</span>
+          <a href="https://teknogetir.com/" style={styles.link}>
+            TeknoGetir
+          </a>
         </div>
       </div>
       <footer style={styles.footer}>
