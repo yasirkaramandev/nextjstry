@@ -47,38 +47,60 @@ const CustomCursor = () => {
   );
 };
 
+interface VSCodeStatus {
+  isActive: boolean;
+  currentProject: string;
+  currentFile: string;
+  currentLine: number;
+  lastActive: string;
+}
+
 const VSCodeStatus = () => {
-  const [isActive, setIsActive] = useState(false);
-  const [currentProject, setCurrentProject] = useState("nextjstry");
+  const [status, setStatus] = useState<VSCodeStatus | null>(null);
 
   useEffect(() => {
-    const checkVSCode = () => {
-      const now = new Date().getHours();
-      setIsActive(now >= 9 && now <= 23);
+    const fetchStatus = async () => {
+      try {
+        const response = await fetch('/api/vscode-status');
+        const data = await response.json();
+        setStatus(data);
+      } catch (error) {
+        console.error('VS Code status fetch failed:', error);
+      }
     };
 
-    checkVSCode();
-    const interval = setInterval(checkVSCode, 60000);
+    fetchStatus();
+    const interval = setInterval(fetchStatus, 10000); // Her 10 saniyede bir güncelle
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div style={styles.vscodeTerminal}>
       <div style={styles.terminalHeader}>
-        <span style={styles.terminalTitle}>Visual Studio Code</span>
         <div style={styles.terminalDots}>
-          <span style={styles.terminalDot}></span>
-          <span style={styles.terminalDot}></span>
-          <span style={styles.terminalDot}></span>
+          <span style={{...styles.terminalDot, background: '#ff5f56'}}></span>
+          <span style={{...styles.terminalDot, background: '#ffbd2e'}}></span>
+          <span style={{...styles.terminalDot, background: '#27c93f'}}></span>
         </div>
+        <span style={styles.terminalTitle}>Visual Studio Code</span>
       </div>
       <div style={styles.terminalBody}>
-        <p style={styles.command}>$ code --status</p>
         <div style={styles.vscodeStatus}>
-          <span style={{...styles.statusDot, background: isActive ? '#3FB950' : '#F85149'}}></span>
-          <span style={styles.statusText}>
-            {isActive ? `Aktif Proje: ${currentProject}` : 'Şuan çalışmıyor.'}
-          </span>
+          <span style={{...styles.statusDot, 
+            background: status?.isActive ? '#3FB950' : '#F85149'
+          }}></span>
+          {status ? (
+            <div style={styles.statusInfo}>
+              <p style={styles.projectInfo}>
+                {status.currentProject} • {status.currentFile}
+              </p>
+              <p style={styles.lineInfo}>
+                Line: {status.currentLine}
+              </p>
+            </div>
+          ) : (
+            <span style={styles.statusText}>VS Code bağlantısı kurulamadı</span>
+          )}
         </div>
       </div>
     </div>
@@ -246,23 +268,52 @@ const styles = {
     boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
     marginBottom: '20px',
   } as const,
+  terminalHeader: {
+    background: '#2d2d2d',
+    padding: '10px 15px',
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative' as const,
+  } as const,
+  terminalDots: {
+    display: 'flex',
+    gap: '8px',
+    position: 'absolute' as const,
+    left: '15px',
+  } as const,
   terminalTitle: {
     color: '#e2e8f0',
     fontSize: '0.9rem',
     fontFamily: 'monospace',
+    width: '100%',
+    textAlign: 'center' as const,
   } as const,
-  terminalDots: {
-    display: 'flex',
-    gap: '6px',
+  terminalDot: {
+    width: '12px',
+    height: '12px',
+    borderRadius: '50%',
+    transition: 'opacity 0.2s ease',
+    cursor: 'pointer',
   } as const,
   vscodeStatus: {
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
-    padding: '10px 0',
+    padding: '15px',
     fontFamily: 'monospace',
-    fontSize: '0.9rem',
+  } as const,
+  statusInfo: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '5px',
+  } as const,
+  projectInfo: {
     color: '#e2e8f0',
+    fontSize: '0.9rem',
+  } as const,
+  lineInfo: {
+    color: '#a0aec0',
+    fontSize: '0.8rem',
   } as const,
   statusDot: {
     width: '8px',
