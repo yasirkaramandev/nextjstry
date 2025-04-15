@@ -8,31 +8,42 @@ const CustomCursor = () => {
 
   useEffect(() => {
     const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      requestAnimationFrame(() => {
+        setPosition({ x: e.clientX, y: e.clientY });
+      });
     };
 
     const handleMouseDown = () => setClicked(true);
     const handleMouseUp = () => setClicked(false);
 
-    window.addEventListener('mousemove', updatePosition);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousemove', updatePosition, { passive: true });
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mouseup', handleMouseUp);
 
     return () => {
-      window.removeEventListener('mousemove', updatePosition);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', updatePosition);
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mouseup', handleMouseUp);
     };
   }, []);
 
   return (
-    <div
-      className={`cursor ${clicked ? 'clicked' : ''}`}
-      style={{
-        left: `${position.x - 10}px`,
-        top: `${position.y - 10}px`
-      }}
-    />
+    <div className={`cursor-wrapper ${clicked ? 'cursor-clicked' : ''}`}>
+      <div
+        className="cursor-outer"
+        style={{
+          left: `${position.x}px`,
+          top: `${position.y}px`
+        }}
+      />
+      <div
+        className="cursor-inner"
+        style={{
+          left: `${position.x}px`,
+          top: `${position.y}px`
+        }}
+      />
+    </div>
   );
 };
 
