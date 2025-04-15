@@ -1,0 +1,11 @@
+### VS Code durumunu al
+GET http://localhost:3000/api/vscode-status
+
+### VS Code durumunu güncelle
+POST http://localhost:3000/api/vscode-status
+Content-Type: application/json
+
+{
+  "currentFile": "app/page.tsx",
+  "currentLine": 42
+}
