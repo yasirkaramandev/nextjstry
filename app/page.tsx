@@ -61,30 +61,35 @@ interface SpotifyTrack {
 const SpotifyStatus = () => {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [error, setError] = useState<string>('');
-  const ws = useRef<WebSocket | null>(null);
+  const eventSourceRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
-    const connectWebSocket = () => {
-      ws.current = new WebSocket(`wss://${window.location.host}/api/spotify/socket`);
+    if (typeof window === 'undefined') return;
+
+    const setupEventSource = () => {
+      eventSourceRef.current = new EventSource('/api/spotify/stream');
       
-      ws.current.onmessage = (event) => {
+      eventSourceRef.current.onmessage = (event) => {
         const data = JSON.parse(event.data);
+        if (data.error) {
+          setError('Spotify bağlantısı geçici olarak kullanılamıyor');
+          return;
+        }
         setTrack(data);
+        setError('');
       };
 
-      ws.current.onerror = () => {
+      eventSourceRef.current.onerror = () => {
         setError('Bağlantı hatası oluştu');
-      };
-
-      ws.current.onclose = () => {
-        setTimeout(connectWebSocket, 1000);
+        eventSourceRef.current?.close();
+        setTimeout(setupEventSource, 5000);
       };
     };
 
-    connectWebSocket();
+    setupEventSource();
 
     return () => {
-      ws.current?.close();
+      eventSourceRef.current?.close();
     };
   }, []);
 
