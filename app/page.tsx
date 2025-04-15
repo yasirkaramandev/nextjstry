@@ -61,37 +61,65 @@ interface SpotifyTrack {
 const SpotifyStatus = () => {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [error, setError] = useState<string>('');
-  const eventSourceRef = useRef<EventSource | null>(null);
+  const [localProgress, setLocalProgress] = useState(0);
+  const progressRef = useRef<NodeJS.Timer>();
+  const pollingRef = useRef<NodeJS.Timer>();
+
+  const updateSpotifyData = async () => {
+    try {
+      const timestamp = Date.now();
+      const res = await fetch(`/api/spotify?t=${timestamp}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
+        }
+      });
+
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      console.log('Spotify Güncellemesi:', {
+        şarkı: data.title,
+        durum: data.isPlaying ? 'Çalıyor' : 'Duraklatıldı',
+        zaman: new Date().toLocaleTimeString()
+      });
+
+      setTrack(data);
+      setLocalProgress(data.progress);
+      setError('');
+    } catch (err) {
+      console.error('Spotify Hatası:', err);
+      setError('Bağlantı hatası oluştu');
+    }
+  };
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    // İlk yükleme
+    updateSpotifyData();
 
-    const setupEventSource = () => {
-      eventSourceRef.current = new EventSource('/api/spotify/stream');
-      
-      eventSourceRef.current.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        if (data.error) {
-          setError('Spotify bağlantısı geçici olarak kullanılamıyor');
-          return;
-        }
-        setTrack(data);
-        setError('');
-      };
+    // Her 2 saniyede bir veri güncelle
+    pollingRef.current = setInterval(updateSpotifyData, 2000);
 
-      eventSourceRef.current.onerror = () => {
-        setError('Bağlantı hatası oluştu');
-        eventSourceRef.current?.close();
-        setTimeout(setupEventSource, 5000);
-      };
-    };
-
-    setupEventSource();
+    // Progress bar'ı her 100ms'de bir güncelle
+    progressRef.current = setInterval(() => {
+      if (track?.isPlaying) {
+        setLocalProgress(prev => {
+          const next = prev + 100;
+          if (next >= (track?.duration || 0)) {
+            updateSpotifyData(); // Şarkı bittiyse yeni veriyi al
+            return 0;
+          }
+          return next;
+        });
+      }
+    }, 100);
 
     return () => {
-      eventSourceRef.current?.close();
+      clearInterval(pollingRef.current);
+      clearInterval(progressRef.current);
     };
-  }, []);
+  }, [track?.isPlaying, track?.duration]);
 
   const formatTime = (ms: number) => {
     const seconds = Math.floor((ms / 1000) % 60);
@@ -125,9 +153,9 @@ const SpotifyStatus = () => {
               <div style={styles.trackInfo}>
                 <p style={styles.trackName}>{track.title}</p>
                 <p style={styles.artistName}>{track.artist}</p>
-                <a 
-                  href={track.songUrl} 
-                  target="_blank" 
+                <a
+                  href={track.songUrl}
+                  target="_blank"
                   rel="noopener noreferrer"
                   style={styles.listenButton}
                 >
@@ -137,15 +165,15 @@ const SpotifyStatus = () => {
             </div>
             <div style={styles.progressContainer}>
               <div style={styles.progressBar}>
-                <div 
+                <div
                   style={{
                     ...styles.progressFill,
-                    width: `${(track.progress / track.duration) * 100}%`
+                    width: `${(localProgress / track.duration) * 100}%`
                   }}
                 />
               </div>
               <div style={styles.timeInfo}>
-                <span>{formatTime(track.progress)}</span>
+                <span>{formatTime(localProgress)}</span>
                 <span>{formatTime(track.duration)}</span>
               </div>
             </div>
@@ -344,7 +372,7 @@ const styles = {
     borderRadius: '8px',
     overflow: 'hidden',
     boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
-    marginBottom: '20px'
+    marginBottom: '20px',
   } as const,
   musicInfo: {
     display: 'flex',
@@ -437,6 +465,7 @@ const styles = {
   } as const,
   progressContainer: {
     padding: '0 20px 20px',
+    width: '100%',
   } as const,
   progressBar: {
     width: '100%',
