@@ -61,11 +61,18 @@ interface SpotifyTrack {
 const SpotifyStatus = () => {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [error, setError] = useState<string>('');
+  const [localProgress, setLocalProgress] = useState(0);
 
   useEffect(() => {
     const getSpotifyStatus = async () => {
       try {
-        const res = await fetch('/api/spotify', { cache: 'no-store' });
+        const res = await fetch('/api/spotify', {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
         const data = await res.json();
 
         if (data.error) {
@@ -74,14 +81,15 @@ const SpotifyStatus = () => {
           return;
         }
 
+        setTrack(data);
+        setLocalProgress(data.progress);
         console.log('Spotify Güncel Veri:', {
           şarkı: data.title,
           sanatçı: data.artist,
           durum: data.isPlaying ? 'Çalıyor' : 'Duraklatıldı',
-          süre: `${Math.floor(data.progress / 1000)}/${Math.floor(data.duration / 1000)} sn`
+          süre: `${Math.floor(data.progress / 1000)}/${Math.floor(data.duration / 1000)} sn`,
+          güncelleme_zamanı: new Date().toLocaleTimeString()
         });
-
-        setTrack(data);
         setError('');
       } catch (err) {
         console.error('Spotify Bağlantı Hatası:', err);
@@ -89,10 +97,20 @@ const SpotifyStatus = () => {
       }
     };
 
-    getSpotifyStatus(); // İlk yükleme
-    const interval = setInterval(getSpotifyStatus, 5000); // 5 saniyede bir güncelle
-    return () => clearInterval(interval);
-  }, []);
+    getSpotifyStatus();
+    
+    const apiInterval = setInterval(getSpotifyStatus, 5000);
+    const progressInterval = setInterval(() => {
+      if (track?.isPlaying) {
+        setLocalProgress(prev => Math.min(prev + 1000, track.duration));
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(apiInterval);
+      clearInterval(progressInterval);
+    };
+  }, [track?.duration, track?.isPlaying]);
 
   const formatTime = (ms: number) => {
     const seconds = Math.floor((ms / 1000) % 60);
@@ -137,12 +155,12 @@ const SpotifyStatus = () => {
                 <div 
                   style={{
                     ...styles.progressFill,
-                    width: `${(track.progress / track.duration) * 100}%`
+                    width: `${(localProgress / (track?.duration || 1)) * 100}%`
                   }}
                 />
               </div>
               <div style={styles.timeInfo}>
-                <span>{formatTime(track.progress)}</span>
+                <span>{formatTime(localProgress)}</span>
                 <span>{formatTime(track.duration)}</span>
               </div>
             </div>
