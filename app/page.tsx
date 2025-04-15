@@ -65,23 +65,32 @@ const SpotifyStatus = () => {
   useEffect(() => {
     const getSpotifyStatus = async () => {
       try {
-        const res = await fetch('/api/spotify');
+        const res = await fetch('/api/spotify', { cache: 'no-store' });
         const data = await res.json();
 
         if (data.error) {
+          console.log('Spotify Hatası:', data.error);
           setError('Spotify bağlantısı geçici olarak kullanılamıyor');
           return;
         }
 
+        console.log('Spotify Güncel Veri:', {
+          şarkı: data.title,
+          sanatçı: data.artist,
+          durum: data.isPlaying ? 'Çalıyor' : 'Duraklatıldı',
+          süre: `${Math.floor(data.progress / 1000)}/${Math.floor(data.duration / 1000)} sn`
+        });
+
         setTrack(data);
         setError('');
       } catch (err) {
+        console.error('Spotify Bağlantı Hatası:', err);
         setError('Spotify bağlantısı kurulamadı');
       }
     };
 
-    getSpotifyStatus();
-    const interval = setInterval(getSpotifyStatus, 30000); // 30 saniyede bir güncelle
+    getSpotifyStatus(); // İlk yükleme
+    const interval = setInterval(getSpotifyStatus, 5000); // 5 saniyede bir güncelle
     return () => clearInterval(interval);
   }, []);
 
@@ -339,20 +348,30 @@ const styles = {
   musicInfo: {
     display: 'flex',
     alignItems: 'center',
-    gap: '15px',
-    padding: '15px'
+    gap: '20px',
+    padding: '20px',
+    background: 'linear-gradient(to right, rgba(29, 185, 84, 0.1), transparent)',
+    margin: '0 15px',
+    borderRadius: '8px',
+    transition: 'transform 0.2s ease',
+    cursor: 'pointer',
+    ':hover': {
+      transform: 'translateY(-2px)'
+    }
   } as const,
   artwork: {
-    width: '80px',
-    height: '80px',
-    borderRadius: '6px',
+    width: '90px',
+    height: '90px',
+    borderRadius: '8px',
     objectFit: 'cover' as const,
-    transition: 'transform 0.2s ease'
+    boxShadow: '0 8px 16px rgba(0,0,0,0.3)',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease'
   } as const,
   albumLink: {
     display: 'block',
     ':hover img': {
-      transform: 'scale(1.05)'
+      transform: 'scale(1.05)',
+      boxShadow: '0 12px 20px rgba(0,0,0,0.4)'
     }
   } as const,
   trackInfo: {
@@ -361,9 +380,13 @@ const styles = {
   } as const,
   trackName: {
     color: '#ffffff',
-    fontSize: '1.1rem',
-    fontWeight: '600',
-    marginBottom: '4px'
+    fontSize: '1.2rem',
+    fontWeight: '700',
+    marginBottom: '6px',
+    transition: 'color 0.2s ease',
+    ':hover': {
+      color: '#1DB954'
+    }
   } as const,
   artistName: {
     color: '#a0aec0',
@@ -378,15 +401,22 @@ const styles = {
     fontSize: '0.8rem'
   } as const,
   listenButton: {
-    display: 'inline-block',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '6px',
     background: '#1DB954',
     color: '#ffffff',
-    padding: '6px 12px',
+    padding: '8px 16px',
     borderRadius: '20px',
-    fontSize: '0.8rem',
+    fontSize: '0.9rem',
+    fontWeight: '600',
     textDecoration: 'none',
-    transition: 'background-color 0.2s ease',
-    marginTop: '8px'
+    transition: 'all 0.2s ease',
+    marginTop: '12px',
+    ':hover': {
+      background: '#1ed760',
+      transform: 'translateY(-2px)'
+    }
   } as const,
   statusDot: {
     width: '8px',
@@ -405,19 +435,23 @@ const styles = {
     textAlign: 'center' as const
   } as const,
   progressContainer: {
-    padding: '0 15px 15px',
+    padding: '0 20px 20px',
   } as const,
   progressBar: {
     width: '100%',
-    height: '4px',
+    height: '5px',
     background: '#4a5568',
-    borderRadius: '2px',
+    borderRadius: '3px',
     overflow: 'hidden',
-    marginBottom: '8px'
+    marginBottom: '10px',
+    cursor: 'pointer',
+    ':hover': {
+      height: '6px'
+    }
   } as const,
   progressFill: {
     height: '100%',
-    background: '#1DB954',
+    background: 'linear-gradient(to right, #1DB954, #1ed760)',
     transition: 'width 0.3s ease'
   } as const,
   timeInfo: {
