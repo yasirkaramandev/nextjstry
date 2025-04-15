@@ -205,9 +205,11 @@ const styles = {
   } as const,
   terminalHeader: {
     background: '#2d2d2d',
-    padding: '10px',
+    padding: '10px 15px',
     display: 'flex',
-    gap: '6px'
+    alignItems: 'center',
+    position: 'relative' as const,
+    justifyContent: 'center'
   } as const,
   terminalDot: {
     width: '12px',
@@ -219,10 +221,19 @@ const styles = {
     display: 'flex',
     gap: '8px',
     position: 'absolute' as const,
-    left: '15px'
+    left: '15px',
+    top: '50%',
+    transform: 'translateY(-50%)'
   } as const,
   terminalBody: {
     padding: '20px'
+  } as const,
+  terminalTitle: {
+    color: '#e2e8f0',
+    fontSize: '0.9rem',
+    fontFamily: 'monospace',
+    textAlign: 'center' as const,
+    margin: '0 auto'
   } as const,
   title: {
     fontSize: 'clamp(2rem, 5vw, 3.5rem)',
