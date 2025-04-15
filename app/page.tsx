@@ -63,57 +63,73 @@ const SpotifyStatus = () => {
   const [error, setError] = useState<string>('');
   const [localProgress, setLocalProgress] = useState(0);
 
-  const getSpotifyStatus = async () => {
-    try {
-      const timestamp = new Date().getTime();
-      const res = await fetch(`/api/spotify?t=${timestamp}`, {
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache'
-        }
-      });
-      const data = await res.json();
-
-      if (data.error) {
-        console.log('Spotify Hatası:', data.error);
-        setError('Spotify bağlantısı geçici olarak kullanılamıyor');
-        return;
-      }
-
-      setTrack(data);
-      setLocalProgress(data.progress);
-      
-      console.log('Spotify Güncel Veri:', {
-        şarkı: data.title,
-        sanatçı: data.artist,
-        durum: data.isPlaying ? 'Çalıyor' : 'Duraklatıldı',
-        süre: `${Math.floor(data.progress / 1000)}/${Math.floor(data.duration / 1000)} sn`,
-        güncelleme_zamanı: new Date().toLocaleTimeString(),
-        request_id: timestamp
-      });
-      
-      setError('');
-    } catch (err) {
-      console.error('Spotify Bağlantı Hatası:', err);
-      setError('Spotify bağlantısı kurulamadı');
-    }
-  };
-
   useEffect(() => {
+    let isMounted = true;
+
+    const getSpotifyStatus = async () => {
+      try {
+        const timestamp = new Date().getTime();
+        const res = await fetch(`/api/spotify?t=${timestamp}`, {
+          cache: 'no-store',
+          next: { revalidate: 0 },
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache'
+          }
+        });
+
+        if (!isMounted) return;
+
+        const data = await res.json();
+
+        if (data.error) {
+          console.log('Spotify Hatası:', data.error);
+          setError('Spotify bağlantısı geçici olarak kullanılamıyor');
+          return;
+        }
+
+        // Yeni veri eski veriden farklıysa güncelle
+        if (JSON.stringify(track) !== JSON.stringify(data)) {
+          console.log('Yeni Spotify Verisi Algılandı:', {
+            önceki_şarkı: track?.title,
+            yeni_şarkı: data.title,
+            zaman: new Date().toLocaleTimeString()
+          });
+          
+          setTrack(data);
+          setLocalProgress(data.progress);
+        }
+
+        setError('');
+      } catch (err) {
+        if (!isMounted) return;
+        console.error('Spotify Bağlantı Hatası:', err);
+        setError('Spotify bağlantısı kurulamadı');
+      }
+    };
+
+    // İlk yükleme
     getSpotifyStatus();
-    const apiInterval = setInterval(getSpotifyStatus, 5000);
-    
+
+    // Her 3 saniyede bir güncelle
+    const apiInterval = setInterval(getSpotifyStatus, 3000);
+
+    // Her saniye progress'i güncelle
     const progressInterval = setInterval(() => {
       if (track?.isPlaying) {
         setLocalProgress(prev => {
-          const newProgress = prev + 1000;
-          return newProgress >= (track?.duration || 0) ? track?.progress || 0 : newProgress;
+          if (prev >= (track?.duration || 0)) {
+            // Şarkı bittiyse yeni veriyi hemen al
+            getSpotifyStatus();
+            return 0;
+          }
+          return prev + 1000;
         });
       }
     }, 1000);
 
     return () => {
+      isMounted = false;
       clearInterval(apiInterval);
       clearInterval(progressInterval);
     };
