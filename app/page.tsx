@@ -341,6 +341,12 @@ const styles = {
     color: '#e2e8f0',
     fontSize: '0.8rem'
   } as const,
+  statusDot: {
+    width: '8px',
+    height: '8px',
+    borderRadius: '50%',
+    transition: 'background-color 0.3s ease'
+  } as const,
   errorText: {
     color: '#F85149',
     padding: '15px',
