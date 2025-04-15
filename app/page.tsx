@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -58,53 +59,23 @@ interface SpotifyTrack {
   progress: number;
 }
 
-const SpotifyStatus = () => {
-  const [track, setTrack] = useState<SpotifyTrack | null>(null);
-  const [error, setError] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchSpotifyData = async () => {
-    if (isLoading) return;
-    
-    try {
-      setIsLoading(true);
-      const timestamp = Date.now();
-      const res = await fetch(`/api/spotify?t=${timestamp}`, {
-        method: 'GET',
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
-      });
-
-      if (!res.ok) throw new Error('API yanıt vermedi');
-
-      const data = await res.json();
-
-      if (data.error) {
-        console.warn('Spotify Hatası:', data.error);
-        setError('Spotify bağlantısı geçici olarak kullanılamıyor');
-        return;
-      }
-
-      setTrack(data);
-      setError('');
-    } catch (err) {
-      console.error('Fetch hatası:', err);
-      setError('Bağlantı hatası oluştu');
-    } finally {
-      setIsLoading(false);
+const fetcher = async (url: string) => {
+  const res = await fetch(url, {
+    headers: { 
+      'x-timestamp': Date.now().toString(),
+      'Cache-Control': 'no-cache'
     }
-  };
+  });
+  if (!res.ok) throw new Error('API yanıt vermedi');
+  return res.json();
+};
 
-  useEffect(() => {
-    fetchSpotifyData();
-    const interval = setInterval(fetchSpotifyData, 3000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+const SpotifyStatus = () => {
+  const { data: track, error } = useSWR<SpotifyTrack>('/api/spotify', fetcher, {
+    refreshInterval: 1000,
+    revalidateOnFocus: true,
+    dedupingInterval: 1000
+  });
 
   const formatTime = (ms: number) => {
     const seconds = Math.floor((ms / 1000) % 60);
@@ -120,12 +91,16 @@ const SpotifyStatus = () => {
           <span style={{ ...styles.terminalDot, background: '#ffbd2e' }}></span>
           <span style={{ ...styles.terminalDot, background: '#27c93f' }}></span>
         </div>
-        <span style={styles.terminalTitle}>Spotify'da Çalan</span>
+        <span style={styles.terminalTitle}>
+          {error ? 'Bağlantı Hatası' : 'Spotify\'da Çalan'}
+        </span>
       </div>
       <div style={styles.terminalBody}>
         {error ? (
-          <p style={styles.errorText}>{error}</p>
-        ) : track ? (
+          <p style={styles.errorText}>Spotify bağlantısı kurulamadı</p>
+        ) : !track ? (
+          <p style={styles.loadingText}>Yükleniyor...</p>
+        ) : (
           <>
             <div style={styles.musicInfo}>
               <a href={track.songUrl} target="_blank" rel="noopener noreferrer" style={styles.albumLink}>
@@ -159,8 +134,6 @@ const SpotifyStatus = () => {
               </div>
             </div>
           </>
-        ) : (
-          <p style={styles.loadingText}>Yükleniyor...</p>
         )}
       </div>
     </div>
