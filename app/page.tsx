@@ -61,63 +61,68 @@ interface SpotifyTrack {
 const SpotifyStatus = () => {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
   const [localProgress, setLocalProgress] = useState(0);
-  const progressRef = useRef<NodeJS.Timer>();
-  const pollingRef = useRef<NodeJS.Timer>();
+  const abortControllerRef = useRef<AbortController>();
 
   const updateSpotifyData = async () => {
+    if (isLoading) return;
     try {
-      const timestamp = Date.now();
-      const res = await fetch(`/api/spotify?t=${timestamp}`, {
-        cache: 'no-store',
+      setIsLoading(true);
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = new AbortController();
+
+      const res = await fetch(`/api/spotify?_=${Date.now()}`, {
+        signal: abortControllerRef.current.signal,
         headers: {
           'Cache-Control': 'no-cache, no-store, must-revalidate',
           'Pragma': 'no-cache'
         }
       });
 
+      if (!res.ok) throw new Error('API yanıt vermedi');
       const data = await res.json();
-      if (data.error) throw new Error(data.error);
-
-      console.log('Spotify Güncellemesi:', {
-        şarkı: data.title,
-        durum: data.isPlaying ? 'Çalıyor' : 'Duraklatıldı',
-        zaman: new Date().toLocaleTimeString()
-      });
 
       setTrack(data);
       setLocalProgress(data.progress);
       setError('');
     } catch (err) {
-      console.error('Spotify Hatası:', err);
+      if (err.name === 'AbortError') return;
       setError('Bağlantı hatası oluştu');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    // İlk yükleme
     updateSpotifyData();
+    const interval = setInterval(updateSpotifyData, 1000);
+    
+    return () => {
+      clearInterval(interval);
+      abortControllerRef.current?.abort();
+    };
+  }, []);
 
-    // Her 2 saniyede bir veri güncelle
-    pollingRef.current = setInterval(updateSpotifyData, 2000);
+  const progressInterval = useRef<NodeJS.Timer>();
 
-    // Progress bar'ı her 100ms'de bir güncelle
-    progressRef.current = setInterval(() => {
-      if (track?.isPlaying) {
+  useEffect(() => {
+    if (track?.isPlaying) {
+      progressInterval.current = setInterval(() => {
         setLocalProgress(prev => {
-          const next = prev + 100;
-          if (next >= (track?.duration || 0)) {
-            updateSpotifyData(); // Şarkı bittiyse yeni veriyi al
+          if (prev >= track.duration) {
+            updateSpotifyData();
             return 0;
           }
-          return next;
+          return prev + 50;
         });
-      }
-    }, 100);
+      }, 50);
+    }
 
     return () => {
-      clearInterval(pollingRef.current);
-      clearInterval(progressRef.current);
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+      }
     };
   }, [track?.isPlaying, track?.duration]);
 
