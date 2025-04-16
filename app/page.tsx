@@ -458,7 +458,45 @@ const styles = {
     color: '#a0aec0',
     fontSize: '0.8rem',
     fontFamily: 'monospace'
-  } as const
+  } as const,
+  errorText: {
+    color: '#ff5f56',
+    fontSize: '1.1rem',
+    fontWeight: '500',
+    textAlign: 'center' as const,
+    padding: '20px'
+  },
+  loadingText: {
+    color: '#e2e8f0',
+    fontSize: '1.1rem',
+    fontWeight: '500',
+    textAlign: 'center' as const,
+    padding: '20px'
+  },
+  trackInfo: {
+    flex: 1,
+    textAlign: 'left' as const,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '4px'
+  },
+  trackName: {
+    color: '#ffffff',
+    fontSize: '1.1rem',
+    fontWeight: '600',
+    marginBottom: '4px'
+  },
+  artistName: {
+    color: '#a0aec0',
+    fontSize: '0.9rem'
+  },
+  albumLink: {
+    display: 'block',
+    transition: 'transform 0.2s ease',
+    ':hover': {
+      transform: 'scale(1.05)'
+    }
+  }
 };
 
 // Add keyframe animations to your global CSS
