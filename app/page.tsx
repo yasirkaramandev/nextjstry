@@ -135,34 +135,45 @@ const SpotifyStatus = () => {
         ) : (
           <>
             <div style={styles.musicInfo}>
-              <a href={track.songUrl} target="_blank" rel="noopener noreferrer" style={styles.albumLink}>
-                <img src={track.albumImageUrl} alt={track.title} style={styles.artwork} />
-              </a>
-              <div style={styles.trackInfo}>
-                <p style={styles.trackName}>{track.title}</p>
-                <p style={styles.artistName}>{track.artist}</p>
-                <a
-                  href={track.songUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={styles.listenButton}
-                >
-                  Spotify'da Dinle
+              {track.isPlaying ? (
+                <a href={track.songUrl} target="_blank" rel="noopener noreferrer" style={styles.albumLink}>
+                  <img src={track.albumImageUrl} alt={track.title} style={styles.artwork} />
                 </a>
+              ) : (
+                <div style={styles.albumLink}>
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png" 
+                       alt="Spotify Logo" 
+                       style={styles.artwork} />
+                </div>
+              )}
+              <div style={styles.trackInfo}>
+                {track.isPlaying ? (
+                  <>
+                    <p style={styles.trackName}>{track.title}</p>
+                    <p style={styles.artistName}>{track.artist}</p>
+                    <a href={track.songUrl} target="_blank" rel="noopener noreferrer" style={styles.listenButton}>
+                      Spotify'da Dinle
+                    </a>
+                  </>
+                ) : (
+                  <p style={styles.notPlayingText}>Şuan bir şey dinlemiyor</p>
+                )}
               </div>
             </div>
-            <div style={styles.progressContainer}>
-              <div style={styles.progressBar}>
-                <div style={{
-                  ...styles.progressFill,
-                  width: `${(localProgress / (track?.duration || 1)) * 100}%`
-                }} />
+            {track.isPlaying && (
+              <div style={styles.progressContainer}>
+                <div style={styles.progressBar}>
+                  <div style={{
+                    ...styles.progressFill,
+                    width: `${(localProgress / (track?.duration || 1)) * 100}%`
+                  }} />
+                </div>
+                <div style={styles.timeInfo}>
+                  <span>{formatTime(localProgress)}</span>
+                  <span>{formatTime(track?.duration || 0)}</span>
+                </div>
               </div>
-              <div style={styles.timeInfo}>
-                <span>{formatTime(localProgress)}</span>
-                <span>{formatTime(track?.duration || 0)}</span>
-              </div>
-            </div>
+            )}
           </>
         )}
       </div>
@@ -239,14 +250,19 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     padding: '1rem',
-    position: 'relative' as const
+    position: 'relative' as const,
+    background: 'linear-gradient(135deg, #13151a, #1e2127)',
   } as const,
   content: {
-    width: '90%',
-    maxWidth: '600px',
+    width: '95%',
+    maxWidth: '800px',
     textAlign: 'center' as const,
     animation: 'fadeIn 1s ease-in',
-    marginBottom: '60px'
+    marginBottom: '80px',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    alignItems: 'center',
+    gap: '2rem'
   },
   terminal: {
     width: '100%',
@@ -354,100 +370,66 @@ const styles = {
   } as const,
   musicTerminal: {
     width: '100%',
-    background: '#1e1e1e',
-    borderRadius: '8px',
+    maxWidth: '500px',
+    background: 'rgba(30, 30, 30, 0.95)',
+    borderRadius: '12px',
     overflow: 'hidden',
-    boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
+    boxShadow: '0 15px 30px rgba(0,0,0,0.4)',
     marginBottom: '20px',
+    backdropFilter: 'blur(10px)',
+    transform: 'scale(0.98)',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    ':hover': {
+      transform: 'scale(1)',
+      boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+    }
   } as const,
   musicInfo: {
     display: 'flex',
     alignItems: 'center',
     gap: '20px',
     padding: '20px',
-    background: 'linear-gradient(to right, rgba(29, 185, 84, 0.1), transparent)',
+    background: 'linear-gradient(to right, rgba(29, 185, 84, 0.05), transparent)',
     margin: '0 15px',
-    borderRadius: '8px',
-    transition: 'transform 0.2s ease',
-    cursor: 'pointer',
-    ':hover': {
-      transform: 'translateY(-2px)'
-    }
+    borderRadius: '12px',
+    transition: 'all 0.3s ease',
   } as const,
   artwork: {
-    width: '90px',
-    height: '90px',
-    borderRadius: '8px',
+    width: '80px',
+    height: '80px',
+    borderRadius: '12px',
     objectFit: 'cover' as const,
     boxShadow: '0 8px 16px rgba(0,0,0,0.3)',
-    transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+    transition: 'all 0.3s ease',
+    animation: 'pulse 2s infinite ease-in-out'
   } as const,
-  albumLink: {
-    display: 'block',
-    ':hover img': {
-      transform: 'scale(1.05)',
-      boxShadow: '0 12px 20px rgba(0,0,0,0.4)'
-    }
-  } as const,
-  trackInfo: {
-    flex: 1,
-    textAlign: 'left' as const
-  } as const,
-  trackName: {
-    color: '#ffffff',
-    fontSize: '1.2rem',
-    fontWeight: '700',
-    marginBottom: '6px',
-    transition: 'color 0.2s ease',
-    ':hover': {
-      color: '#1DB954'
-    }
-  } as const,
-  artistName: {
+  notPlayingText: {
     color: '#a0aec0',
-    fontSize: '0.9rem',
-    marginBottom: '8px'
-  } as const,
-  playingStatus: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    color: '#e2e8f0',
-    fontSize: '0.8rem'
+    fontSize: '1.1rem',
+    fontWeight: '500',
+    textAlign: 'center' as const,
+    margin: '0 auto'
   } as const,
   listenButton: {
     display: 'inline-flex',
     alignItems: 'center',
     gap: '6px',
-    background: '#1DB954',
+    background: 'linear-gradient(45deg, #1DB954, #1ed760)',
     color: '#ffffff',
     padding: '8px 16px',
     borderRadius: '20px',
     fontSize: '0.9rem',
     fontWeight: '600',
     textDecoration: 'none',
-    transition: 'all 0.2s ease',
+    transition: 'all 0.3s ease',
     marginTop: '12px',
+    border: 'none',
+    cursor: 'pointer',
+    boxShadow: '0 4px 12px rgba(29, 185, 84, 0.3)',
     ':hover': {
-      background: '#1ed760',
-      transform: 'translateY(-2px)'
+      transform: 'translateY(-2px) scale(1.02)',
+      boxShadow: '0 6px 16px rgba(29, 185, 84, 0.4)',
     }
-  } as const,
-  statusDot: {
-    width: '8px',
-    height: '8px',
-    borderRadius: '50%',
-    transition: 'background-color 0.3s ease'
-  } as const,
-  errorText: {
-    color: '#F85149',
-    padding: '15px',
-    textAlign: 'center' as const
-  } as const,
-  loadingText: {
-    color: '#e2e8f0',
-    padding: '15px',
-    textAlign: 'center' as const
   } as const,
   progressContainer: {
     padding: '0 20px 20px',
@@ -478,3 +460,22 @@ const styles = {
     fontFamily: 'monospace'
   } as const
 };
+
+// Add keyframe animations to your global CSS
+const globalStyles = `
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+
+// Add a style tag to your document head with these animations
+const styleTag = document.createElement('style');
+styleTag.textContent = globalStyles;
+document.head.appendChild(styleTag);
