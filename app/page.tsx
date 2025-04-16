@@ -292,16 +292,22 @@ const styles = {
     borderRadius: '16px',
     overflow: 'hidden',
     animation: 'fadeIn 0.5s ease-out',
-    className: 'glassEffect'
-  },
+    background: 'rgba(30, 30, 30, 0.95)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 15px 30px rgba(0,0,0,0.4)'
+  } as const,
 
   terminal: {
     width: '100%',
     borderRadius: '16px',
     overflow: 'hidden',
     animation: 'fadeIn 0.5s ease-out',
-    className: 'glassEffect'
-  },
+    background: 'rgba(30, 30, 30, 0.95)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 15px 30px rgba(0,0,0,0.4)'
+  } as const,
 
   terminalHeader: {
     background: '#2d2d2d',
@@ -380,10 +386,14 @@ const styles = {
     padding: '10px 20px',
     borderRadius: '8px',
     transition: 'all 0.3s ease',
-    position: 'relative',
-    overflow: 'hidden',
-    className: 'link'
-  },
+    display: 'inline-block',
+    background: 'transparent',
+    border: '1px solid transparent',
+    '&:hover': {
+      background: 'rgba(97, 218, 251, 0.1)',
+      transform: 'translateY(-2px)'
+    }
+  } as const,
 
   listenButton: {
     display: 'inline-flex',
@@ -396,8 +406,16 @@ const styles = {
     letterSpacing: '0.5px',
     border: 'none',
     cursor: 'pointer',
-    className: 'listenButton'
-  },
+    background: 'linear-gradient(45deg, #1DB954, #1ed760)',
+    color: '#ffffff',
+    textDecoration: 'none',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 4px 12px rgba(29, 185, 84, 0.3)',
+    '&:hover': {
+      transform: 'translateY(-2px) scale(1.02)',
+      boxShadow: '0 6px 16px rgba(29, 185, 84, 0.4)'
+    }
+  } as const,
 
   footer: {
     position: 'fixed' as const,
