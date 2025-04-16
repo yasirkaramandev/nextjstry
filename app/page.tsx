@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { SpotifyWidget } from './components/SpotifyWidget';
+import { GitHubStats } from './components/GitHubStats';
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -230,7 +231,10 @@ export default function Home() {
                 yenilikçi çözümler üretiyorum. Özellikle görüntü işleme ve doğal dil işleme 
                 konularında uzmanlaşmış durumdayım.</p>
             </div>
-            <SpotifyWidget />
+            <div style={styles.statsContainer}>
+              <SpotifyWidget />
+              <GitHubStats />
+            </div>
           </div>
         </section>
 
@@ -485,6 +489,15 @@ const styles = {
     }
   },
 
+  statsContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: '2rem',
+    width: '100%',
+    maxWidth: '1000px',
+    margin: '2rem auto',
+  },
+
   sectionTitle: {
     fontSize: 'clamp(1.5rem, 5vw, 2rem)',
     marginBottom: '2rem',
@@ -578,6 +591,7 @@ const styles = {
     border: '1px solid rgba(99,102,241,0.2)',
     boxShadow: '0 15px 30px rgba(0,0,0,0.4)',
     transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    maxWidth: '450px',
     '&:hover': {
       transform: 'translateY(-5px)',
       boxShadow: '0 20px 40px rgba(0,0,0,0.6)'
@@ -618,7 +632,7 @@ const styles = {
   } as const,
   musicInfo: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: '20px',
     padding: '20px',
     background: 'linear-gradient(to right, rgba(29, 185, 84, 0.05), transparent)',
@@ -636,10 +650,10 @@ const styles = {
     animation: 'pulse 2s infinite ease-in-out'
   } as const,
   notPlayingText: {
-    color: '#a0aec0',
-    fontSize: '1.1rem',
+    color: '#94a3b8',
+    fontSize: '1rem',
+    textAlign: 'left' as const,
     fontWeight: '500',
-    textAlign: 'center' as const,
     margin: '0 auto'
   } as const,
   progressContainer: {
@@ -689,7 +703,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'column' as const,
     gap: '4px',
-    textAlign: 'left' as const
+    textAlign: 'left' as const,
+    marginLeft: '1rem',
   } as const,
   trackName: {
     color: '#ffffff',
