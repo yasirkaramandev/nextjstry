@@ -270,29 +270,39 @@ const styles = {
     flexDirection: 'column' as const,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: '1rem',
+    padding: '2rem',
     position: 'relative' as const,
     background: 'linear-gradient(135deg, #13151a, #1e2127)',
-  } as const,
+    gap: '2rem'
+  },
+  
   content: {
     width: '95%',
-    maxWidth: '800px',
-    textAlign: 'center' as const,
-    animation: 'fadeIn 1s ease-in',
-    marginBottom: '80px',
+    maxWidth: '900px',
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
-    gap: '2rem'
+    gap: '2.5rem',
+    animation: 'fadeIn 1s ease-out'
   },
+
+  musicTerminal: {
+    width: '100%',
+    maxWidth: '500px',
+    borderRadius: '16px',
+    overflow: 'hidden',
+    animation: 'fadeIn 0.5s ease-out',
+    className: 'glassEffect'
+  },
+
   terminal: {
     width: '100%',
-    background: '#1e1e1e',
-    borderRadius: '8px',
+    borderRadius: '16px',
     overflow: 'hidden',
-    boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
-    marginBottom: '30px'
-  } as const,
+    animation: 'fadeIn 0.5s ease-out',
+    className: 'glassEffect'
+  },
+
   terminalHeader: {
     background: '#2d2d2d',
     padding: '10px 15px',
@@ -366,16 +376,29 @@ const styles = {
   link: {
     color: '#61dafb',
     textDecoration: 'none',
-    fontSize: 'clamp(0.9rem, 4vw, 1.1rem)',
-    padding: '8px 12px',
-    borderRadius: '5px',
+    fontSize: '1rem',
+    padding: '10px 20px',
+    borderRadius: '8px',
     transition: 'all 0.3s ease',
-    whiteSpace: 'nowrap' as const
-  } as const,
-  divider: {
-    color: '#4a5568',
-    fontSize: '1rem'
-  } as const,
+    position: 'relative',
+    overflow: 'hidden',
+    className: 'link'
+  },
+
+  listenButton: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '12px 24px',
+    borderRadius: '30px',
+    fontSize: '0.95rem',
+    fontWeight: '600',
+    letterSpacing: '0.5px',
+    border: 'none',
+    cursor: 'pointer',
+    className: 'listenButton'
+  },
+
   footer: {
     position: 'fixed' as const,
     bottom: '0',
@@ -388,22 +411,6 @@ const styles = {
     background: 'rgba(26, 32, 44, 0.9)',
     backdropFilter: 'blur(5px)',
     zIndex: 10
-  } as const,
-  musicTerminal: {
-    width: '100%',
-    maxWidth: '500px',
-    background: 'rgba(30, 30, 30, 0.95)',
-    borderRadius: '12px',
-    overflow: 'hidden',
-    boxShadow: '0 15px 30px rgba(0,0,0,0.4)',
-    marginBottom: '20px',
-    backdropFilter: 'blur(10px)',
-    transform: 'scale(0.98)',
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-    ':hover': {
-      transform: 'scale(1)',
-      boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
-    }
   } as const,
   musicInfo: {
     display: 'flex',
@@ -430,27 +437,6 @@ const styles = {
     fontWeight: '500',
     textAlign: 'center' as const,
     margin: '0 auto'
-  } as const,
-  listenButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '6px',
-    background: 'linear-gradient(45deg, #1DB954, #1ed760)',
-    color: '#ffffff',
-    padding: '8px 16px',
-    borderRadius: '20px',
-    fontSize: '0.9rem',
-    fontWeight: '600',
-    textDecoration: 'none',
-    transition: 'all 0.3s ease',
-    marginTop: '12px',
-    border: 'none',
-    cursor: 'pointer',
-    boxShadow: '0 4px 12px rgba(29, 185, 84, 0.3)',
-    ':hover': {
-      transform: 'translateY(-2px) scale(1.02)',
-      boxShadow: '0 6px 16px rgba(29, 185, 84, 0.4)',
-    }
   } as const,
   progressContainer: {
     padding: '0 20px 20px',
