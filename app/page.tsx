@@ -521,5 +521,11 @@ const styles = {
     ':hover': {
       transform: 'scale(1.05)'
     }
-  }
+  },
+  divider: {
+    color: '#4a5568',
+    fontSize: '1rem',
+    margin: '0 4px',
+    opacity: 0.6
+  } as const,
 };
