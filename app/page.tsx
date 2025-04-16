@@ -181,6 +181,16 @@ const SpotifyStatus = () => {
   );
 };
 
+const Hero = () => (
+  <div style={styles.hero}>
+    <div style={styles.glowCircle} />
+    <h1 style={styles.heroTitle}>
+      <span style={styles.heroHighlight}>Yasir</span> Karaman
+    </h1>
+    <p style={styles.heroSubtitle}>Full Stack Developer</p>
+  </div>
+);
+
 export default function Home() {
   useEffect(() => {
     const styleTag = document.createElement('style');
@@ -206,14 +216,8 @@ export default function Home() {
   return (
     <main style={styles.container}>
       <CustomCursor />
+      <Hero />
       <div style={styles.content}>
-        <div style={styles.hero}>
-          <div style={styles.glowCircle} />
-          <h1 style={styles.heroTitle}>
-            <span style={styles.heroHighlight}>Yasir</span> Karaman
-          </h1>
-          <p style={styles.heroSubtitle}>Full Stack Developer</p>
-        </div>
         <SpotifyStatus />
         <div style={styles.constructionCard}>
           <div style={styles.cardGlow} />
@@ -227,27 +231,27 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <nav style={styles.socialLinks}>
-          {[
-            { href: "https://github.com/yasirkaramandev", text: "GitHub" },
-            { href: "https://www.linkedin.com/in/yasirkaramandev", text: "LinkedIn" },
-            { href: "mailto:yasir@yasirkaraman.com.tr", text: "Mail" },
-            { href: "https://teknogetir.com/", text: "TeknoGetir" }
-          ].map((link, i) => (
-            <React.Fragment key={link.href}>
-              <a
-                href={link.href}
-                style={styles.socialLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {link.text}
-              </a>
-              {i < 3 && <span style={styles.socialDivider}>•</span>}
-            </React.Fragment>
-          ))}
-        </nav>
       </div>
+      <nav style={styles.socialLinks}>
+        {[
+          { href: "https://github.com/yasirkaramandev", text: "GitHub" },
+          { href: "https://www.linkedin.com/in/yasirkaramandev", text: "LinkedIn" },
+          { href: "mailto:yasir@yasirkaraman.com.tr", text: "Mail" },
+          { href: "https://teknogetir.com/", text: "TeknoGetir" }
+        ].map((link, i) => (
+          <React.Fragment key={link.href}>
+            <a
+              href={link.href}
+              style={styles.socialLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {link.text}
+            </a>
+            {i < 3 && <span style={styles.socialDivider}>•</span>}
+          </React.Fragment>
+        ))}
+      </nav>
       <footer style={styles.pageFooter}>
         <p>© {new Date().getFullYear()} Yasir Karaman</p>
       </footer>
@@ -264,17 +268,23 @@ const styles = {
     background: 'linear-gradient(to bottom, #0f1117, #1a1f2c)',
     position: 'relative' as const,
     overflow: 'hidden',
+    width: '100%'
   },
 
   content: {
     flex: 1,
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '3rem',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+    gap: '2rem',
     padding: '2rem',
-    zIndex: 1,
+    maxWidth: '1400px',
+    margin: '0 auto',
+    width: '100%',
+    alignItems: 'start',
+    '@media (max-width: 768px)': {
+      gridTemplateColumns: '1fr',
+      padding: '1rem'
+    }
   },
 
   // Hero styles
@@ -372,12 +382,18 @@ const styles = {
 
   // Social links styles
   socialLinks: {
-    display: 'flex',
-    flexWrap: 'wrap' as const,
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
     gap: '1rem',
-  },
+    width: '100%',
+    maxWidth: '1400px',
+    margin: '2rem auto',
+    padding: '0 2rem',
+    '@media (max-width: 768px)': {
+      gridTemplateColumns: '1fr',
+      padding: '0 1rem'
+    }
+  } as const,
 
   socialLink: {
     color: '#fff',
@@ -388,13 +404,22 @@ const styles = {
     background: 'rgba(99,102,241,0.1)',
     border: '1px solid rgba(99,102,241,0.2)',
     transition: 'all 0.3s ease',
-  },
-
-  socialDivider: {
-    color: '#4b5563',
-    opacity: 0.6,
-    margin: '0 0.5rem',
-  },
+    position: 'relative' as const,
+    overflow: 'hidden',
+    '&:hover': {
+      transform: 'translateY(-2px)',
+      background: 'rgba(99,102,241,0.2)',
+      border: '1px solid rgba(99,102,241,0.4)',
+    },
+    '&:active': {
+      transform: 'translateY(1px)',
+      background: 'rgba(99,102,241,0.3)',
+    },
+    '@media (max-width: 768px)': {
+      width: '100%',
+      textAlign: 'center' as const
+    }
+  } as const,
 
   pageFooter: {
     width: '100%',
@@ -410,14 +435,18 @@ const styles = {
   // SpotifyStatus styles
   musicTerminal: {
     width: '100%',
-    maxWidth: '500px',
     borderRadius: '16px',
     overflow: 'hidden',
     animation: 'fadeIn 0.5s ease-out',
-    background: 'rgba(30, 30, 30, 0.95)',
+    background: 'rgba(30, 41, 59, 0.5)',
     backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    boxShadow: '0 15px 30px rgba(0,0,0,0.4)'
+    border: '1px solid rgba(99,102,241,0.2)',
+    boxShadow: '0 15px 30px rgba(0,0,0,0.4)',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      boxShadow: '0 20px 40px rgba(0,0,0,0.6)'
+    }
   } as const,
 
   terminalHeader: {
@@ -551,21 +580,30 @@ const styles = {
   listenButton: {
     display: 'inline-flex',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: '8px',
-    padding: '10px 20px',
+    padding: '12px 24px',
     background: 'linear-gradient(45deg, #1DB954, #1ed760)',
     color: '#ffffff',
     textDecoration: 'none',
     borderRadius: '20px',
-    fontSize: '0.9rem',
+    fontSize: '0.95rem',
     fontWeight: '600',
     transition: 'all 0.3s ease',
     border: 'none',
     cursor: 'pointer',
     boxShadow: '0 4px 12px rgba(29, 185, 84, 0.3)',
+    width: 'fit-content',
     '&:hover': {
-      transform: 'translateY(-2px)',
+      transform: 'translateY(-2px) scale(1.02)',
       boxShadow: '0 6px 16px rgba(29, 185, 84, 0.4)',
+    },
+    '&:active': {
+      transform: 'translateY(1px)',
+      boxShadow: '0 2px 8px rgba(29, 185, 84, 0.4)',
+    },
+    '@media (max-width: 768px)': {
+      width: '100%'
     }
   } as const,
 };

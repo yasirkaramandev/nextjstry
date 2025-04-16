@@ -30,6 +30,11 @@
   50% { transform: translateY(-10px); }
 }
 
+@keyframes shine {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
 @keyframes glow {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
@@ -187,8 +192,34 @@ html, body {
   animation: glow 4s ease-in-out infinite;
 }
 
+.socialLink {
+  position: relative;
+  overflow: hidden;
+}
+
+.socialLink::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.1),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.socialLink:hover::before {
+  left: 100%;
+}
+
 @media (max-width: 768px) {
   .content {
+    grid-template-columns: 1fr !important;
     padding: 1rem;
   }
   
@@ -200,6 +231,10 @@ html, body {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
+  }
+
+  .musicTerminal, .constructionCard {
+    width: 100% !important;
   }
 }
 
