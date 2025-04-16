@@ -236,93 +236,89 @@ export default function Home() {
     <main style={styles.container}>
       <CustomCursor />
       <Navbar />
-      <div style={styles.wrapper}>
+      <div style={styles.mainContent}>
         <section style={styles.heroSection}>
-          <div style={styles.heroContent}>
-            <h1 style={styles.title}>
-              <span style={styles.titleGradient}>Yasir Karaman</span>
+          <div style={styles.heroWrapper}>
+            <h1 style={styles.heroTitle}>
+              <span style={styles.heroHighlight}>Yasir Karaman</span>
             </h1>
-            <p style={styles.subtitle}>AI Developer & GUI Specialist</p>
-            <p style={styles.description}>
-              6 yıllık yazılım geliştirme deneyimim ve yapay zeka alanındaki uzmanlığımla
-              yenilikçi çözümler üretiyorum.
-            </p>
+            <p style={styles.heroSubtitle}>AI Developer & GUI Specialist</p>
+            <div style={styles.heroDescription}>
+              <p>6 yıllık yazılım geliştirme deneyimim ve yapay zeka alanındaki uzmanlığımla
+                yenilikçi çözümler üretiyorum.</p>
+            </div>
+            <SpotifyWidget />
           </div>
-          <SpotifyWidget />
         </section>
 
-        <div style={styles.content}>
-          <section id="deneyim" style={styles.section}>
-            <h2 style={styles.sectionTitle}>Deneyimlerim</h2>
-            <div style={styles.experienceGrid}>
+        <section id="deneyim" style={styles.section}>
+          <h2 style={styles.sectionTitle}>Deneyimlerim</h2>
+          <div style={styles.experienceGrid}>
+            {[
+              {
+                title: 'Hayal Otonomi',
+                role: 'Multimedya Sistemleri Lideri',
+                description: 'Otonom araç projesinde multimedya sistemlerinin tasarımı ve implementasyonu'
+              },
+              {
+                title: 'AI Projeleri',
+                role: 'Yapay Zeka Geliştirici',
+                description: 'Görüntü işleme ve makine öğrenimi modelleri geliştirme'
+              },
+              {
+                title: 'GUI Development',
+                role: 'Arayüz Tasarımcısı',
+                description: 'Modern ve kullanıcı dostu arayüzler tasarlama ve geliştirme'
+              }
+            ].map((exp) => (
+              <div key={exp.title} style={styles.experienceCard}>
+                <h3 style={styles.experienceTitle}>{exp.title}</h3>
+                <h4 style={styles.experienceRole}>{exp.role}</h4>
+                <p style={styles.experienceDesc}>{exp.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="projeler" style={styles.section}>
+          <h2 style={styles.sectionTitle}>Projeler</h2>
+          <div style={styles.constructionMessage}>
+            <span style={styles.constructionIcon}>🚧</span>
+            <p>Yakında burada olacak...</p>
+          </div>
+        </section>
+
+        <section id="iletisim" style={styles.section}>
+          <h2 style={styles.sectionTitle}>İletişim</h2>
+          <div style={styles.contactContent}>
+            <p style={styles.contactText}>
+              Yenilikçi bir proje üzerinde birlikte çalışmak veya fikir alışverişinde 
+              bulunmak isterseniz, benimle iletişime geçmekten çekinmeyin.
+            </p>
+            <div style={styles.contactLinks}>
               {[
-                {
-                  title: 'Hayal Otonomi',
-                  role: 'Multimedya Sistemleri Lideri',
-                  description: 'Otonom araç projesinde multimedya sistemlerinin tasarımı ve implementasyonu'
-                },
-                {
-                  title: 'AI Projeleri',
-                  role: 'Yapay Zeka Geliştirici',
-                  description: 'Görüntü işleme ve makine öğrenimi modelleri geliştirme'
-                },
-                {
-                  title: 'GUI Development',
-                  role: 'Arayüz Tasarımcısı',
-                  description: 'Modern ve kullanıcı dostu arayüzler tasarlama ve geliştirme'
-                }
-              ].map((exp) => (
-                <div key={exp.title} style={styles.experienceCard}>
-                  <h3 style={styles.experienceTitle}>{exp.title}</h3>
-                  <h4 style={styles.experienceRole}>{exp.role}</h4>
-                  <p style={styles.experienceDesc}>{exp.description}</p>
-                </div>
+                { href: "mailto:yasir@yasirkaraman.com.tr", icon: "✉️", label: "E-posta" },
+                { href: "https://github.com/yasirkaramandev", icon: "💻", label: "GitHub" },
+                { href: "https://www.linkedin.com/in/yasirkaramandev", icon: "🔗", label: "LinkedIn" },
+                { href: "https://teknogetir.com/", icon: "🌐", label: "TeknoGetir" }
+              ].map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  style={styles.contactLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span style={styles.contactIcon}>{link.icon}</span>
+                  {link.label}
+                </a>
               ))}
             </div>
-          </section>
-
-          <section id="projeler" style={styles.section}>
-            <h2 style={styles.sectionTitle}>Projeler</h2>
-            <div style={styles.constructionMessage}>
-              <span style={styles.constructionIcon}>🚧</span>
-              <p>Yakında burada olacak...</p>
-            </div>
-          </section>
-
-          <section id="iletisim" style={styles.section}>
-            <h2 style={styles.sectionTitle}>İletişim</h2>
-            <div style={styles.contactContent}>
-              <p style={styles.contactText}>
-                Yenilikçi bir proje üzerinde birlikte çalışmak veya fikir alışverişinde 
-                bulunmak isterseniz, benimle iletişime geçmekten çekinmeyin.
-              </p>
-              <div style={styles.contactLinks}>
-                {[
-                  { href: "mailto:yasir@yasirkaraman.com.tr", icon: "✉️", label: "E-posta" },
-                  { href: "https://github.com/yasirkaramandev", icon: "💻", label: "GitHub" },
-                  { href: "https://www.linkedin.com/in/yasirkaramandev", icon: "🔗", label: "LinkedIn" },
-                  { href: "https://teknogetir.com/", icon: "🌐", label: "TeknoGetir" }
-                ].map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    style={styles.contactLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span style={styles.contactIcon}>{link.icon}</span>
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </section>
-        </div>
+          </div>
+        </section>
 
         <footer style={styles.footer}>
-          <div style={styles.footerContent}>
-            <p style={styles.copyright}>© {new Date().getFullYear()} Yasir KARAMAN. Tüm hakları saklıdır.</p>
-          </div>
+          <p>© {new Date().getFullYear()} Yasir KARAMAN</p>
         </footer>
       </div>
     </main>
@@ -332,63 +328,50 @@ export default function Home() {
 const styles = {
   container: {
     minHeight: '100vh',
-    background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-    color: '#e2e8f0',
-    padding: '2rem',
+    background: 'linear-gradient(135deg, var(--bg-primary), var(--bg-secondary))',
+    color: 'var(--text-primary)',
     position: 'relative' as const,
+    overflow: 'hidden',
   },
 
-  wrapper: {
+  mainContent: {
     width: '100%',
     maxWidth: '1200px',
     margin: '0 auto',
-    padding: '0 1rem',
+    padding: '0 1.5rem',
     display: 'flex',
     flexDirection: 'column' as const,
-    minHeight: '100vh',
+    gap: '4rem',
   },
 
   heroSection: {
+    minHeight: '100vh',
     display: 'flex',
-    flexDirection: 'column' as const,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '100vh',
     padding: '6rem 0',
-    gap: '2rem',
   },
 
-  heroContent: {
-    textAlign: 'center' as const,
+  heroWrapper: {
     maxWidth: '800px',
     margin: '0 auto',
+    textAlign: 'center' as const,
   },
 
-  title: {
-    fontSize: 'clamp(2.5rem, 8vw, 4.5rem)',
-    fontWeight: 'bold',
-    marginBottom: '1.5rem',
+  section: {
+    padding: '4rem 0',
+    opacity: 0,
+    transform: 'translateY(20px)',
+    animation: 'fadeInUp 0.6s ease-out forwards',
   },
 
-  titleGradient: {
-    background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
-  },
-
-  subtitle: {
-    fontSize: 'clamp(1.25rem, 4vw, 1.5rem)',
-    color: '#94a3b8',
-    marginBottom: '1.5rem',
-  },
-
-  description: {
-    fontSize: 'clamp(1rem, 3vw, 1.2rem)',
-    color: '#cbd5e1',
-    lineHeight: '1.8',
-    maxWidth: '600px',
-    margin: '0 auto',
+  footer: {
+    width: '100%',
+    textAlign: 'center' as const,
+    padding: '2rem 0',
+    marginTop: 'auto',
+    color: 'var(--text-secondary)',
+    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
   },
 
   navbar: {
@@ -480,11 +463,6 @@ const styles = {
     },
   },
 
-  hero: {
-    textAlign: 'center' as const,
-    padding: '4rem 0',
-  },
-
   heroTitle: {
     fontSize: 'clamp(2.5rem, 8vw, 4.5rem)',
     marginBottom: '1.5rem',
@@ -504,24 +482,12 @@ const styles = {
     marginBottom: '2rem',
   },
 
-  aboutSection: {
-    padding: '2rem 0',
-  },
-
-  aboutContent: {
-    textAlign: 'center' as const,
-  },
-
-  aboutText: {
-    maxWidth: '800px',
-    margin: '0 auto',
+  heroDescription: {
     fontSize: 'clamp(1rem, 3vw, 1.2rem)',
-    lineHeight: '1.8',
     color: '#cbd5e1',
-  },
-
-  section: {
-    padding: '4rem 0',
+    lineHeight: '1.8',
+    maxWidth: '600px',
+    margin: '0 auto',
   },
 
   sectionTitle: {
@@ -605,27 +571,6 @@ const styles = {
 
   contactIcon: {
     fontSize: '1.5rem',
-  },
-
-  footer: {
-    width: '100%',
-    background: 'rgba(15, 23, 42, 0.9)',
-    backdropFilter: 'blur(10px)',
-    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-    padding: '1.5rem 0',
-    marginTop: 'auto',
-  },
-
-  footerContent: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '0 1rem',
-    textAlign: 'center' as const,
-  },
-
-  copyright: {
-    color: '#94a3b8',
-    fontSize: '0.9rem',
   },
 
   musicTerminal: {
