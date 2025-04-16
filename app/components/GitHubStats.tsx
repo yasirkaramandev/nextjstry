@@ -7,7 +7,18 @@ interface GitHubStats {
   public_repos: number;
   total_stars: number;
   name: string;
+  total_commits: number;
 }
+
+const formatNumber = (num: number): string => {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'M';
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'K';
+  }
+  return num.toString();
+};
 
 export const GitHubStats = () => {
   const [stats, setStats] = useState<GitHubStats | null>(null);
@@ -16,11 +27,19 @@ export const GitHubStats = () => {
   useEffect(() => {
     const fetchGitHubStats = async () => {
       try {
-        const userRes = await fetch('https://api.github.com/users/yasirkaramandev');
-        const userData = await userRes.json();
+        const [userRes, reposRes, eventsRes] = await Promise.all([
+          fetch('https://api.github.com/users/yasirkaramandev'),
+          fetch('https://api.github.com/users/yasirkaramandev/repos'),
+          fetch('https://api.github.com/users/yasirkaramandev/events/public')
+        ]);
 
-        const reposRes = await fetch('https://api.github.com/users/yasirkaramandev/repos');
+        const userData = await userRes.json();
         const reposData = await reposRes.json();
+        const eventsData = await eventsRes.json();
+
+        const totalCommits = eventsData
+          .filter((event: any) => event.type === 'PushEvent')
+          .reduce((acc: number, event: any) => acc + event.payload.commits?.length || 0, 0);
 
         const totalStars = reposData.reduce((acc: number, repo: any) => 
           acc + repo.stargazers_count, 0);
@@ -29,7 +48,8 @@ export const GitHubStats = () => {
           avatar_url: userData.avatar_url,
           public_repos: userData.public_repos,
           total_stars: totalStars,
-          name: userData.name
+          name: userData.name,
+          total_commits: totalCommits
         });
       } catch (err) {
         setError('GitHub verisi alınamadı');
@@ -57,8 +77,12 @@ export const GitHubStats = () => {
             <span style={styles.statLabel}>Repo</span>
           </div>
           <div style={styles.stat}>
-            <span style={styles.statNumber}>{stats?.total_stars || '...'}</span>
+            <span style={styles.statNumber}>{stats?.total_stars ? formatNumber(stats.total_stars) : '...'}</span>
             <span style={styles.statLabel}>Star</span>
+          </div>
+          <div style={styles.stat}>
+            <span style={styles.statNumber}>{stats?.total_commits ? formatNumber(stats.total_commits) : '...'}</span>
+            <span style={styles.statLabel}>Commit</span>
           </div>
         </div>
       </div>
