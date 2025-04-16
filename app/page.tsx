@@ -207,57 +207,49 @@ export default function Home() {
     <main style={styles.container}>
       <CustomCursor />
       <div style={styles.content}>
+        <div style={styles.hero}>
+          <div style={styles.glowCircle} />
+          <h1 style={styles.heroTitle}>
+            <span style={styles.heroHighlight}>Yasir</span> Karaman
+          </h1>
+          <p style={styles.heroSubtitle}>Full Stack Developer</p>
+        </div>
         <SpotifyStatus />
-        <div style={styles.terminal}>
-          <div style={styles.terminalHeader}>
-            <div style={styles.terminalDots}>
-              <span style={{ ...styles.terminalDot, background: '#ff5f56' }}></span>
-              <span style={{ ...styles.terminalDot, background: '#ffbd2e' }}></span>
-              <span style={{ ...styles.terminalDot, background: '#27c93f' }}></span>
+        <div style={styles.constructionCard}>
+          <div style={styles.cardGlow} />
+          <div style={styles.cardContent}>
+            <div style={styles.iconContainer}>
+              <span style={styles.constructionIcon}>🚧</span>
             </div>
-            <span style={styles.terminalTitle}>Terminal</span>
-          </div>
-          <div style={styles.terminalBody}>
-            <p style={styles.command}>$ status</p>
-            <h1 style={styles.title}>&gt; Yapım Aşamasında</h1>
-            <div style={styles.line} />
-            <p style={styles.message}>
-              <span style={styles.console}>&gt; console.log(</span>
-              "Portfolyo sayfam hala yapım aşamasında. Lütfen daha sonra tekrar kontrol edin!"
-              <span style={styles.console}>);</span>
+            <h2 style={styles.constructionTitle}>Yapım Aşamasında</h2>
+            <p style={styles.constructionText}>
+              Portfolyom şu anda yenileniyor. Çok yakında burada olacağım!
             </p>
           </div>
         </div>
-        <div style={styles.links}>
-          <a
-            href="https://github.com/yasirkaramandev"
-            style={styles.link}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
-          <span style={styles.divider}>•</span>
-          <a
-            href="https://www.linkedin.com/in/yasirkaramandev"
-            style={styles.link}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn
-          </a>
-          <span style={styles.divider}>•</span>
-          <a href="mailto:yasir@yasirkaraman.com.tr" style={styles.link}>
-            Mail
-          </a>
-          <span style={styles.divider}>•</span>
-          <a href="https://teknogetir.com/" style={styles.link}>
-            TeknoGetir
-          </a>
+        <div style={styles.socialLinks}>
+          {[
+            { href: "https://github.com/yasirkaramandev", text: "GitHub" },
+            { href: "https://www.linkedin.com/in/yasirkaramandev", text: "LinkedIn" },
+            { href: "mailto:yasir@yasirkaraman.com.tr", text: "Mail" },
+            { href: "https://teknogetir.com/", text: "TeknoGetir" }
+          ].map((link, i) => (
+            <React.Fragment key={link.href}>
+              <a
+                href={link.href}
+                style={styles.socialLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link.text}
+              </a>
+              {i < 3 && <span style={styles.divider}>•</span>}
+            </React.Fragment>
+          ))}
         </div>
       </div>
       <footer style={styles.footer}>
-        <p>© {new Date().getFullYear()} Yasir Karaman. Tüm hakları saklıdır.</p>
+        <p>© {new Date().getFullYear()} Yasir Karaman</p>
       </footer>
     </main>
   );
@@ -268,22 +260,155 @@ const styles = {
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column' as const,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '2rem',
+    justifyContent: 'space-between',
+    background: 'linear-gradient(to bottom, #0f1117, #1a1f2c)',
     position: 'relative' as const,
-    background: 'linear-gradient(135deg, #13151a, #1e2127)',
-    gap: '2rem'
+    overflow: 'hidden',
   },
-  
+
   content: {
-    width: '95%',
-    maxWidth: '900px',
+    flex: 1,
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
-    gap: '2.5rem',
-    animation: 'fadeIn 1s ease-out'
+    justifyContent: 'center',
+    gap: '3rem',
+    padding: '2rem',
+    zIndex: 1,
+  },
+
+  hero: {
+    position: 'relative' as const,
+    textAlign: 'center' as const,
+    marginBottom: '2rem',
+  },
+
+  glowCircle: {
+    position: 'absolute' as const,
+    top: '-50%',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: '600px',
+    height: '600px',
+    background: 'radial-gradient(circle, rgba(99,102,241,0.15) 0%, rgba(99,102,241,0) 70%)',
+    borderRadius: '50%',
+    zIndex: -1,
+  },
+
+  heroTitle: {
+    fontSize: 'clamp(2.5rem, 8vw, 4rem)',
+    fontWeight: '700',
+    marginBottom: '1rem',
+    color: '#fff',
+    textShadow: '0 0 20px rgba(99,102,241,0.3)',
+  },
+
+  heroHighlight: {
+    background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+    backgroundClip: 'text',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+  },
+
+  heroSubtitle: {
+    fontSize: 'clamp(1rem, 4vw, 1.5rem)',
+    color: '#94a3b8',
+    fontWeight: '500',
+  },
+
+  constructionCard: {
+    position: 'relative' as const,
+    background: 'rgba(30, 41, 59, 0.5)',
+    backdropFilter: 'blur(10px)',
+    borderRadius: '24px',
+    padding: '2rem',
+    maxWidth: '600px',
+    width: '90%',
+    border: '1px solid rgba(99,102,241,0.2)',
+    overflow: 'hidden',
+    animation: 'fadeIn 0.5s ease-out',
+  },
+
+  cardGlow: {
+    position: 'absolute' as const,
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    background: 'radial-gradient(circle at 50% 0%, rgba(99,102,241,0.1), transparent 70%)',
+    zIndex: 0,
+  },
+
+  cardContent: {
+    position: 'relative' as const,
+    zIndex: 1,
+    textAlign: 'center' as const,
+  },
+
+  iconContainer: {
+    width: '80px',
+    height: '80px',
+    margin: '0 auto 1.5rem',
+    background: 'rgba(99,102,241,0.1)',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  constructionIcon: {
+    fontSize: '2.5rem',
+  },
+
+  constructionTitle: {
+    fontSize: 'clamp(1.5rem, 5vw, 2rem)',
+    fontWeight: '700',
+    color: '#fff',
+    marginBottom: '1rem',
+  },
+
+  constructionText: {
+    fontSize: 'clamp(1rem, 3vw, 1.2rem)',
+    color: '#94a3b8',
+    lineHeight: '1.6',
+  },
+
+  socialLinks: {
+    display: 'flex',
+    flexWrap: 'wrap' as const,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '1rem',
+  },
+
+  socialLink: {
+    color: '#fff',
+    textDecoration: 'none',
+    fontSize: '1rem',
+    padding: '0.75rem 1.5rem',
+    borderRadius: '12px',
+    background: 'rgba(99,102,241,0.1)',
+    border: '1px solid rgba(99,102,241,0.2)',
+    transition: 'all 0.3s ease',
+    '&:hover': {
+      background: 'rgba(99,102,241,0.2)',
+      transform: 'translateY(-2px)',
+    }
+  },
+
+  divider: {
+    color: '#4b5563',
+    opacity: 0.6,
+  },
+
+  footer: {
+    width: '100%',
+    textAlign: 'center' as const,
+    padding: '1.5rem',
+    color: '#94a3b8',
+    background: 'rgba(15, 17, 23, 0.8)',
+    backdropFilter: 'blur(10px)',
+    borderTop: '1px solid rgba(99,102,241,0.1)',
   },
 
   musicTerminal: {
