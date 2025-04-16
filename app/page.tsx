@@ -181,16 +181,6 @@ const SpotifyStatus = () => {
   );
 };
 
-const Hero = () => (
-  <div style={styles.hero}>
-    <div style={styles.glowCircle} />
-    <h1 style={styles.heroTitle}>
-      <span style={styles.heroHighlight}>Yasir</span> Karaman
-    </h1>
-    <p style={styles.heroSubtitle}>Full Stack Developer</p>
-  </div>
-);
-
 export default function Home() {
   useEffect(() => {
     const styleTag = document.createElement('style');
@@ -216,8 +206,15 @@ export default function Home() {
   return (
     <main style={styles.container}>
       <CustomCursor />
-      <Hero />
       <div style={styles.content}>
+        <div style={styles.hero}>
+          <div style={styles.glowCircle} />
+          <h1 style={styles.heroTitle}>
+            <span style={styles.heroHighlight}>Yasir</span> Karaman
+          </h1>
+          <p style={styles.heroSubtitle}>AI Developer</p>
+        </div>
+        
         <SpotifyStatus />
         <div style={styles.constructionCard}>
           <div style={styles.cardGlow} />
@@ -231,27 +228,28 @@ export default function Home() {
             </p>
           </div>
         </div>
+
+        <nav style={styles.socialLinks}>
+          {[
+            { href: "https://github.com/yasirkaramandev", text: "GitHub" },
+            { href: "https://www.linkedin.com/in/yasirkaramandev", text: "LinkedIn" },
+            { href: "mailto:yasir@yasirkaraman.com.tr", text: "Mail" },
+            { href: "https://teknogetir.com/", text: "TeknoGetir" }
+          ].map((link, i) => (
+            <div key={link.href} style={styles.socialContainer}>
+              <a
+                href={link.href}
+                style={styles.socialLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link.text}
+              </a>
+              {i < 3 && <span style={styles.socialDivider}>•</span>}
+            </div>
+          ))}
+        </nav>
       </div>
-      <nav style={styles.socialLinks}>
-        {[
-          { href: "https://github.com/yasirkaramandev", text: "GitHub" },
-          { href: "https://www.linkedin.com/in/yasirkaramandev", text: "LinkedIn" },
-          { href: "mailto:yasir@yasirkaraman.com.tr", text: "Mail" },
-          { href: "https://teknogetir.com/", text: "TeknoGetir" }
-        ].map((link, i) => (
-          <React.Fragment key={link.href}>
-            <a
-              href={link.href}
-              style={styles.socialLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {link.text}
-            </a>
-            {i < 3 && <span style={styles.socialDivider}>•</span>}
-          </React.Fragment>
-        ))}
-      </nav>
       <footer style={styles.pageFooter}>
         <p>© {new Date().getFullYear()} Yasir Karaman</p>
       </footer>
@@ -325,6 +323,9 @@ const styles = {
     fontSize: 'clamp(1rem, 4vw, 1.5rem)',
     color: '#94a3b8',
     fontWeight: '500',
+    background: 'linear-gradient(135deg, #61dafb, #8b5cf6)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
   },
 
   // Construction card styles
@@ -395,6 +396,15 @@ const styles = {
     }
   } as const,
 
+  socialContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    '@media (max-width: 768px)': {
+      width: '100%'
+    }
+  },
+
   socialLink: {
     color: '#fff',
     textDecoration: 'none',
@@ -419,6 +429,12 @@ const styles = {
       width: '100%',
       textAlign: 'center' as const
     }
+  } as const,
+
+  socialDivider: {
+    color: 'rgba(99,102,241,0.3)',
+    margin: '0 0.5rem',
+    userSelect: 'none'
   } as const,
 
   pageFooter: {

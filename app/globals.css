@@ -217,6 +217,18 @@ html, body {
   left: 100%;
 }
 
+.socialContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.socialContainer:hover .socialDivider {
+  color: rgba(99,102,241,0.6);
+  transform: scale(1.2);
+}
+
 @media (max-width: 768px) {
   .content {
     grid-template-columns: 1fr !important;
@@ -235,6 +247,16 @@ html, body {
 
   .musicTerminal, .constructionCard {
     width: 100% !important;
+  }
+
+  .socialContainer {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .socialLink {
+    width: 100%;
+    text-align: center;
   }
 }
 
