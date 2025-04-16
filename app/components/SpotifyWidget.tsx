@@ -8,203 +8,103 @@ interface SpotifyTrack {
   artist: string;
   albumImageUrl: string;
   songUrl: string;
-  progress: number;
   duration: number;
+  progress: number;
 }
 
-const styles = {
-  musicTerminal: {
-    fontFamily: 'monospace',
-    background: '#1e1e1e',
-    color: '#fff',
-    borderRadius: '8px',
-    padding: '16px',
-    maxWidth: '400px',
-    margin: '0 auto',
-  },
-  terminalHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '8px',
-  },
-  terminalDots: {
-    display: 'flex',
-    gap: '4px',
-  },
-  terminalDot: {
-    width: '12px',
-    height: '12px',
-    borderRadius: '50%',
-  },
-  terminalTitle: {
-    fontWeight: 'bold',
-  },
-  terminalBody: {
-    marginTop: '8px',
-  },
-  errorText: {
-    color: 'red',
-  },
-  loadingText: {
-    color: 'gray',
-  },
-  musicInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '8px',
-  },
-  albumLink: {
-    marginRight: '8px',
-  },
-  artwork: {
-    width: '60px',
-    height: '60px',
-    borderRadius: '4px',
-  },
-  trackInfo: {
-    flex: 1,
-  },
-  notPlayingText: {
-    color: 'gray',
-  },
-  trackName: {
-    fontWeight: 'bold',
-  },
-  artistName: {
-    color: 'gray',
-  },
-  listenButton: {
-    color: '#1db954',
-    textDecoration: 'none',
-  },
-  progressContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '4px',
-  },
-  progressBar: {
-    height: '4px',
-    background: '#ccc',
-    borderRadius: '2px',
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    background: '#1db954',
-  },
-  timeInfo: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    fontSize: '12px',
-    color: 'gray',
-  },
-};
-
-const formatTime = (time: number) => {
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
+const formatTime = (ms: number) => {
+  const minutes = Math.floor(ms / 60000);
+  const seconds = Math.floor((ms % 60000) / 1000);
   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
 
-export const SpotifyStatus = () => {
+export const SpotifyWidget = () => {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
   const [localProgress, setLocalProgress] = useState(0);
 
-  const fetchTrackData = useCallback(async () => {
+  const fetchSpotifyData = useCallback(async () => {
+    if (isLoading) return;
     try {
-      const res = await fetch('/api/spotify');
+      setIsLoading(true);
+      const res = await fetch(`/api/spotify?_=${Date.now()}`, {
+        next: { revalidate: 0 }
+      });
       const data = await res.json();
+      if (data.error) throw new Error(data.error);
       setTrack(data);
-      setError(false);
+      setLocalProgress(data.progress);
+      setError('');
     } catch (err) {
-      console.error('Spotify data fetch error:', err);
-      setError(true);
+      setError('Bağlantı hatası oluştu');
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
-    fetchTrackData();
-    const interval = setInterval(() => {
-      fetchTrackData();
-      if (track && track.isPlaying) {
-        setLocalProgress((prev) => Math.min(prev + 1, track.duration));
-      }
-    }, 1000);
+    fetchSpotifyData();
+    const interval = setInterval(fetchSpotifyData, 5000);
     return () => clearInterval(interval);
-  }, [fetchTrackData, track]);
+  }, [fetchSpotifyData]);
 
-  const renderContent = () => {
-    if (error) {
-      return <p style={styles.errorText}>Spotify bağlantısı kurulamadı</p>;
-    }
-
-    if (!track) {
-      return <p style={styles.loadingText}>Yükleniyor...</p>;
-    }
-
-    if (!track.isPlaying) {
-      return (
-        <div style={styles.musicInfo}>
-          <div style={styles.albumLink}>
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png" 
-              alt="Spotify Logo" 
-              style={styles.artwork} 
-            />
-          </div>
-          <div style={styles.trackInfo}>
-            <p style={styles.notPlayingText}>Şuan bir şey dinlemiyor.</p>
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <>
-        <div style={styles.musicInfo}>
-          <a href={track.songUrl} target="_blank" rel="noopener noreferrer" style={styles.albumLink}>
-            <img src={track.albumImageUrl} alt={track.title} style={styles.artwork} />
-          </a>
-          <div style={styles.trackInfo}>
-            <p style={styles.trackName}>{track.title}</p>
-            <p style={styles.artistName}>{track.artist}</p>
-            <a href={track.songUrl} target="_blank" rel="noopener noreferrer" style={styles.listenButton}>
-              Spotify'da Dinle
-            </a>
-          </div>
-        </div>
-        <div style={styles.progressContainer}>
-          <div style={styles.progressBar}>
-            <div style={{
-              ...styles.progressFill,
-              width: `${(localProgress / track.duration) * 100}%`
-            }} />
-          </div>
-          <div style={styles.timeInfo}>
-            <span>{formatTime(localProgress)}</span>
-            <span>{formatTime(track.duration)}</span>
-          </div>
-        </div>
-      </>
-    );
-  };
+  useEffect(() => {
+    if (!track?.isPlaying) return;
+    const progressInterval = setInterval(() => {
+      setLocalProgress(prev => {
+        if (prev >= track.duration) return track.progress;
+        return prev + 1000;
+      });
+    }, 1000);
+    return () => clearInterval(progressInterval);
+  }, [track]);
 
   return (
-    <div style={styles.musicTerminal}>
-      <div style={styles.terminalHeader}>
-        <div style={styles.terminalDots}>
-          <span style={{ ...styles.terminalDot, background: '#ff5f56' }}></span>
-          <span style={{ ...styles.terminalDot, background: '#ffbd2e' }}></span>
-          <span style={{ ...styles.terminalDot, background: '#27c93f' }}></span>
+    <div className="spotify-player">
+      <div className="terminal-header">
+        <div className="terminal-dots">
+          <span className="terminal-dot red"></span>
+          <span className="terminal-dot yellow"></span>
+          <span className="terminal-dot green"></span>
         </div>
-        <span style={styles.terminalTitle}>
-          {error ? 'Bağlantı Hatası' : 'Spotify\'da Çalan'}
-        </span>
+        <span className="terminal-title">Spotify'da Dinleniyor</span>
       </div>
-      <div style={styles.terminalBody}>
-        {renderContent()}
+      <div className="terminal-body">
+        {error ? (
+          <div className="error-message">Bağlantı hatası oluştu</div>
+        ) : !track ? (
+          <div className="loading">Yükleniyor...</div>
+        ) : (
+          <div className="music-info">
+            {track.isPlaying ? (
+              <>
+                <img src={track.albumImageUrl} alt={track.title} className="album-art" />
+                <div className="track-details">
+                  <div className="track-name">{track.title}</div>
+                  <div className="artist-name">{track.artist}</div>
+                  <div className="progress-bar">
+                    <div 
+                      className="progress-fill" 
+                      style={{ width: `${(localProgress / track.duration) * 100}%` }} 
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png" 
+                  alt="Spotify Logo" 
+                  className="album-art" 
+                />
+                <div className="track-details">
+                  <div className="not-playing">Şuan bir şey dinlemiyor.</div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

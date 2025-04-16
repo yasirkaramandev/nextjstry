@@ -285,57 +285,93 @@ html {
 .spotify-player {
   background: rgba(30, 41, 59, 0.5);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
-  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(99,102,241,0.2);
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.terminal-header {
+  background: #2d2d2d;
+  padding: 12px;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin: 2rem 0;
-  transition: all 0.3s ease;
-}
-
-.spotify-player:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-}
-
-.spotify-album {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  overflow: hidden;
   position: relative;
 }
 
-.spotify-info {
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+  position: absolute;
+  left: 12px;
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27c93f; }
+
+.terminal-title {
+  width: 100%;
+  text-align: center;
+  color: #e2e8f0;
+  font-size: 14px;
+  font-family: monospace;
+}
+
+.terminal-body {
+  padding: 20px;
+}
+
+.music-info {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.album-art {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.track-details {
   flex: 1;
-  min-width: 0;
 }
 
-.spotify-title {
-  color: var(--text-primary);
+.track-name {
   font-weight: 600;
-  margin-bottom: 0.25rem;
-  white-space: nowrap;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.artist-name {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.not-playing {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.progress-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  margin-top: 12px;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.spotify-artist {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-.spotify-progress {
-  height: 3px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-top: 0.5rem;
-}
-
-.spotify-progress-bar {
+.progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #1DB954, #1ed760);
   transition: width 0.1s linear;
