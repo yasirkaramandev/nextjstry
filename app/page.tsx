@@ -522,21 +522,25 @@ const styles = {
   },
   trackInfo: {
     flex: 1,
-    textAlign: 'left' as const,
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: '4px'
-  },
+    gap: '4px',
+    textAlign: 'left' as const
+  } as const,
   trackName: {
     color: '#ffffff',
     fontSize: '1.1rem',
     fontWeight: '600',
-    marginBottom: '4px'
-  },
+    marginBottom: '4px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap' as const
+  } as const,
   artistName: {
-    color: '#a0aec0',
-    fontSize: '0.9rem'
-  },
+    color: '#94a3b8',
+    fontSize: '0.9rem',
+    opacity: 0.8
+  } as const,
   albumLink: {
     display: 'block',
     transition: 'transform 0.2s ease',
@@ -544,4 +548,24 @@ const styles = {
       transform: 'scale(1.05)'
     }
   },
+  listenButton: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '10px 20px',
+    background: 'linear-gradient(45deg, #1DB954, #1ed760)',
+    color: '#ffffff',
+    textDecoration: 'none',
+    borderRadius: '20px',
+    fontSize: '0.9rem',
+    fontWeight: '600',
+    transition: 'all 0.3s ease',
+    border: 'none',
+    cursor: 'pointer',
+    boxShadow: '0 4px 12px rgba(29, 185, 84, 0.3)',
+    '&:hover': {
+      transform: 'translateY(-2px)',
+      boxShadow: '0 6px 16px rgba(29, 185, 84, 0.4)',
+    }
+  } as const,
 };
