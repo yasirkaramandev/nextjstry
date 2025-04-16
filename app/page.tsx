@@ -213,24 +213,6 @@ const SpotifyStatus = () => {
   );
 };
 
-const AboutSection = () => (
-  <section style={styles.aboutSection}>
-    <div style={styles.aboutContent}>
-      <h1 style={styles.heroTitle}>
-        <span style={styles.heroHighlight}>Merhaba, Ben Yasir</span>
-      </h1>
-      <h2 style={styles.heroSubtitle}>AI Developer & GUI Specialist</h2>
-      <p style={styles.aboutText}>
-        Yapay zeka ve kullanıcı deneyimi tasarımı alanlarında uzmanlaşmış bir geliştiriciyim. 
-        6 yıllık tecrübemle, teknolojinin insanlara daha iyi hizmet etmesini sağlayan 
-        yenilikçi çözümler üretiyorum. Özellikle görüntü işleme, doğal dil işleme ve 
-        kullanıcı arayüzü tasarımı konularında derin bilgi birikimine sahibim.
-      </p>
-      <SpotifyWidget />
-    </div>
-  </section>
-);
-
 export default function Home() {
   return (
     <main style={styles.container}>
@@ -245,7 +227,8 @@ export default function Home() {
             <p style={styles.heroSubtitle}>AI Developer & GUI Specialist</p>
             <div style={styles.heroDescription}>
               <p>6 yıllık yazılım geliştirme deneyimim ve yapay zeka alanındaki uzmanlığımla
-                yenilikçi çözümler üretiyorum.</p>
+                yenilikçi çözümler üretiyorum. Özellikle görüntü işleme ve doğal dil işleme 
+                konularında uzmanlaşmış durumdayım.</p>
             </div>
             <SpotifyWidget />
           </div>
@@ -356,6 +339,14 @@ const styles = {
     maxWidth: '800px',
     margin: '0 auto',
     textAlign: 'center' as const,
+    padding: '2rem',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '2rem',
+    '@media (max-width: 768px)': {
+      padding: '1rem',
+      gap: '1.5rem'
+    }
   },
 
   section: {
@@ -484,10 +475,14 @@ const styles = {
 
   heroDescription: {
     fontSize: 'clamp(1rem, 3vw, 1.2rem)',
-    color: '#cbd5e1',
     lineHeight: '1.8',
-    maxWidth: '600px',
+    color: '#94a3b8',
+    maxWidth: '700px',
     margin: '0 auto',
+    '@media (max-width: 768px)': {
+      fontSize: '1rem',
+      lineHeight: '1.6'
+    }
   },
 
   sectionTitle: {
