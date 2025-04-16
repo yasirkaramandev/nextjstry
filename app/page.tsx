@@ -72,10 +72,30 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80; // navbar height + extra padding
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav style={{ ...styles.navbar, ...(isScrolled ? styles.navbarScrolled : {}) }}>
       <div style={styles.navContent}>
-        <a href="#" style={styles.navLogo}>YK</a>
+        <a href="#" style={styles.navLogo} onClick={(e) => {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}>YK</a>
         {isMobile ? (
           <button style={styles.menuButton} onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <span style={styles.menuIcon}></span>
@@ -83,7 +103,15 @@ const Navbar = () => {
         ) : (
           <div style={styles.navLinksDesktop}>
             {['Home', 'Deneyim', 'Projeler', 'İletişim'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} style={styles.navLink}>
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                style={styles.navLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(item.toLowerCase());
+                }}
+              >
                 {item}
               </a>
             ))}
@@ -92,7 +120,15 @@ const Navbar = () => {
         {isMobile && isMenuOpen && (
           <div style={styles.navLinksMobile}>
             {['Home', 'Deneyim', 'Projeler', 'İletişim'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} style={styles.navLink}>
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                style={styles.navLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(item.toLowerCase());
+                }}
+              >
                 {item}
               </a>
             ))}
@@ -352,6 +388,9 @@ const styles = {
     display: 'flex',
     flexDirection: 'column' as const,
     gap: '4rem',
+    '@media (max-width: 768px)': {
+      padding: '0 1rem'
+    }
   },
 
   heroSection: {
@@ -483,6 +522,10 @@ const styles = {
     '&:hover': {
       color: '#60a5fa',
     },
+    '@media (max-width: 768px)': {
+      width: '100%',
+      textAlign: 'center'
+    }
   },
 
   heroTitle: {
@@ -510,19 +553,28 @@ const styles = {
     color: '#94a3b8',
     maxWidth: '700px',
     margin: '0 auto',
+    padding: '0 1rem',
     '@media (max-width: 768px)': {
       fontSize: '1rem',
-      lineHeight: '1.6'
+      lineHeight: '1.6',
+      padding: '0 1.5rem',
+      width: '100%',
+      maxWidth: '100%'
     }
   },
 
   statsContainer: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gridTemplateColumns: 'repeat(2, 1fr)',
     gap: '2rem',
     width: '100%',
     maxWidth: '1000px',
     margin: '2rem auto',
+    '@media (max-width: 768px)': {
+      gridTemplateColumns: '1fr',
+      gap: '1.5rem',
+      padding: '0 1rem'
+    }
   },
 
   sectionTitle: {
