@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { SpotifyWidget } from './components/SpotifyWidget';
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -225,7 +226,7 @@ const AboutSection = () => (
         yenilikçi çözümler üretiyorum. Özellikle görüntü işleme, doğal dil işleme ve 
         kullanıcı arayüzü tasarımı konularında derin bilgi birikimine sahibim.
       </p>
-      <SpotifyStatus />
+      <SpotifyWidget />
     </div>
   </section>
 );
@@ -253,13 +254,31 @@ export default function Home() {
   }, []);
 
   return (
-    <main style={styles.container}>
+    <main className="min-h-screen bg-gradient-to-b from-bg-primary to-bg-secondary">
       <CustomCursor />
-      <Navbar />
-      
+      <nav className="fixed top-0 w-full backdrop-blur-md bg-bg-primary/80 z-50">
+        {/* Navigation content */}
+      </nav>
+
+      <section className="min-h-screen flex items-center justify-center px-4 pt-20">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-accent-primary to-accent-secondary text-transparent bg-clip-text">
+            Yasir Karaman
+          </h1>
+          <p className="text-xl md:text-2xl text-text-secondary mb-8">
+            AI Developer & GUI Specialist
+          </p>
+          <div className="prose prose-invert max-w-2xl mx-auto mb-8">
+            <p>
+              6 yıllık yazılım geliştirme deneyimim ve yapay zeka alanındaki uzmanlığımla
+              yenilikçi çözümler üretiyorum.
+            </p>
+          </div>
+          <SpotifyWidget />
+        </div>
+      </section>
+
       <div style={styles.content}>
-        <AboutSection />
-        
         <section id="deneyim" style={styles.section}>
           <h2 style={styles.sectionTitle}>Deneyimlerim</h2>
           <div style={styles.experienceGrid}>

@@ -1,3 +1,18 @@
+:root {
+  --primary: #61dafb;
+  --secondary: #1DB954;
+  --background: #13151a;
+  --surface: #1e2127;
+  --text: #ffffff;
+  --text-secondary: #a0aec0;
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --accent-primary: #60a5fa;
+  --accent-secondary: #818cf8;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -98,15 +113,6 @@
 .cursor-clicked .cursor-inner {
   transform: translate(-50%, -50%) scale(0.8);
   background: rgba(97, 218, 251, 0.9);
-}
-
-:root {
-  --primary: #61dafb;
-  --secondary: #1DB954;
-  --background: #13151a;
-  --surface: #1e2127;
-  --text: #ffffff;
-  --text-secondary: #a0aec0;
 }
 
 * {
@@ -262,6 +268,78 @@ html {
   animation: fadeInUp 0.6s ease-out;
 }
 
+/* Modern section animations */
+.section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Spotify player styles */
+.spotify-player {
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  transition: all 0.3s ease;
+}
+
+.spotify-player:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.spotify-album {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.spotify-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.spotify-title {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spotify-artist {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.spotify-progress {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.spotify-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #1DB954, #1ed760);
+  transition: width 0.1s linear;
+}
+
 @media (max-width: 768px) {
   .content {
     grid-template-columns: 1fr !important;
@@ -299,6 +377,16 @@ html {
   .nav-links.open {
     display: flex;
     flex-direction: column;
+  }
+
+  .spotify-player {
+    margin: 1rem 0;
+    padding: 0.75rem;
+  }
+  
+  .spotify-album {
+    width: 50px;
+    height: 50px;
   }
 }
 
