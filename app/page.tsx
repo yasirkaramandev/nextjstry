@@ -519,12 +519,17 @@ const styles = {
     fontSize: '1rem',
     fontWeight: '500',
     transition: 'color 0.3s ease',
+    padding: '0.5rem 1rem',
+    borderRadius: '8px',
+    cursor: 'pointer',
     '&:hover': {
       color: '#60a5fa',
+      background: 'rgba(96, 165, 250, 0.1)',
     },
     '@media (max-width: 768px)': {
       width: '100%',
-      textAlign: 'center'
+      textAlign: 'center',
+      padding: '1rem'
     }
   },
 
@@ -564,14 +569,13 @@ const styles = {
   },
 
   statsContainer: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
+    display: 'flex',
+    flexDirection: 'column' as const,
     gap: '2rem',
     width: '100%',
-    maxWidth: '1000px',
+    maxWidth: '450px',
     margin: '2rem auto',
     '@media (max-width: 768px)': {
-      gridTemplateColumns: '1fr',
       gap: '1.5rem',
       padding: '0 1rem'
     }
