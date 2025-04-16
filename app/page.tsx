@@ -207,52 +207,79 @@ export default function Home() {
     <main style={styles.container}>
       <CustomCursor />
       <div style={styles.content}>
-        <div style={styles.hero}>
-          <div style={styles.glowCircle} />
+        {/* Hero Section */}
+        <section style={styles.hero}>
           <h1 style={styles.heroTitle}>
-            <span style={styles.heroHighlight}>Yasir</span> Karaman
+            <span style={styles.heroHighlight}>Merhaba, Ben Yasir</span>
           </h1>
-          <p style={styles.heroSubtitle}>AI Developer</p>
-        </div>
-        
-        <SpotifyStatus />
-        <div style={styles.constructionCard}>
-          <div style={styles.cardGlow} />
-          <div style={styles.cardContent}>
-            <div style={styles.iconContainer}>
-              <span style={styles.constructionIcon}>🚧</span>
-            </div>
-            <h2 style={styles.constructionTitle}>Yapım Aşamasında</h2>
-            <p style={styles.constructionText}>
-              Portfolyom şu anda yenileniyor. Çok yakında burada olacağım!
-            </p>
+          <p style={styles.heroSubtitle}>AI Developer & GUI Specialist</p>
+          <div style={styles.description}>
+            <p>6 yıllık yazılım geliştirme deneyimi ile yapay zeka ve kullanıcı arayüzü tasarımı alanlarında uzmanlaşmış bir geliştiriciyim.</p>
           </div>
-        </div>
+        </section>
 
-        <nav style={styles.socialLinks}>
-          {[
-            { href: "https://github.com/yasirkaramandev", text: "GitHub" },
-            { href: "https://www.linkedin.com/in/yasirkaramandev", text: "LinkedIn" },
-            { href: "mailto:yasir@yasirkaraman.com.tr", text: "Mail" },
-            { href: "https://teknogetir.com/", text: "TeknoGetir" }
-          ].map((link, i) => (
-            <div key={link.href} style={styles.socialContainer}>
-              <a
-                href={link.href}
-                style={styles.socialLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {link.text}
-              </a>
-              {i < 3 && <span style={styles.socialDivider}>•</span>}
+        {/* About Section */}
+        <section style={styles.aboutSection}>
+          <div style={styles.aboutCard}>
+            <h2 style={styles.sectionTitle}>Deneyimlerim</h2>
+            <div style={styles.experienceList}>
+              <div style={styles.experienceItem}>
+                <span style={styles.experienceHighlight}>Hayal Otonomi</span>
+                <p>Otonom araç geliştirme projesinde multimedya sistemleri sorumlusu</p>
+              </div>
+              <div style={styles.experienceItem}>
+                <span style={styles.experienceHighlight}>AI Development</span>
+                <p>Yapay zeka ve görüntü işleme projelerinde uzmanlaşma</p>
+              </div>
+              <div style={styles.experienceItem}>
+                <span style={styles.experienceHighlight}>GUI Development</span>
+                <p>Kullanıcı arayüzü tasarımı ve geliştirme projeleri</p>
+              </div>
             </div>
-          ))}
-        </nav>
+          </div>
+        </section>
+
+        {/* Spotify Widget */}
+        <section style={styles.spotifySection}>
+          <SpotifyStatus />
+        </section>
+
+        {/* Contact Section */}
+        <section style={styles.contactSection}>
+          <div style={styles.contactCard}>
+            <h2 style={styles.sectionTitle}>İletişim</h2>
+            <p style={styles.contactText}>
+              Projeleriniz için benimle iletişime geçebilirsiniz
+            </p>
+            <div style={styles.socialLinks}>
+              <a
+                href="mailto:yasir@yasirkaraman.com.tr"
+                style={styles.contactButton}
+              >
+                Mail Gönder
+              </a>
+              <div style={styles.socialIcons}>
+                {[
+                  { href: "https://github.com/yasirkaramandev", icon: "🐱", label: "GitHub" },
+                  { href: "https://www.linkedin.com/in/yasirkaramandev", icon: "💼", label: "LinkedIn" },
+                  { href: "https://teknogetir.com/", icon: "🌐", label: "TeknoGetir" }
+                ].map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    style={styles.socialIcon}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={link.label}
+                  >
+                    {link.icon}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-      <footer style={styles.pageFooter}>
-        <p>© {new Date().getFullYear()} Yasir Karaman</p>
-      </footer>
     </main>
   );
 }
@@ -260,192 +287,156 @@ export default function Home() {
 const styles = {
   container: {
     minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column' as const,
-    justifyContent: 'space-between',
-    background: 'linear-gradient(to bottom, #0f1117, #1a1f2c)',
+    background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+    color: '#e2e8f0',
+    padding: '2rem',
     position: 'relative' as const,
-    overflow: 'hidden',
-    width: '100%'
   },
 
   content: {
-    flex: 1,
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '2rem',
-    padding: '2rem',
-    maxWidth: '1400px',
+    maxWidth: '1200px',
     margin: '0 auto',
-    width: '100%',
-    alignItems: 'start',
-    '@media (max-width: 768px)': {
-      gridTemplateColumns: '1fr',
-      padding: '1rem'
-    }
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '4rem',
   },
 
-  // Hero styles
   hero: {
-    position: 'relative' as const,
     textAlign: 'center' as const,
-    marginBottom: '2rem',
-  },
-
-  glowCircle: {
-    position: 'absolute' as const,
-    top: '-50%',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: '600px',
-    height: '600px',
-    background: 'radial-gradient(circle, rgba(99,102,241,0.15) 0%, rgba(99,102,241,0) 70%)',
-    borderRadius: '50%',
-    zIndex: -1,
+    padding: '4rem 0',
   },
 
   heroTitle: {
-    fontSize: 'clamp(2.5rem, 8vw, 4rem)',
-    fontWeight: '700',
-    marginBottom: '1rem',
-    color: '#fff',
-    textShadow: '0 0 20px rgba(99,102,241,0.3)',
+    fontSize: 'clamp(2.5rem, 8vw, 4.5rem)',
+    marginBottom: '1.5rem',
+    lineHeight: '1.2',
   },
 
   heroHighlight: {
-    background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-    backgroundClip: 'text',
+    background: 'linear-gradient(135deg, #60a5fa, #a78bfa)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
+    fontWeight: '700',
   },
 
   heroSubtitle: {
-    fontSize: 'clamp(1rem, 4vw, 1.5rem)',
+    fontSize: 'clamp(1.25rem, 4vw, 1.5rem)',
     color: '#94a3b8',
-    fontWeight: '500',
-    background: 'linear-gradient(135deg, #61dafb, #8b5cf6)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
+    marginBottom: '2rem',
   },
 
-  // Construction card styles
-  constructionCard: {
-    position: 'relative' as const,
+  description: {
+    maxWidth: '800px',
+    margin: '0 auto',
+    fontSize: 'clamp(1rem, 3vw, 1.2rem)',
+    lineHeight: '1.8',
+    color: '#cbd5e1',
+  },
+
+  aboutSection: {
+    padding: '2rem 0',
+  },
+
+  aboutCard: {
     background: 'rgba(30, 41, 59, 0.5)',
-    backdropFilter: 'blur(10px)',
     borderRadius: '24px',
     padding: '2rem',
-    width: '100%',
-    maxWidth: '600px',
-    border: '1px solid rgba(99,102,241,0.2)',
-    overflow: 'hidden',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
   },
 
-  cardGlow: {
-    position: 'absolute' as const,
-    inset: 0,
-    background: 'radial-gradient(circle at 50% 0%, rgba(99,102,241,0.1), transparent 70%)',
-  },
-
-  cardContent: {
-    position: 'relative' as const,
-    zIndex: 1,
+  sectionTitle: {
+    fontSize: 'clamp(1.5rem, 5vw, 2rem)',
+    marginBottom: '2rem',
     textAlign: 'center' as const,
+    color: '#60a5fa',
   },
 
-  iconContainer: {
-    width: '80px',
-    height: '80px',
-    margin: '0 auto 1.5rem',
-    background: 'rgba(99,102,241,0.1)',
-    borderRadius: '50%',
+  experienceList: {
+    display: 'grid',
+    gap: '2rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+  },
+
+  experienceItem: {
+    padding: '1.5rem',
+    background: 'rgba(15, 23, 42, 0.5)',
+    borderRadius: '16px',
+    border: '1px solid rgba(255, 255, 255, 0.05)',
+  },
+
+  experienceHighlight: {
+    display: 'block',
+    fontSize: '1.25rem',
+    color: '#60a5fa',
+    marginBottom: '0.5rem',
+  },
+
+  spotifySection: {
+    maxWidth: '600px',
+    margin: '0 auto',
+    width: '100%',
+  },
+
+  contactSection: {
+    padding: '4rem 0',
+  },
+
+  contactCard: {
+    background: 'rgba(30, 41, 59, 0.5)',
+    borderRadius: '24px',
+    padding: '3rem 2rem',
+    textAlign: 'center' as const,
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+  },
+
+  contactText: {
+    fontSize: '1.2rem',
+    marginBottom: '2rem',
+    color: '#94a3b8',
+  },
+
+  socialLinks: {
     display: 'flex',
+    flexDirection: 'column' as const,
     alignItems: 'center',
+    gap: '2rem',
+  },
+
+  contactButton: {
+    display: 'inline-block',
+    padding: '1rem 2.5rem',
+    background: 'linear-gradient(135deg, #60a5fa, #a78bfa)',
+    color: '#fff',
+    borderRadius: '50px',
+    fontSize: '1.1rem',
+    fontWeight: '600',
+    textDecoration: 'none',
+    transition: 'all 0.3s ease',
+    border: 'none',
+    cursor: 'pointer',
+    '&:hover': {
+      transform: 'translateY(-2px)',
+      boxShadow: '0 4px 20px rgba(96, 165, 250, 0.4)',
+    },
+  },
+
+  socialIcons: {
+    display: 'flex',
+    gap: '1.5rem',
     justifyContent: 'center',
   },
 
-  constructionIcon: {
-    fontSize: '2.5rem',
-  },
-
-  constructionTitle: {
-    fontSize: 'clamp(1.5rem, 5vw, 2rem)',
-    fontWeight: '700',
-    color: '#fff',
-    marginBottom: '1rem',
-  },
-
-  constructionText: {
-    fontSize: 'clamp(1rem, 3vw, 1.2rem)',
+  socialIcon: {
+    fontSize: '1.5rem',
     color: '#94a3b8',
-    lineHeight: '1.6',
-  },
-
-  // Social links styles
-  socialLinks: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-    gap: '1rem',
-    width: '100%',
-    maxWidth: '1400px',
-    margin: '2rem auto',
-    padding: '0 2rem',
-    '@media (max-width: 768px)': {
-      gridTemplateColumns: '1fr',
-      padding: '0 1rem'
-    }
-  } as const,
-
-  socialContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    '@media (max-width: 768px)': {
-      width: '100%'
-    }
-  },
-
-  socialLink: {
-    color: '#fff',
     textDecoration: 'none',
-    fontSize: '1rem',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '12px',
-    background: 'rgba(99,102,241,0.1)',
-    border: '1px solid rgba(99,102,241,0.2)',
     transition: 'all 0.3s ease',
-    position: 'relative' as const,
-    overflow: 'hidden',
     '&:hover': {
+      color: '#60a5fa',
       transform: 'translateY(-2px)',
-      background: 'rgba(99,102,241,0.2)',
-      border: '1px solid rgba(99,102,241,0.4)',
     },
-    '&:active': {
-      transform: 'translateY(1px)',
-      background: 'rgba(99,102,241,0.3)',
-    },
-    '@media (max-width: 768px)': {
-      width: '100%',
-      textAlign: 'center' as const
-    }
-  } as const,
-
-  socialDivider: {
-    color: 'rgba(99,102,241,0.3)',
-    margin: '0 0.5rem',
-    userSelect: 'none'
-  } as const,
-
-  pageFooter: {
-    width: '100%',
-    textAlign: 'center' as const,
-    padding: '1.5rem',
-    color: '#94a3b8',
-    background: 'rgba(15, 17, 23, 0.8)',
-    backdropFilter: 'blur(10px)',
-    borderTop: '1px solid rgba(99,102,241,0.1)',
-    marginTop: 'auto',
   },
 
   // SpotifyStatus styles
