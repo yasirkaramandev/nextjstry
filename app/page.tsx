@@ -47,6 +47,37 @@ const CustomCursor = () => {
   );
 };
 
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <nav style={{ ...styles.navbar, ...(isScrolled ? styles.navbarScrolled : {}) }}>
+      <div style={styles.navContent}>
+        <a href="#" style={styles.navLogo}>YK</a>
+        <button style={styles.menuButton} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <span style={styles.menuIcon}></span>
+        </button>
+        <div style={{ ...styles.navLinks, ...(isMenuOpen ? styles.navLinksOpen : {}) }}>
+          {['Home', 'Deneyim', 'Projeler', 'İletişim'].map((item) => (
+            <a key={item} href={`#${item.toLowerCase()}`} style={styles.navLink}>
+              {item}
+            </a>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+};
+
 interface SpotifyTrack {
   isPlaying: boolean;
   title: string;
@@ -181,6 +212,24 @@ const SpotifyStatus = () => {
   );
 };
 
+const AboutSection = () => (
+  <section style={styles.aboutSection}>
+    <div style={styles.aboutContent}>
+      <h1 style={styles.heroTitle}>
+        <span style={styles.heroHighlight}>Merhaba, Ben Yasir</span>
+      </h1>
+      <h2 style={styles.heroSubtitle}>AI Developer & GUI Specialist</h2>
+      <p style={styles.aboutText}>
+        Yapay zeka ve kullanıcı deneyimi tasarımı alanlarında uzmanlaşmış bir geliştiriciyim. 
+        6 yıllık tecrübemle, teknolojinin insanlara daha iyi hizmet etmesini sağlayan 
+        yenilikçi çözümler üretiyorum. Özellikle görüntü işleme, doğal dil işleme ve 
+        kullanıcı arayüzü tasarımı konularında derin bilgi birikimine sahibim.
+      </p>
+      <SpotifyStatus />
+    </div>
+  </section>
+);
+
 export default function Home() {
   useEffect(() => {
     const styleTag = document.createElement('style');
@@ -206,76 +255,73 @@ export default function Home() {
   return (
     <main style={styles.container}>
       <CustomCursor />
+      <Navbar />
+      
       <div style={styles.content}>
-        {/* Hero Section */}
-        <section style={styles.hero}>
-          <h1 style={styles.heroTitle}>
-            <span style={styles.heroHighlight}>Merhaba, Ben Yasir</span>
-          </h1>
-          <p style={styles.heroSubtitle}>AI Developer & GUI Specialist</p>
-          <div style={styles.description}>
-            <p>6 yıllık yazılım geliştirme deneyimi ile yapay zeka ve kullanıcı arayüzü tasarımı alanlarında uzmanlaşmış bir geliştiriciyim.</p>
+        <AboutSection />
+        
+        <section id="deneyim" style={styles.section}>
+          <h2 style={styles.sectionTitle}>Deneyimlerim</h2>
+          <div style={styles.experienceGrid}>
+            {[
+              {
+                title: 'Hayal Otonomi',
+                role: 'Multimedya Sistemleri Lideri',
+                description: 'Otonom araç projesinde multimedya sistemlerinin tasarımı ve implementasyonu'
+              },
+              {
+                title: 'AI Projeleri',
+                role: 'Yapay Zeka Geliştirici',
+                description: 'Görüntü işleme ve makine öğrenimi modelleri geliştirme'
+              },
+              {
+                title: 'GUI Development',
+                role: 'Arayüz Tasarımcısı',
+                description: 'Modern ve kullanıcı dostu arayüzler tasarlama ve geliştirme'
+              }
+            ].map((exp) => (
+              <div key={exp.title} style={styles.experienceCard}>
+                <h3 style={styles.experienceTitle}>{exp.title}</h3>
+                <h4 style={styles.experienceRole}>{exp.role}</h4>
+                <p style={styles.experienceDesc}>{exp.description}</p>
+              </div>
+            ))}
           </div>
         </section>
 
-        {/* About Section */}
-        <section style={styles.aboutSection}>
-          <div style={styles.aboutCard}>
-            <h2 style={styles.sectionTitle}>Deneyimlerim</h2>
-            <div style={styles.experienceList}>
-              <div style={styles.experienceItem}>
-                <span style={styles.experienceHighlight}>Hayal Otonomi</span>
-                <p>Otonom araç geliştirme projesinde multimedya sistemleri sorumlusu</p>
-              </div>
-              <div style={styles.experienceItem}>
-                <span style={styles.experienceHighlight}>AI Development</span>
-                <p>Yapay zeka ve görüntü işleme projelerinde uzmanlaşma</p>
-              </div>
-              <div style={styles.experienceItem}>
-                <span style={styles.experienceHighlight}>GUI Development</span>
-                <p>Kullanıcı arayüzü tasarımı ve geliştirme projeleri</p>
-              </div>
-            </div>
+        <section id="projeler" style={styles.section}>
+          <h2 style={styles.sectionTitle}>Projeler</h2>
+          <div style={styles.constructionMessage}>
+            <span style={styles.constructionIcon}>🚧</span>
+            <p>Yakında burada olacak...</p>
           </div>
         </section>
 
-        {/* Spotify Widget */}
-        <section style={styles.spotifySection}>
-          <SpotifyStatus />
-        </section>
-
-        {/* Contact Section */}
-        <section style={styles.contactSection}>
-          <div style={styles.contactCard}>
-            <h2 style={styles.sectionTitle}>İletişim</h2>
+        <section id="iletisim" style={styles.section}>
+          <h2 style={styles.sectionTitle}>İletişim</h2>
+          <div style={styles.contactContent}>
             <p style={styles.contactText}>
-              Projeleriniz için benimle iletişime geçebilirsiniz
+              Yenilikçi bir proje üzerinde birlikte çalışmak veya fikir alışverişinde 
+              bulunmak isterseniz, benimle iletişime geçmekten çekinmeyin.
             </p>
-            <div style={styles.socialLinks}>
-              <a
-                href="mailto:yasir@yasirkaraman.com.tr"
-                style={styles.contactButton}
-              >
-                Mail Gönder
-              </a>
-              <div style={styles.socialIcons}>
-                {[
-                  { href: "https://github.com/yasirkaramandev", icon: "🐱", label: "GitHub" },
-                  { href: "https://www.linkedin.com/in/yasirkaramandev", icon: "💼", label: "LinkedIn" },
-                  { href: "https://teknogetir.com/", icon: "🌐", label: "TeknoGetir" }
-                ].map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    style={styles.socialIcon}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={link.label}
-                  >
-                    {link.icon}
-                  </a>
-                ))}
-              </div>
+            <div style={styles.contactLinks}>
+              {[
+                { href: "mailto:yasir@yasirkaraman.com.tr", icon: "✉️", label: "E-posta" },
+                { href: "https://github.com/yasirkaramandev", icon: "💻", label: "GitHub" },
+                { href: "https://www.linkedin.com/in/yasirkaramandev", icon: "🔗", label: "LinkedIn" },
+                { href: "https://teknogetir.com/", icon: "🌐", label: "TeknoGetir" }
+              ].map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  style={styles.contactLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span style={styles.contactIcon}>{link.icon}</span>
+                  {link.label}
+                </a>
+              ))}
             </div>
           </div>
         </section>
@@ -299,6 +345,95 @@ const styles = {
     display: 'flex',
     flexDirection: 'column' as const,
     gap: '4rem',
+  },
+
+  navbar: {
+    position: 'fixed' as const,
+    top: 0,
+    left: 0,
+    width: '100%',
+    padding: '1rem 2rem',
+    background: 'transparent',
+    transition: 'background 0.3s ease',
+    zIndex: 1000,
+  },
+
+  navbarScrolled: {
+    background: 'rgba(15, 23, 42, 0.9)',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+  },
+
+  navContent: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  navLogo: {
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    color: '#60a5fa',
+    textDecoration: 'none',
+  },
+
+  menuButton: {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  menuIcon: {
+    width: '24px',
+    height: '2px',
+    background: '#e2e8f0',
+    position: 'relative' as const,
+    '&::before': {
+      content: '""',
+      position: 'absolute' as const,
+      top: '-8px',
+      width: '24px',
+      height: '2px',
+      background: '#e2e8f0',
+    },
+    '&::after': {
+      content: '""',
+      position: 'absolute' as const,
+      top: '8px',
+      width: '24px',
+      height: '2px',
+      background: '#e2e8f0',
+    },
+  },
+
+  navLinks: {
+    display: 'none',
+    flexDirection: 'column' as const,
+    gap: '1rem',
+    position: 'absolute' as const,
+    top: '100%',
+    right: '2rem',
+    background: 'rgba(15, 23, 42, 0.9)',
+    padding: '1rem',
+    borderRadius: '8px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+  },
+
+  navLinksOpen: {
+    display: 'flex',
+  },
+
+  navLink: {
+    color: '#e2e8f0',
+    textDecoration: 'none',
+    fontSize: '1rem',
+    fontWeight: '500',
+    transition: 'color 0.3s ease',
+    '&:hover': {
+      color: '#60a5fa',
+    },
   },
 
   hero: {
@@ -325,7 +460,15 @@ const styles = {
     marginBottom: '2rem',
   },
 
-  description: {
+  aboutSection: {
+    padding: '2rem 0',
+  },
+
+  aboutContent: {
+    textAlign: 'center' as const,
+  },
+
+  aboutText: {
     maxWidth: '800px',
     margin: '0 auto',
     fontSize: 'clamp(1rem, 3vw, 1.2rem)',
@@ -333,16 +476,8 @@ const styles = {
     color: '#cbd5e1',
   },
 
-  aboutSection: {
-    padding: '2rem 0',
-  },
-
-  aboutCard: {
-    background: 'rgba(30, 41, 59, 0.5)',
-    borderRadius: '24px',
-    padding: '2rem',
-    backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
+  section: {
+    padding: '4rem 0',
   },
 
   sectionTitle: {
@@ -352,43 +487,49 @@ const styles = {
     color: '#60a5fa',
   },
 
-  experienceList: {
+  experienceGrid: {
     display: 'grid',
     gap: '2rem',
     gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
   },
 
-  experienceItem: {
+  experienceCard: {
     padding: '1.5rem',
     background: 'rgba(15, 23, 42, 0.5)',
     borderRadius: '16px',
     border: '1px solid rgba(255, 255, 255, 0.05)',
   },
 
-  experienceHighlight: {
-    display: 'block',
+  experienceTitle: {
     fontSize: '1.25rem',
     color: '#60a5fa',
     marginBottom: '0.5rem',
   },
 
-  spotifySection: {
-    maxWidth: '600px',
-    margin: '0 auto',
-    width: '100%',
+  experienceRole: {
+    fontSize: '1rem',
+    color: '#94a3b8',
+    marginBottom: '0.5rem',
   },
 
-  contactSection: {
-    padding: '4rem 0',
+  experienceDesc: {
+    fontSize: '0.9rem',
+    color: '#cbd5e1',
   },
 
-  contactCard: {
-    background: 'rgba(30, 41, 59, 0.5)',
-    borderRadius: '24px',
-    padding: '3rem 2rem',
+  constructionMessage: {
     textAlign: 'center' as const,
-    backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
+    color: '#94a3b8',
+    fontSize: '1.2rem',
+  },
+
+  constructionIcon: {
+    fontSize: '2rem',
+    marginBottom: '1rem',
+  },
+
+  contactContent: {
+    textAlign: 'center' as const,
   },
 
   contactText: {
@@ -397,49 +538,31 @@ const styles = {
     color: '#94a3b8',
   },
 
-  socialLinks: {
+  contactLinks: {
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
-    gap: '2rem',
+    gap: '1rem',
   },
 
-  contactButton: {
-    display: 'inline-block',
-    padding: '1rem 2.5rem',
-    background: 'linear-gradient(135deg, #60a5fa, #a78bfa)',
-    color: '#fff',
-    borderRadius: '50px',
-    fontSize: '1.1rem',
-    fontWeight: '600',
-    textDecoration: 'none',
-    transition: 'all 0.3s ease',
-    border: 'none',
-    cursor: 'pointer',
-    '&:hover': {
-      transform: 'translateY(-2px)',
-      boxShadow: '0 4px 20px rgba(96, 165, 250, 0.4)',
-    },
-  },
-
-  socialIcons: {
+  contactLink: {
     display: 'flex',
-    gap: '1.5rem',
-    justifyContent: 'center',
-  },
-
-  socialIcon: {
-    fontSize: '1.5rem',
-    color: '#94a3b8',
+    alignItems: 'center',
+    gap: '0.5rem',
+    color: '#e2e8f0',
     textDecoration: 'none',
-    transition: 'all 0.3s ease',
+    fontSize: '1rem',
+    fontWeight: '500',
+    transition: 'color 0.3s ease',
     '&:hover': {
       color: '#60a5fa',
-      transform: 'translateY(-2px)',
     },
   },
 
-  // SpotifyStatus styles
+  contactIcon: {
+    fontSize: '1.5rem',
+  },
+
   musicTerminal: {
     width: '100%',
     borderRadius: '16px',
