@@ -232,118 +232,98 @@ const AboutSection = () => (
 );
 
 export default function Home() {
-  useEffect(() => {
-    const styleTag = document.createElement('style');
-    styleTag.textContent = `
-      @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-      }
-      
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-    `;
-    document.head.appendChild(styleTag);
-
-    return () => {
-      styleTag.remove();
-    };
-  }, []);
-
   return (
-    <main className="min-h-screen bg-gradient-to-b from-bg-primary to-bg-secondary">
+    <main style={styles.container}>
       <CustomCursor />
-      <nav className="fixed top-0 w-full backdrop-blur-md bg-bg-primary/80 z-50">
-        {/* Navigation content */}
-      </nav>
-
-      <section className="min-h-screen flex items-center justify-center px-4 pt-20">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-accent-primary to-accent-secondary text-transparent bg-clip-text">
-            Yasir Karaman
-          </h1>
-          <p className="text-xl md:text-2xl text-text-secondary mb-8">
-            AI Developer & GUI Specialist
-          </p>
-          <div className="prose prose-invert max-w-2xl mx-auto mb-8">
-            <p>
+      <Navbar />
+      <div style={styles.wrapper}>
+        <section style={styles.heroSection}>
+          <div style={styles.heroContent}>
+            <h1 style={styles.title}>
+              <span style={styles.titleGradient}>Yasir Karaman</span>
+            </h1>
+            <p style={styles.subtitle}>AI Developer & GUI Specialist</p>
+            <p style={styles.description}>
               6 yıllık yazılım geliştirme deneyimim ve yapay zeka alanındaki uzmanlığımla
               yenilikçi çözümler üretiyorum.
             </p>
           </div>
           <SpotifyWidget />
-        </div>
-      </section>
-
-      <div style={styles.content}>
-        <section id="deneyim" style={styles.section}>
-          <h2 style={styles.sectionTitle}>Deneyimlerim</h2>
-          <div style={styles.experienceGrid}>
-            {[
-              {
-                title: 'Hayal Otonomi',
-                role: 'Multimedya Sistemleri Lideri',
-                description: 'Otonom araç projesinde multimedya sistemlerinin tasarımı ve implementasyonu'
-              },
-              {
-                title: 'AI Projeleri',
-                role: 'Yapay Zeka Geliştirici',
-                description: 'Görüntü işleme ve makine öğrenimi modelleri geliştirme'
-              },
-              {
-                title: 'GUI Development',
-                role: 'Arayüz Tasarımcısı',
-                description: 'Modern ve kullanıcı dostu arayüzler tasarlama ve geliştirme'
-              }
-            ].map((exp) => (
-              <div key={exp.title} style={styles.experienceCard}>
-                <h3 style={styles.experienceTitle}>{exp.title}</h3>
-                <h4 style={styles.experienceRole}>{exp.role}</h4>
-                <p style={styles.experienceDesc}>{exp.description}</p>
-              </div>
-            ))}
-          </div>
         </section>
 
-        <section id="projeler" style={styles.section}>
-          <h2 style={styles.sectionTitle}>Projeler</h2>
-          <div style={styles.constructionMessage}>
-            <span style={styles.constructionIcon}>🚧</span>
-            <p>Yakında burada olacak...</p>
-          </div>
-        </section>
-
-        <section id="iletisim" style={styles.section}>
-          <h2 style={styles.sectionTitle}>İletişim</h2>
-          <div style={styles.contactContent}>
-            <p style={styles.contactText}>
-              Yenilikçi bir proje üzerinde birlikte çalışmak veya fikir alışverişinde 
-              bulunmak isterseniz, benimle iletişime geçmekten çekinmeyin.
-            </p>
-            <div style={styles.contactLinks}>
+        <div style={styles.content}>
+          <section id="deneyim" style={styles.section}>
+            <h2 style={styles.sectionTitle}>Deneyimlerim</h2>
+            <div style={styles.experienceGrid}>
               {[
-                { href: "mailto:yasir@yasirkaraman.com.tr", icon: "✉️", label: "E-posta" },
-                { href: "https://github.com/yasirkaramandev", icon: "💻", label: "GitHub" },
-                { href: "https://www.linkedin.com/in/yasirkaramandev", icon: "🔗", label: "LinkedIn" },
-                { href: "https://teknogetir.com/", icon: "🌐", label: "TeknoGetir" }
-              ].map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  style={styles.contactLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span style={styles.contactIcon}>{link.icon}</span>
-                  {link.label}
-                </a>
+                {
+                  title: 'Hayal Otonomi',
+                  role: 'Multimedya Sistemleri Lideri',
+                  description: 'Otonom araç projesinde multimedya sistemlerinin tasarımı ve implementasyonu'
+                },
+                {
+                  title: 'AI Projeleri',
+                  role: 'Yapay Zeka Geliştirici',
+                  description: 'Görüntü işleme ve makine öğrenimi modelleri geliştirme'
+                },
+                {
+                  title: 'GUI Development',
+                  role: 'Arayüz Tasarımcısı',
+                  description: 'Modern ve kullanıcı dostu arayüzler tasarlama ve geliştirme'
+                }
+              ].map((exp) => (
+                <div key={exp.title} style={styles.experienceCard}>
+                  <h3 style={styles.experienceTitle}>{exp.title}</h3>
+                  <h4 style={styles.experienceRole}>{exp.role}</h4>
+                  <p style={styles.experienceDesc}>{exp.description}</p>
+                </div>
               ))}
             </div>
+          </section>
+
+          <section id="projeler" style={styles.section}>
+            <h2 style={styles.sectionTitle}>Projeler</h2>
+            <div style={styles.constructionMessage}>
+              <span style={styles.constructionIcon}>🚧</span>
+              <p>Yakında burada olacak...</p>
+            </div>
+          </section>
+
+          <section id="iletisim" style={styles.section}>
+            <h2 style={styles.sectionTitle}>İletişim</h2>
+            <div style={styles.contactContent}>
+              <p style={styles.contactText}>
+                Yenilikçi bir proje üzerinde birlikte çalışmak veya fikir alışverişinde 
+                bulunmak isterseniz, benimle iletişime geçmekten çekinmeyin.
+              </p>
+              <div style={styles.contactLinks}>
+                {[
+                  { href: "mailto:yasir@yasirkaraman.com.tr", icon: "✉️", label: "E-posta" },
+                  { href: "https://github.com/yasirkaramandev", icon: "💻", label: "GitHub" },
+                  { href: "https://www.linkedin.com/in/yasirkaramandev", icon: "🔗", label: "LinkedIn" },
+                  { href: "https://teknogetir.com/", icon: "🌐", label: "TeknoGetir" }
+                ].map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    style={styles.contactLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span style={styles.contactIcon}>{link.icon}</span>
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <footer style={styles.footer}>
+          <div style={styles.footerContent}>
+            <p style={styles.copyright}>© {new Date().getFullYear()} Yasir KARAMAN. Tüm hakları saklıdır.</p>
           </div>
-        </section>
+        </footer>
       </div>
     </main>
   );
@@ -358,12 +338,57 @@ const styles = {
     position: 'relative' as const,
   },
 
-  content: {
+  wrapper: {
+    width: '100%',
     maxWidth: '1200px',
     margin: '0 auto',
+    padding: '0 1rem',
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: '4rem',
+    minHeight: '100vh',
+  },
+
+  heroSection: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '100vh',
+    padding: '6rem 0',
+    gap: '2rem',
+  },
+
+  heroContent: {
+    textAlign: 'center' as const,
+    maxWidth: '800px',
+    margin: '0 auto',
+  },
+
+  title: {
+    fontSize: 'clamp(2.5rem, 8vw, 4.5rem)',
+    fontWeight: 'bold',
+    marginBottom: '1.5rem',
+  },
+
+  titleGradient: {
+    background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+  },
+
+  subtitle: {
+    fontSize: 'clamp(1.25rem, 4vw, 1.5rem)',
+    color: '#94a3b8',
+    marginBottom: '1.5rem',
+  },
+
+  description: {
+    fontSize: 'clamp(1rem, 3vw, 1.2rem)',
+    color: '#cbd5e1',
+    lineHeight: '1.8',
+    maxWidth: '600px',
+    margin: '0 auto',
   },
 
   navbar: {
@@ -580,6 +605,27 @@ const styles = {
 
   contactIcon: {
     fontSize: '1.5rem',
+  },
+
+  footer: {
+    width: '100%',
+    background: 'rgba(15, 23, 42, 0.9)',
+    backdropFilter: 'blur(10px)',
+    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+    padding: '1.5rem 0',
+    marginTop: 'auto',
+  },
+
+  footerContent: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '0 1rem',
+    textAlign: 'center' as const,
+  },
+
+  copyright: {
+    color: '#94a3b8',
+    fontSize: '0.9rem',
   },
 
   musicTerminal: {
