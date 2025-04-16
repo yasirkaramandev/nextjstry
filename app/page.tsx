@@ -182,6 +182,27 @@ const SpotifyStatus = () => {
 };
 
 export default function Home() {
+  useEffect(() => {
+    const styleTag = document.createElement('style');
+    styleTag.textContent = `
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
+    document.head.appendChild(styleTag);
+
+    return () => {
+      styleTag.remove();
+    };
+  }, []);
+
   return (
     <main style={styles.container}>
       <CustomCursor />
@@ -498,22 +519,3 @@ const styles = {
     }
   }
 };
-
-// Add keyframe animations to your global CSS
-const globalStyles = `
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-`;
-
-// Add a style tag to your document head with these animations
-const styleTag = document.createElement('style');
-styleTag.textContent = globalStyles;
-document.head.appendChild(styleTag);
