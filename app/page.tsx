@@ -52,6 +52,17 @@ const CustomCursor = () => {
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,16 +76,28 @@ const Navbar = () => {
     <nav style={{ ...styles.navbar, ...(isScrolled ? styles.navbarScrolled : {}) }}>
       <div style={styles.navContent}>
         <a href="#" style={styles.navLogo}>YK</a>
-        <button style={styles.menuButton} onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          <span style={styles.menuIcon}></span>
-        </button>
-        <div style={{ ...styles.navLinks, ...(isMenuOpen ? styles.navLinksOpen : {}) }}>
-          {['Home', 'Deneyim', 'Projeler', 'İletişim'].map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`} style={styles.navLink}>
-              {item}
-            </a>
-          ))}
-        </div>
+        {isMobile ? (
+          <button style={styles.menuButton} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <span style={styles.menuIcon}></span>
+          </button>
+        ) : (
+          <div style={styles.navLinksDesktop}>
+            {['Home', 'Deneyim', 'Projeler', 'İletişim'].map((item) => (
+              <a key={item} href={`#${item.toLowerCase()}`} style={styles.navLink}>
+                {item}
+              </a>
+            ))}
+          </div>
+        )}
+        {isMobile && isMenuOpen && (
+          <div style={styles.navLinksMobile}>
+            {['Home', 'Deneyim', 'Projeler', 'İletişim'].map((item) => (
+              <a key={item} href={`#${item.toLowerCase()}`} style={styles.navLink}>
+                {item}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </nav>
   );
@@ -375,7 +398,8 @@ const styles = {
     left: 0,
     width: '100%',
     padding: '1rem 2rem',
-    background: 'transparent',
+    background: 'rgba(15, 23, 42, 0.8)',
+    backdropFilter: 'blur(8px)',
     transition: 'background 0.3s ease',
     zIndex: 1000,
   },
@@ -430,21 +454,24 @@ const styles = {
     },
   },
 
-  navLinks: {
-    display: 'none',
-    flexDirection: 'column' as const,
-    gap: '1rem',
-    position: 'absolute' as const,
-    top: '100%',
-    right: '2rem',
-    background: 'rgba(15, 23, 42, 0.9)',
-    padding: '1rem',
-    borderRadius: '8px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+  navLinksDesktop: {
+    display: 'flex',
+    gap: '2rem',
+    alignItems: 'center',
   },
 
-  navLinksOpen: {
+  navLinksMobile: {
+    position: 'absolute' as const,
+    top: '100%',
+    left: 0,
+    right: 0,
+    background: 'rgba(15, 23, 42, 0.95)',
+    backdropFilter: 'blur(8px)',
+    padding: '1rem',
     display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '1rem',
+    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
   },
 
   navLink: {

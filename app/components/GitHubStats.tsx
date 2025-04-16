@@ -42,6 +42,14 @@ export const GitHubStats = () => {
   return (
     <div style={styles.githubCard}>
       <div style={styles.cardHeader}>
+        <span style={styles.cardTitle}>GitHub Stats</span>
+        <div style={styles.terminalDots}>
+          <span style={{ ...styles.terminalDot, background: '#ff5f56' }}></span>
+          <span style={{ ...styles.terminalDot, background: '#ffbd2e' }}></span>
+          <span style={{ ...styles.terminalDot, background: '#27c93f' }}></span>
+        </div>
+      </div>
+      <div style={styles.cardContent}>
         <img src={stats?.avatar_url} alt="Profile" style={styles.avatar} />
         <div style={styles.statsContainer}>
           <div style={styles.stat}>
@@ -63,17 +71,50 @@ const styles = {
     background: 'rgba(30, 41, 59, 0.5)',
     backdropFilter: 'blur(10px)',
     borderRadius: '16px',
-    padding: '1.5rem',
+    overflow: 'hidden',
     border: '1px solid rgba(99,102,241,0.2)',
     boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
     width: '100%',
-    maxWidth: '300px',
+    maxWidth: '450px',
   },
 
   cardHeader: {
+    background: '#2d2d2d',
+    padding: '10px 15px',
     display: 'flex',
     alignItems: 'center',
-    gap: '1.5rem',
+    position: 'relative' as const,
+    justifyContent: 'center'
+  },
+
+  cardTitle: {
+    color: '#e2e8f0',
+    fontSize: '0.9rem',
+    fontFamily: 'monospace',
+    textAlign: 'center' as const,
+    margin: '0 auto'
+  },
+
+  terminalDots: {
+    display: 'flex',
+    gap: '8px',
+    position: 'absolute' as const,
+    left: '15px',
+    top: '50%',
+    transform: 'translateY(-50%)'
+  },
+
+  terminalDot: {
+    width: '12px',
+    height: '12px',
+    borderRadius: '50%'
+  },
+
+  cardContent: {
+    padding: '1.5rem',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '2rem'
   },
 
   avatar: {
