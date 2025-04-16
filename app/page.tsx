@@ -227,7 +227,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div style={styles.socialLinks}>
+        <nav style={styles.socialLinks}>
           {[
             { href: "https://github.com/yasirkaramandev", text: "GitHub" },
             { href: "https://www.linkedin.com/in/yasirkaramandev", text: "LinkedIn" },
@@ -243,12 +243,12 @@ export default function Home() {
               >
                 {link.text}
               </a>
-              {i < 3 && <span style={styles.divider}>•</span>}
+              {i < 3 && <span style={styles.socialDivider}>•</span>}
             </React.Fragment>
           ))}
-        </div>
+        </nav>
       </div>
-      <footer style={styles.footer}>
+      <footer style={styles.pageFooter}>
         <p>© {new Date().getFullYear()} Yasir Karaman</p>
       </footer>
     </main>
@@ -277,6 +277,7 @@ const styles = {
     zIndex: 1,
   },
 
+  // Hero styles
   hero: {
     position: 'relative' as const,
     textAlign: 'center' as const,
@@ -316,27 +317,23 @@ const styles = {
     fontWeight: '500',
   },
 
+  // Construction card styles
   constructionCard: {
     position: 'relative' as const,
     background: 'rgba(30, 41, 59, 0.5)',
     backdropFilter: 'blur(10px)',
     borderRadius: '24px',
     padding: '2rem',
+    width: '100%',
     maxWidth: '600px',
-    width: '90%',
     border: '1px solid rgba(99,102,241,0.2)',
     overflow: 'hidden',
-    animation: 'fadeIn 0.5s ease-out',
   },
 
   cardGlow: {
     position: 'absolute' as const,
-    top: '0',
-    left: '0',
-    width: '100%',
-    height: '100%',
+    inset: 0,
     background: 'radial-gradient(circle at 50% 0%, rgba(99,102,241,0.1), transparent 70%)',
-    zIndex: 0,
   },
 
   cardContent: {
@@ -373,6 +370,7 @@ const styles = {
     lineHeight: '1.6',
   },
 
+  // Social links styles
   socialLinks: {
     display: 'flex',
     flexWrap: 'wrap' as const,
@@ -390,18 +388,15 @@ const styles = {
     background: 'rgba(99,102,241,0.1)',
     border: '1px solid rgba(99,102,241,0.2)',
     transition: 'all 0.3s ease',
-    '&:hover': {
-      background: 'rgba(99,102,241,0.2)',
-      transform: 'translateY(-2px)',
-    }
   },
 
-  divider: {
+  socialDivider: {
     color: '#4b5563',
     opacity: 0.6,
+    margin: '0 0.5rem',
   },
 
-  footer: {
+  pageFooter: {
     width: '100%',
     textAlign: 'center' as const,
     padding: '1.5rem',
@@ -409,22 +404,13 @@ const styles = {
     background: 'rgba(15, 17, 23, 0.8)',
     backdropFilter: 'blur(10px)',
     borderTop: '1px solid rgba(99,102,241,0.1)',
+    marginTop: 'auto',
   },
 
+  // SpotifyStatus styles
   musicTerminal: {
     width: '100%',
     maxWidth: '500px',
-    borderRadius: '16px',
-    overflow: 'hidden',
-    animation: 'fadeIn 0.5s ease-out',
-    background: 'rgba(30, 30, 30, 0.95)',
-    backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    boxShadow: '0 15px 30px rgba(0,0,0,0.4)'
-  } as const,
-
-  terminal: {
-    width: '100%',
     borderRadius: '16px',
     overflow: 'hidden',
     animation: 'fadeIn 0.5s ease-out',
@@ -465,95 +451,6 @@ const styles = {
     fontFamily: 'monospace',
     textAlign: 'center' as const,
     margin: '0 auto'
-  } as const,
-  title: {
-    fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-    color: '#ffffff',
-    marginBottom: '20px',
-    fontWeight: '700'
-  } as const,
-  line: {
-    width: '80px',
-    height: '4px',
-    background: '#61dafb',
-    margin: '0 auto 30px',
-    borderRadius: '2px'
-  } as const,
-  message: {
-    fontSize: 'clamp(0.9rem, 4vw, 1.2rem)',
-    color: '#e2e8f0',
-    marginBottom: '40px',
-    lineHeight: '1.6',
-    padding: '0 10px'
-  } as const,
-  command: {
-    color: '#61dafb',
-    marginBottom: '10px',
-    fontFamily: 'monospace',
-    fontSize: '1rem'
-  } as const,
-  console: {
-    color: '#61dafb',
-    fontFamily: 'monospace'
-  } as const,
-  links: {
-    display: 'flex',
-    flexWrap: 'wrap' as const,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '10px',
-    padding: '0 10px'
-  } as const,
-  link: {
-    color: '#61dafb',
-    textDecoration: 'none',
-    fontSize: '1rem',
-    padding: '10px 20px',
-    borderRadius: '8px',
-    transition: 'all 0.3s ease',
-    display: 'inline-block',
-    background: 'transparent',
-    border: '1px solid transparent',
-    '&:hover': {
-      background: 'rgba(97, 218, 251, 0.1)',
-      transform: 'translateY(-2px)'
-    }
-  } as const,
-
-  listenButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '8px',
-    padding: '12px 24px',
-    borderRadius: '30px',
-    fontSize: '0.95rem',
-    fontWeight: '600',
-    letterSpacing: '0.5px',
-    border: 'none',
-    cursor: 'pointer',
-    background: 'linear-gradient(45deg, #1DB954, #1ed760)',
-    color: '#ffffff',
-    textDecoration: 'none',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 4px 12px rgba(29, 185, 84, 0.3)',
-    '&:hover': {
-      transform: 'translateY(-2px) scale(1.02)',
-      boxShadow: '0 6px 16px rgba(29, 185, 84, 0.4)'
-    }
-  } as const,
-
-  footer: {
-    position: 'fixed' as const,
-    bottom: '0',
-    left: '0',
-    right: '0',
-    textAlign: 'center' as const,
-    padding: '15px',
-    color: '#a0aec0',
-    fontSize: 'clamp(0.7rem, 3vw, 0.9rem)',
-    background: 'rgba(26, 32, 44, 0.9)',
-    backdropFilter: 'blur(5px)',
-    zIndex: 10
   } as const,
   musicInfo: {
     display: 'flex',
@@ -647,10 +544,4 @@ const styles = {
       transform: 'scale(1.05)'
     }
   },
-  divider: {
-    color: '#4a5568',
-    fontSize: '1rem',
-    margin: '0 4px',
-    opacity: 0.6
-  } as const,
 };
